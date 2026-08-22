@@ -21,7 +21,5 @@ public interface PaymentService {
 
     double getTotalRevenue();
 
-    double getPendingAmount();
-
     double getMonthlyRevenue();
 }

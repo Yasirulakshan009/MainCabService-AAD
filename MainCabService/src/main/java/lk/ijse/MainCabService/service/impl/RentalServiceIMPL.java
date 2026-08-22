@@ -67,7 +67,7 @@ public class RentalServiceIMPL implements RentalService {
                 paymentStatus = PaymentStatus.COMPLETED;
             } else {
                 vehicleStatus = VehicleStatus.RENTED;
-                paymentStatus = PaymentStatus.PENDING;
+                paymentStatus = PaymentStatus.COMPLETED;
             }
 
             vehicle.setVehicleStatus(vehicleStatus);
@@ -155,7 +155,7 @@ public class RentalServiceIMPL implements RentalService {
             paymentStatus = PaymentStatus.COMPLETED;
         } else {
             vehicleStatus = VehicleStatus.RENTED;
-            paymentStatus = PaymentStatus.PENDING;
+            paymentStatus = PaymentStatus.COMPLETED;
         }
 
         vehicle.setVehicleStatus(vehicleStatus);
