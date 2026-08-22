@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -112,26 +113,147 @@ public class PaymentServiceIMPL implements PaymentService {
 
     @Override
     public List<PaymentDTO> getAllPayments() {
-        return List.of();
+        log.info("Fetching all payments");
+        try {
+            List<Payment> payments = paymentRepository.findAll();
+            List<PaymentDTO> paymentDTOs = new ArrayList<>();
+
+            for (Payment payment : payments) {
+                PaymentDTO dto = new PaymentDTO();
+                dto.setPaymentID(payment.getPaymentID());
+                dto.setAmount(payment.getAmount());
+                dto.setStatus(payment.getPaymentStatus());
+                dto.setDate(payment.getPaymentDate());
+
+                if (payment.getRental() != null) {
+                    dto.setRentalID(payment.getRental().getRentalID());
+                }
+                if (payment.getPaymentMethod() != null) {
+                    dto.setPaymentMethod(payment.getPaymentMethod().getPaymentMethod());
+                }
+
+                paymentDTOs.add(dto);
+            }
+            return paymentDTOs;
+
+        } catch (Exception e) {
+            log.error("Error in getAllPayments(): " + e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public List<PaymentDTO> getPaymentsByStatus(PaymentStatus status) {
-        return List.of();
+
+        log.info("Fetching payments by status: " + status);
+
+        try {
+            List<Payment> payments = paymentRepository.findAll();
+            List<PaymentDTO> paymentDTOs = new ArrayList<>();
+
+            for (Payment payment : payments) {
+                if (payment.getPaymentStatus() == status) {
+                    PaymentDTO dto = new PaymentDTO();
+                    dto.setPaymentID(payment.getPaymentID());
+                    dto.setAmount(payment.getAmount());
+                    dto.setStatus(payment.getPaymentStatus());
+                    dto.setDate(payment.getPaymentDate());
+
+                    if (payment.getRental() != null) {
+                        dto.setRentalID(payment.getRental().getRentalID());
+                    }
+                    if (payment.getPaymentMethod() != null) {
+                        dto.setPaymentMethod(payment.getPaymentMethod().getPaymentMethod());
+                    }
+                    paymentDTOs.add(dto);
+                }
+            }
+            return paymentDTOs;
+
+        } catch (Exception e) {
+            log.error("Error in getPaymentsByStatus(): " + e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public List<PaymentDTO> searchPayments(String keyword) {
-        return List.of();
+        log.info("Searching payments with keyword: " + keyword);
+        try {
+            List<Payment> payments = paymentRepository.findAll();
+            List<PaymentDTO> paymentDTOs = new ArrayList<>();
+
+            for (Payment payment : payments) {
+                try {
+                    Long searchId = Long.parseLong(keyword);
+
+                    if (payment.getRental() != null && payment.getRental().getRentalID() == searchId) {
+                        PaymentDTO dto = new PaymentDTO();
+                        dto.setPaymentID(payment.getPaymentID());
+                        dto.setAmount(payment.getAmount());
+                        dto.setStatus(payment.getPaymentStatus());
+                        dto.setDate(payment.getPaymentDate());
+                        dto.setRentalID(payment.getRental().getRentalID());
+
+                        if (payment.getPaymentMethod() != null) {
+                            dto.setPaymentMethod(payment.getPaymentMethod().getPaymentMethod());
+                        }
+                        paymentDTOs.add(dto);
+                    }
+                } catch (NumberFormatException e) {
+                    log.warn("Keyword is not a valid number: " + keyword);
+                }
+            }
+            return paymentDTOs;
+
+        } catch (Exception e) {
+            log.error("Error in searchPayments(): " + e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public double getTotalRevenue() {
-        return 0;
+        log.info("Calculating total revenue");
+        try {
+            List<Payment> payments = paymentRepository.findAll();
+            double totalRevenue = 0.0;
+
+            for (Payment payment : payments) {
+                if (payment.getPaymentStatus() == PaymentStatus.COMPLETED) {
+                    totalRevenue += payment.getAmount();
+                }
+            }
+            return totalRevenue;
+
+        } catch (Exception e) {
+            log.error("Error in getTotalRevenue(): " + e.getMessage());
+            return 0.0;
+        }
     }
 
     @Override
     public double getMonthlyRevenue() {
-        return 0;
+        log.info("Calculating monthly revenue");
+        try {
+            List<Payment> payments = paymentRepository.findAll();
+            double monthlyRevenue = 0.0;
+            int currentMonth = LocalDate.now().getMonthValue();
+            int currentYear = LocalDate.now().getYear();
+
+            for (Payment payment : payments) {
+                if (payment.getPaymentStatus() == PaymentStatus.COMPLETED && payment.getPaymentDate() != null) {
+                    if (payment.getPaymentDate().getMonthValue() == currentMonth && payment.getPaymentDate().getYear() == currentYear) {
+                        monthlyRevenue += payment.getAmount();
+                    }
+                }
+            }
+            return monthlyRevenue;
+
+        } catch (Exception e) {
+            log.error("Error in getMonthlyRevenue(): " + e.getMessage());
+            return 0.0;
+        }
     }
+
 }

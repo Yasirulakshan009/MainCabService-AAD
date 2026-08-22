@@ -11,6 +11,5 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
 
     Optional<Payment> findByRental_RentalID(Long rentalID);
 
-
     void deleteByRental_RentalID(Long rentalID);
 }
