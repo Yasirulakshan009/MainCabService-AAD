@@ -1,17 +1,21 @@
 package lk.ijse.MainCabService.service.impl;
 
+import jakarta.transaction.Transactional;
+import lk.ijse.MainCabService.dto.PaymentDTO;
 import lk.ijse.MainCabService.dto.RentalDTO;
 import lk.ijse.MainCabService.entity.Customer;
 import lk.ijse.MainCabService.entity.PaymentMethod;
 import lk.ijse.MainCabService.entity.Rental;
 import lk.ijse.MainCabService.entity.Vehicle;
 import lk.ijse.MainCabService.enumeratios.Method;
+import lk.ijse.MainCabService.enumeratios.PaymentStatus;
 import lk.ijse.MainCabService.enumeratios.RentalStatus;
 import lk.ijse.MainCabService.enumeratios.VehicleStatus;
 import lk.ijse.MainCabService.repository.CustomerRepository;
 import lk.ijse.MainCabService.repository.PaymentMethodRepository;
 import lk.ijse.MainCabService.repository.RentalRepository;
 import lk.ijse.MainCabService.repository.VehicleRepository;
+import lk.ijse.MainCabService.service.PaymentService;
 import lk.ijse.MainCabService.service.RentalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +26,15 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class RentalServiceIMPL implements RentalService {
 
     private final RentalRepository rentalRepository;
     private final CustomerRepository customerRepository;
     private final VehicleRepository vehicleRepository;
     private final PaymentMethodRepository paymentMethodRepository;
+
+    private final PaymentService paymentService;
 
 
     @Override
@@ -73,8 +80,20 @@ public class RentalServiceIMPL implements RentalService {
                 }
             }
 
-            rentalRepository.save(rental);
-            log.info("Rental saved successfully!");
+            Rental savedRental = rentalRepository.save(rental);
+
+            /*/////////////////////////*/
+
+            PaymentDTO paymentDTO = new PaymentDTO();
+
+            paymentDTO.setRentalID(savedRental.getRentalID());
+            paymentDTO.setAmount(savedRental.getTotalAmount());
+            paymentDTO.setPaymentMethod(paymentMethodEnum);
+
+            paymentService.savePayment(paymentDTO);
+
+
+            log.info("Rental and payment saved successfully!");
 
         } catch (Exception e) {
             log.error("Error in save Rental(): " + e.getMessage());
@@ -133,8 +152,17 @@ public class RentalServiceIMPL implements RentalService {
             }
         }
 
-        rentalRepository.save(rental);
-        log.info("Rental updated successfully!");
+        Rental updatedRental = rentalRepository.save(rental);
+
+        /*////////////////*/
+
+        PaymentDTO paymentDTO = new PaymentDTO();
+        paymentDTO.setRentalID(updatedRental.getRentalID());
+        paymentDTO.setAmount(updatedRental.getTotalAmount());
+        paymentDTO.setPaymentMethod(paymentMethodEnum);
+
+        paymentService.updatePayment(paymentDTO);
+        log.info("Rental and payment updated successfully!");
     }
 
     @Override
