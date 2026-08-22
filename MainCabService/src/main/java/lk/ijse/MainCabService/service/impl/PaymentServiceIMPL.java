@@ -15,4 +15,9 @@ public class PaymentServiceIMPL implements PaymentService {
     public void updatePayment(PaymentDTO paymentDTO) {
 
     }
+
+    @Override
+    public void deletePayment(Long id) {
+
+    }
 }

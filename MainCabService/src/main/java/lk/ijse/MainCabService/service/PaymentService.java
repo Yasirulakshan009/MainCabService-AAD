@@ -7,4 +7,6 @@ public interface PaymentService {
     void savePayment(PaymentDTO paymentDTO);
 
     void updatePayment(PaymentDTO paymentDTO);
+
+    void deletePayment(Long id);
 }

@@ -352,7 +352,10 @@ public class RentalServiceIMPL implements RentalService {
                 vehicleRepository.save(vehicle);
             }
 
+            paymentService.deletePayment(id);
+
             rentalRepository.deleteById(id);
+
             log.info("Rental deleted successfully!");
 
         } catch (Exception e) {
