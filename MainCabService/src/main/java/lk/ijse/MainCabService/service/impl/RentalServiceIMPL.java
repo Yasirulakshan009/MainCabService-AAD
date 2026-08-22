@@ -49,11 +49,29 @@ public class RentalServiceIMPL implements RentalService {
             rental.setEndDate(rentalDTO.getEndDate());
             rental.setPickupAddress(rentalDTO.getPickupAddress());
             rental.setDeliveryFee(rentalDTO.getDeliveryFee());
-            rental.setRentalStatus(RentalStatus.ACTIVE);
+
+            RentalStatus rentalStatus = rentalDTO.getRentalStatus();
+            rental.setRentalStatus(rentalStatus);
 
             Vehicle vehicle = vehicleRepository.findById(rentalDTO.getVehicleID())
                     .orElseThrow(() -> new RuntimeException("Vehicle not found with ID: " + rentalDTO.getVehicleID()));
-            vehicle.setVehicleStatus(VehicleStatus.RENTED);
+
+            VehicleStatus vehicleStatus;
+            PaymentStatus paymentStatus;
+
+            if (rentalStatus == RentalStatus.CANCELLED) {
+                vehicleStatus = VehicleStatus.AVAILABLE;
+                paymentStatus = PaymentStatus.FAILED;
+            } else if (rentalStatus == RentalStatus.COMPLETED) {
+                vehicleStatus = VehicleStatus.AVAILABLE;
+                paymentStatus = PaymentStatus.COMPLETED;
+            } else {
+                vehicleStatus = VehicleStatus.RENTED;
+                paymentStatus = PaymentStatus.PENDING;
+            }
+
+            vehicle.setVehicleStatus(vehicleStatus);
+
             vehicleRepository.save(vehicle);
             rental.setVehicles(vehicle);
 
@@ -89,6 +107,7 @@ public class RentalServiceIMPL implements RentalService {
             paymentDTO.setRentalID(savedRental.getRentalID());
             paymentDTO.setAmount(savedRental.getTotalAmount());
             paymentDTO.setPaymentMethod(paymentMethodEnum);
+            paymentDTO.setStatus(paymentStatus);
 
             paymentService.savePayment(paymentDTO);
 
@@ -114,7 +133,9 @@ public class RentalServiceIMPL implements RentalService {
         rental.setPickupAddress(rentalDTO.getPickupAddress());
         rental.setDeliveryFee(rentalDTO.getDeliveryFee());
         rental.setTotalAmount(rentalDTO.getTotalAmount());
-        rental.setRentalStatus(rentalDTO.getRentalStatus());
+
+        RentalStatus rentalStatus = rentalDTO.getRentalStatus();
+        rental.setRentalStatus(rentalStatus);
 
         Customer customer = customerRepository.findById(rentalDTO.getCustomerID())
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
@@ -122,17 +143,25 @@ public class RentalServiceIMPL implements RentalService {
 
         Vehicle vehicle = vehicleRepository.findById(rentalDTO.getVehicleID())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
-        rental.setVehicles(vehicle);
 
-        RentalStatus newStatus = rentalDTO.getRentalStatus();
+        VehicleStatus vehicleStatus;
+        PaymentStatus paymentStatus;
 
-        if (newStatus == RentalStatus.COMPLETED || newStatus == RentalStatus.CANCELLED) {
-            vehicle.setVehicleStatus(VehicleStatus.AVAILABLE);
-            vehicleRepository.save(vehicle);
-        } else if (newStatus == RentalStatus.ACTIVE) {
-            vehicle.setVehicleStatus(VehicleStatus.RENTED);
-            vehicleRepository.save(vehicle);
+        if (rentalStatus == RentalStatus.CANCELLED) {
+            vehicleStatus = VehicleStatus.AVAILABLE;
+            paymentStatus = PaymentStatus.FAILED;
+        } else if (rentalStatus == RentalStatus.COMPLETED) {
+            vehicleStatus = VehicleStatus.AVAILABLE;
+            paymentStatus = PaymentStatus.COMPLETED;
+        } else {
+            vehicleStatus = VehicleStatus.RENTED;
+            paymentStatus = PaymentStatus.PENDING;
         }
+
+        vehicle.setVehicleStatus(vehicleStatus);
+
+        vehicleRepository.save(vehicle);
+        rental.setVehicles(vehicle);
 
         long days = java.time.temporal.ChronoUnit.DAYS.between(rentalDTO.getStartDate(), rentalDTO.getEndDate());
         if (days <= 0) {
@@ -160,6 +189,7 @@ public class RentalServiceIMPL implements RentalService {
         paymentDTO.setRentalID(updatedRental.getRentalID());
         paymentDTO.setAmount(updatedRental.getTotalAmount());
         paymentDTO.setPaymentMethod(paymentMethodEnum);
+        paymentDTO.setStatus(paymentStatus);
 
         paymentService.updatePayment(paymentDTO);
         log.info("Rental and payment updated successfully!");
