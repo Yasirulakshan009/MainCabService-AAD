@@ -1,6 +1,6 @@
 package lk.ijse.MainCabService.service.impl;
 
-import jakarta.transaction.Transactional;
+
 import lk.ijse.MainCabService.dto.PaymentDTO;
 import lk.ijse.MainCabService.dto.RentalDTO;
 import lk.ijse.MainCabService.entity.Customer;
@@ -20,6 +20,7 @@ import lk.ijse.MainCabService.service.RentalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
