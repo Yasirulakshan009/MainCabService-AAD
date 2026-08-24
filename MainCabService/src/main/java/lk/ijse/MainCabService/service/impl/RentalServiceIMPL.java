@@ -65,10 +65,10 @@ public class RentalServiceIMPL implements RentalService {
                 paymentStatus = PaymentStatus.FAILED;
             } else if (rentalStatus == RentalStatus.COMPLETED) {
                 vehicleStatus = VehicleStatus.AVAILABLE;
-                paymentStatus = PaymentStatus.COMPLETED;
+                paymentStatus = PaymentStatus.ALL_COMPLETED;
             } else {
                 vehicleStatus = VehicleStatus.RENTED;
-                paymentStatus = PaymentStatus.COMPLETED;
+                paymentStatus = PaymentStatus.RENT_PAID_DONE;
             }
 
             vehicle.setVehicleStatus(vehicleStatus);
@@ -153,10 +153,10 @@ public class RentalServiceIMPL implements RentalService {
             paymentStatus = PaymentStatus.FAILED;
         } else if (rentalStatus == RentalStatus.COMPLETED) {
             vehicleStatus = VehicleStatus.AVAILABLE;
-            paymentStatus = PaymentStatus.COMPLETED;
+            paymentStatus = PaymentStatus.ALL_COMPLETED;
         } else {
             vehicleStatus = VehicleStatus.RENTED;
-            paymentStatus = PaymentStatus.COMPLETED;
+            paymentStatus = PaymentStatus.RENT_PAID_DONE;
         }
 
         vehicle.setVehicleStatus(vehicleStatus);

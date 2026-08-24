@@ -28,7 +28,6 @@ public class ReturnServiceIMPL implements ReturnService {
     private final ReturnRepository returnRepository;
     private final VehicleRepository vehicleRepository;
     private final RentalRepository rentalRepository;
-    private final PaymentRepository paymentRepository;
     private final PaymentMethodRepository paymentMethodRepository;
     private final PaymentService paymentService;
 
@@ -83,7 +82,7 @@ public class ReturnServiceIMPL implements ReturnService {
             paymentDTO.setRentalID(rental.getRentalID());
             paymentDTO.setAmount(finalAmount);
             paymentDTO.setPaymentMethod(paymentMethodEnum);
-            paymentDTO.setStatus(PaymentStatus.COMPLETED);
+            paymentDTO.setStatus(PaymentStatus.ALL_COMPLETED);
 
             paymentService.updatePayment(paymentDTO);
 
@@ -132,7 +131,7 @@ public class ReturnServiceIMPL implements ReturnService {
             paymentDTO.setRentalID(rental.getRentalID());
             paymentDTO.setAmount(finalAmount);
             paymentDTO.setPaymentMethod(paymentMethodEnum);
-            paymentDTO.setStatus(PaymentStatus.COMPLETED);
+            paymentDTO.setStatus(PaymentStatus.ALL_COMPLETED);
 
             paymentService.updatePayment(paymentDTO);
 

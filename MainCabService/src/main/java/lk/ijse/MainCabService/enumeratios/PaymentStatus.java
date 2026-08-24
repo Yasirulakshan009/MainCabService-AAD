@@ -2,7 +2,8 @@ package lk.ijse.MainCabService.enumeratios;
 
 public enum PaymentStatus {
 
-    PENDING,
-    COMPLETED,
+    RENT_PAID_DONE,
+    ALL_COMPLETED,
     FAILED
+
 }
