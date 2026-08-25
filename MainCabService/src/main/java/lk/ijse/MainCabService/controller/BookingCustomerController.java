@@ -1,10 +1,14 @@
 package lk.ijse.MainCabService.controller;
 
+import lk.ijse.MainCabService.constants.CommonResponse;
+import lk.ijse.MainCabService.constants.ResponseCode;
+import lk.ijse.MainCabService.constants.ResponseMessage;
 import lk.ijse.MainCabService.dto.BookingCustomerDTO;
-import lk.ijse.MainCabService.dto.CustomerDTO;
 import lk.ijse.MainCabService.service.BookingCustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,26 +20,72 @@ public class BookingCustomerController {
 
     private final BookingCustomerService bookingCustomerService;
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public String saveBookingCustomer(@RequestBody BookingCustomerDTO bookingCustomerDTO) {
-        bookingCustomerService.saveBookingCustomer(bookingCustomerDTO);
-        return "Booking Customer saved successfully";
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonResponse> saveBookingCustomer(@RequestBody BookingCustomerDTO bookingCustomerDTO) {
+
+        try {
+            bookingCustomerService.saveBookingCustomer(bookingCustomerDTO);
+            CommonResponse commonResponse = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    null,
+                    ResponseMessage.SAVE_SUCCESS
+            );
+            return new ResponseEntity<>(commonResponse, HttpStatus.CREATED);
+        } catch (Exception e) {
+
+            CommonResponse commonResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(commonResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @DeleteMapping("/{id}")
-    public String deleteBookingCustomer(@PathVariable Long id){
-        bookingCustomerService.deleteBookingCustomer(id);
-        return "Booking Customer deleted successfully";
+    public ResponseEntity<CommonResponse> deleteBookingCustomer(@PathVariable Long id){
+
+        try{
+            bookingCustomerService.deleteBookingCustomer(id);
+            CommonResponse commonResponse = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    null,
+                    ResponseMessage.DELETE_SUCCESS
+            );
+            return new ResponseEntity<>(commonResponse,HttpStatus.OK);
+
+        } catch (Exception e) {
+            CommonResponse commonResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(commonResponse,HttpStatus.OK);
+        }
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookingCustomerDTO> getAllBookingCustomers(){
-        return bookingCustomerService.getAllBookingCustomers();
+    public ResponseEntity<CommonResponse> getAllBookingCustomers(){
+        List<BookingCustomerDTO> bookingCustomerDTOList = bookingCustomerService.getAllBookingCustomers();
+        CommonResponse commonResponse = new CommonResponse(
+                ResponseCode.OPERATION_SUCCESS,
+                bookingCustomerDTOList,
+                ResponseMessage.SUCCESS_MESSAGE
+        );
+        return new ResponseEntity<>(commonResponse,HttpStatus.OK);
+
     }
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookingCustomerDTO> searchBookingCustomers(@RequestParam String keyword) {
-        return bookingCustomerService.searchBookingCustomers(keyword);
+    public ResponseEntity<CommonResponse> searchBookingCustomers(@RequestParam String keyword) {
+        List<BookingCustomerDTO> bookingCustomerDTOList = bookingCustomerService.searchBookingCustomers(keyword);
+        CommonResponse commonResponse = new CommonResponse(
+                ResponseCode.OPERATION_SUCCESS,
+                bookingCustomerDTOList,
+                ResponseMessage.SUCCESS_MESSAGE
+        );
+        return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
 }
