@@ -110,8 +110,6 @@ public class VehicleServiceIMPL implements VehicleService {
             MultipartFile imageFile = (MultipartFile) vehicleDTO.getVehicleImage();
             if (imageFile != null && !imageFile.isEmpty()) {
                 vehicle.setVehicleImage(imageFile.getBytes());
-            } else {
-                vehicle.setVehicleImage(null);
             }
 
             vehicleRepository.save(vehicle);
