@@ -117,7 +117,7 @@ public class VehicleController {
     }
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> searchVehicle(@RequestParam("keyword") String keyword){
+    public ResponseEntity<CommonResponse> searchVehicle(@RequestParam String keyword){
         List<VehicleDTO> vehicles = vehicleService.searchVehicles(keyword);
         CommonResponse response = new CommonResponse(
                 ResponseCode.OPERATION_SUCCESS,
