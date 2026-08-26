@@ -1,5 +1,6 @@
 package lk.ijse.MainCabService.controller;
 
+import jakarta.validation.Valid;
 import lk.ijse.MainCabService.constants.CommonResponse;
 import lk.ijse.MainCabService.constants.ResponseCode;
 import lk.ijse.MainCabService.constants.ResponseMessage;
@@ -21,7 +22,7 @@ public class BookingCustomerController {
     private final BookingCustomerService bookingCustomerService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> saveBookingCustomer(@RequestBody BookingCustomerDTO bookingCustomerDTO) {
+    public ResponseEntity<CommonResponse> saveBookingCustomer(@Valid @RequestBody BookingCustomerDTO bookingCustomerDTO) {
 
         try {
             bookingCustomerService.saveBookingCustomer(bookingCustomerDTO);

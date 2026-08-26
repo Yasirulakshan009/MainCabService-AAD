@@ -1,5 +1,6 @@
 package lk.ijse.MainCabService.controller;
 
+import jakarta.validation.Valid;
 import lk.ijse.MainCabService.constants.CommonResponse;
 import lk.ijse.MainCabService.constants.ResponseCode;
 import lk.ijse.MainCabService.constants.ResponseMessage;
@@ -22,7 +23,7 @@ public class VehicleController {
     private final VehicleService vehicleService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> saveVehicle(@ModelAttribute VehicleDTO vehicleDTO) {
+    public ResponseEntity<CommonResponse> saveVehicle(@Valid @ModelAttribute VehicleDTO vehicleDTO) {
         try{
 
             vehicleService.saveVehicle(vehicleDTO);
@@ -44,7 +45,7 @@ public class VehicleController {
     }
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> updateVehicle(@ModelAttribute VehicleDTO vehicleDTO) {
+    public ResponseEntity<CommonResponse> updateVehicle(@Valid @ModelAttribute VehicleDTO vehicleDTO) {
         try {
             vehicleService.updateVehicle(vehicleDTO);
             CommonResponse response = new CommonResponse(
