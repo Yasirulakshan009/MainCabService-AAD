@@ -1,6 +1,8 @@
 package lk.ijse.MainCabService.service.impl;
 
 import lk.ijse.MainCabService.dto.AuthRequestDTO;
+import lk.ijse.MainCabService.dto.ChangeEmailDTO;
+import lk.ijse.MainCabService.dto.ChangePasswordDTO;
 import lk.ijse.MainCabService.dto.UserDTO;
 import lk.ijse.MainCabService.entity.User;
 import lk.ijse.MainCabService.repository.UserRepository;
@@ -13,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -69,21 +72,100 @@ public class AuthServiceIMPL implements AuthService {
 
     @Override
     public List<UserDTO> getAllUsers() {
-        return List.of();
+        List<User> users = userRepository.findAll();
+        List<UserDTO> userDTOList = new ArrayList<>();
+
+        for (User user : users) {
+            UserDTO dto = new UserDTO();
+            dto.setUserID(user.getUserID());
+            dto.setUserName(user.getUserName());
+            dto.setUserEmail(user.getUserEmail());
+            dto.setPhone(user.getPhone());
+            dto.setStatus(user.getStatus());
+            dto.setUserRole(user.getUserRole());
+            dto.setPermissions(user.getPermissions());
+
+            userDTOList.add(dto);
+        }
+        return userDTOList;
     }
 
     @Override
     public UserDTO getUserById(Long id) {
-        return null;
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+        UserDTO dto = new UserDTO();
+        dto.setUserID(user.getUserID());
+        dto.setUserName(user.getUserName());
+        dto.setUserEmail(user.getUserEmail());
+        dto.setPhone(user.getPhone());
+        dto.setStatus(user.getStatus());
+        dto.setUserRole(user.getUserRole());
+        dto.setPermissions(user.getPermissions());
+
+        return dto;
     }
 
     @Override
     public void updateUser(Long id, UserDTO userDTO) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
+        user.setUserName(userDTO.getUserName());
+        user.setUserEmail(userDTO.getUserEmail());
+        user.setPhone(userDTO.getPhone());
+        user.setStatus(userDTO.getStatus());
+        user.setUserRole(userDTO.getUserRole());
+        user.setPermissions(userDTO.getPermissions());
+
+        if (userDTO.getUserPassword() != null && !userDTO.getUserPassword().isEmpty()) {
+            user.setUserPassword(passwordEncoder.encode(userDTO.getUserPassword()));
+        }
+
+        userRepository.save(user);
     }
 
     @Override
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+        userRepository.deleteById(id);
+    }
 
+    @Override
+    public void changeEmail(ChangeEmailDTO changeEmailDTO) {
+        if (!changeEmailDTO.getNewEmail().equals(changeEmailDTO.getConfirmNewEmail())) {
+            throw new RuntimeException("New emails do not match!");
+        }
+
+        User user = userRepository.findByUserEmail(changeEmailDTO.getCurrentEmail())
+                .orElseThrow(() -> new RuntimeException("Current user not found!"));
+
+        if (userRepository.existsByUserEmail(changeEmailDTO.getNewEmail())) {
+            throw new RuntimeException("New email is already in use!");
+        }
+
+        user.setUserEmail(changeEmailDTO.getNewEmail());
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changePassword(ChangePasswordDTO changePasswordDTO) {
+
+        if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfirmNewPassword())) {
+            throw new RuntimeException("New passwords do not match!");
+        }
+
+        User user = userRepository.findByUserEmail(changePasswordDTO.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found!"));
+
+        if (!passwordEncoder.matches(changePasswordDTO.getCurrentPassword(), user.getUserPassword())) {
+            throw new RuntimeException("Incorrect current password!");
+        }
+
+        user.setUserPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
+        userRepository.save(user);
     }
 }

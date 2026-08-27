@@ -1,4 +1,3 @@
-/*
 package lk.ijse.MainCabService.dto;
 
 import lombok.AllArgsConstructor;
@@ -11,5 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChangePasswordDTO {
+
+    private String email;
+    private String currentPassword;
+    private String newPassword;
+    private String confirmNewPassword;
 }
-*/
