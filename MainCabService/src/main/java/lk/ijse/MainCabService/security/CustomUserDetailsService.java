@@ -3,6 +3,7 @@ package lk.ijse.MainCabService.security;
 import lk.ijse.MainCabService.entity.User;
 import lk.ijse.MainCabService.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +28,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         User user = optionalUser.get();
+        
+        if (user.getStatus() != null && user.getStatus().name().equals("INACTIVE")) {
+            throw new LockedException("Your account is inactive. Please contact the administrator.");
+        }
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUserEmail())

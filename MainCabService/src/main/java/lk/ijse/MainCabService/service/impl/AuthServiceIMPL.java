@@ -10,7 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,10 +22,32 @@ public class AuthServiceIMPL implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public String register(UserDTO userDTO) {
-        return "";
+    public void register(UserDTO userDTO) {
+
+        if (!userDTO.getUserPassword().equals(userDTO.getConfirmPassword())) {
+            throw new RuntimeException("Passwords do not match!");
+        }
+
+        if (userRepository.existsByUserEmail(userDTO.getUserEmail())) {
+            throw new RuntimeException("User already exists with this email!");
+        }
+
+        User user = new User();
+        user.setUserName(userDTO.getUserName());
+        user.setUserEmail(userDTO.getUserEmail());
+        user.setPhone(userDTO.getPhone());
+
+        user.setUserPassword(passwordEncoder.encode(userDTO.getUserPassword()));
+
+        user.setStatus(userDTO.getStatus());
+        user.setUserRole(userDTO.getUserRole());
+        user.setPermissions(userDTO.getPermissions());
+
+        userRepository.save(user);
+
     }
 
     @Override
@@ -40,5 +65,25 @@ public class AuthServiceIMPL implements AuthService {
         userDTO.setUserRole(user.getUserRole());
 
         return jwtUtil.generateToken(userDTO);
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        return List.of();
+    }
+
+    @Override
+    public UserDTO getUserById(Long id) {
+        return null;
+    }
+
+    @Override
+    public void updateUser(Long id, UserDTO userDTO) {
+
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+
     }
 }

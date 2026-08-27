@@ -22,6 +22,7 @@ public class UserDTO {
     private String userEmail;
     private String phone;
     private String userPassword;
+    private String confirmPassword;
     private UserStatus status;
     private UserRole userRole;
     private List<DashboardSection> permissions;
