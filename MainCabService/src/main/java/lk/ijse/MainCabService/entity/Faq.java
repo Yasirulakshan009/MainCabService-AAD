@@ -7,17 +7,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "privacy_policy")
+@Table(name = "faq")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PrivacyPolicy {
+public class Faq {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String heading;
-    private String content;
+    private String question;
+    private String answer;
 }
