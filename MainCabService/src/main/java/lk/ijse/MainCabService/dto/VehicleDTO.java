@@ -57,5 +57,10 @@ public class VehicleDTO {
     @NotNull(message = "AC type cannot be null!")
     private ACType acType;
 
+    private boolean showOnWebsite;
+
+    @NotBlank(message = "Web category cannot be blank!")
+    private String webCategory;
+
     private Object vehicleImage;
 }

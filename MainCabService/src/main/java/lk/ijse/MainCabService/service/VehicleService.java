@@ -24,4 +24,6 @@ public interface VehicleService {
     long getVehicleCountByStatus(VehicleStatus status);
 
     long getTotalVehicleCount();
+
+    List<VehicleDTO> getWebsiteVehicles();
 }

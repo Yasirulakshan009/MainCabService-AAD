@@ -149,4 +149,24 @@ public class VehicleController {
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/website-fleet", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonResponse> getWebsiteVehicles() {
+        try {
+            List<VehicleDTO> websiteVehicles = vehicleService.getWebsiteVehicles();
+            CommonResponse commonResponse = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    websiteVehicles,
+                    "Website vehicles fetched successfully!"
+            );
+            return new ResponseEntity<>(commonResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

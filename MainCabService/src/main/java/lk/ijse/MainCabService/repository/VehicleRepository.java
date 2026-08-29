@@ -22,4 +22,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle,Long> {
     List<Vehicle> searchVehicles(@Param("keyword") String keyword);
 
     long countByVehicleStatus(VehicleStatus vehicleStatus);
+
+    List<Vehicle> findByShowOnWebsiteTrue();
 }

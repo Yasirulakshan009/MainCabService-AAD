@@ -42,18 +42,21 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     private VehicleStatus vehicleStatus;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_category_id")
+    private VehicleCategory vehicleCategory;
+
+    private boolean showOnWebsite;
+    private String webCategory;
+
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] vehicleImage;
+
     @OneToMany(mappedBy = "vehicles")
     private List<Rental> rentals;
 
     @OneToMany(mappedBy = "vehicle")
     private List<Maintenance> maintenanceList;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vehicle_category_id")
-    private VehicleCategory vehicleCategory;
-
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    private byte[] vehicleImage;
 
 }
