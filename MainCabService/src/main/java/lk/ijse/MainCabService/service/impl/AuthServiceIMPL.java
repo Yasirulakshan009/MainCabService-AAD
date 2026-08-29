@@ -5,7 +5,11 @@ import lk.ijse.MainCabService.dto.ChangeEmailDTO;
 import lk.ijse.MainCabService.dto.ChangePasswordDTO;
 import lk.ijse.MainCabService.dto.UserDTO;
 import lk.ijse.MainCabService.entity.User;
+import lk.ijse.MainCabService.entity.UserRole;
+import lk.ijse.MainCabService.enumeratios.Role;
+import lk.ijse.MainCabService.enumeratios.UserStatus;
 import lk.ijse.MainCabService.repository.UserRepository;
+import lk.ijse.MainCabService.repository.UserRoleRepository;
 import lk.ijse.MainCabService.security.JwtUtil;
 import lk.ijse.MainCabService.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +28,7 @@ public class AuthServiceIMPL implements AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
@@ -42,11 +47,17 @@ public class AuthServiceIMPL implements AuthService {
         user.setUserName(userDTO.getUserName());
         user.setUserEmail(userDTO.getUserEmail());
         user.setPhone(userDTO.getPhone());
-
         user.setUserPassword(passwordEncoder.encode(userDTO.getUserPassword()));
+        user.setStatus(userDTO.getStatus() != null ? userDTO.getStatus() : UserStatus.ACTIVE);
 
-        user.setStatus(userDTO.getStatus());
-        user.setUserRole(userDTO.getUserRole());
+        if (userDTO.getUserRole() != null) {
+            user.setUserRole(userDTO.getUserRole());
+        } else {
+            UserRole customerRole = userRoleRepository.findByRole(Role.CUSTOMER)
+                    .orElseThrow(() -> new RuntimeException("Default CUSTOMER role not found!"));
+            user.setUserRole(customerRole);
+        }
+
         user.setPermissions(userDTO.getPermissions());
 
         userRepository.save(user);
@@ -62,6 +73,10 @@ public class AuthServiceIMPL implements AuthService {
         User user = userRepository.findByUserEmail(authRequestDTO.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        if (user.getStatus() == UserStatus.INACTIVE) {
+            throw new RuntimeException("Your account is inactive. Please contact the administrator.");
+        }
+
         UserDTO userDTO = new UserDTO();
         userDTO.setUserID(user.getUserID());
         userDTO.setUserEmail(user.getUserEmail());
@@ -72,7 +87,7 @@ public class AuthServiceIMPL implements AuthService {
 
     @Override
     public List<UserDTO> getAllUsers() {
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findByUserRole_RoleNot(Role.CUSTOMER);
         List<UserDTO> userDTOList = new ArrayList<>();
 
         for (User user : users) {
@@ -88,6 +103,38 @@ public class AuthServiceIMPL implements AuthService {
             userDTOList.add(dto);
         }
         return userDTOList;
+    }
+
+    @Override
+    public List<UserDTO> getCustomersOnly() {
+        List<User> customers = userRepository.findByUserRole_Role(Role.CUSTOMER);
+        List<UserDTO> customerDTOList = new ArrayList<>();
+
+        for (User user : customers) {
+            UserDTO dto = new UserDTO();
+            dto.setUserID(user.getUserID());
+            dto.setUserName(user.getUserName());
+            dto.setUserEmail(user.getUserEmail());
+            dto.setPhone(user.getPhone());
+            dto.setStatus(user.getStatus());
+            dto.setUserRole(user.getUserRole());
+
+            customerDTOList.add(dto);
+        }
+        return customerDTOList;
+    }
+
+    @Override
+    public void updateCustomerStatus(Long id, UserStatus status) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
+
+        if (user.getUserRole().getRole() != Role.CUSTOMER) {
+            throw new RuntimeException("User is not a customer!");
+        }
+
+        user.setStatus(status);
+        userRepository.save(user);
     }
 
     @Override

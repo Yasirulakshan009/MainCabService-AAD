@@ -7,6 +7,7 @@ import lk.ijse.MainCabService.dto.AuthRequestDTO;
 import lk.ijse.MainCabService.dto.ChangeEmailDTO;
 import lk.ijse.MainCabService.dto.ChangePasswordDTO;
 import lk.ijse.MainCabService.dto.UserDTO;
+import lk.ijse.MainCabService.enumeratios.UserStatus;
 import lk.ijse.MainCabService.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -72,6 +73,46 @@ public class AuthController {
                     ResponseCode.OPERATION_SUCCESS,
                     userList,
                     ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(commonResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/customers", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonResponse> getAllCustomers() {
+        try {
+            List<UserDTO> customerList = authService.getCustomersOnly();
+            CommonResponse commonResponse = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    customerList,
+                    ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(commonResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/customer-status/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonResponse> updateCustomerStatus(@PathVariable Long id, @RequestParam UserStatus status) {
+        try {
+            authService.updateCustomerStatus(id, status);
+            CommonResponse commonResponse = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    null,
+                    "Customer status updated successfully!"
             );
             return new ResponseEntity<>(commonResponse, HttpStatus.OK);
         } catch (Exception e) {
