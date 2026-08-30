@@ -222,7 +222,7 @@ public class PaymentServiceIMPL implements PaymentService {
             double totalRevenue = 0.0;
 
             for (Payment payment : payments) {
-                if (payment.getPaymentStatus() == PaymentStatus.COMPLETED) {
+                if (payment.getPaymentStatus() == PaymentStatus.ALL_COMPLETED) {
                     totalRevenue += payment.getAmount();
                 }
             }
@@ -244,7 +244,7 @@ public class PaymentServiceIMPL implements PaymentService {
             int currentYear = LocalDate.now().getYear();
 
             for (Payment payment : payments) {
-                if (payment.getPaymentStatus() == PaymentStatus.COMPLETED && payment.getPaymentDate() != null) {
+                if (payment.getPaymentStatus() == PaymentStatus.ALL_COMPLETED && payment.getPaymentDate() != null) {
                     if (payment.getPaymentDate().getMonthValue() == currentMonth && payment.getPaymentDate().getYear() == currentYear) {
                         monthlyRevenue += payment.getAmount();
                     }
