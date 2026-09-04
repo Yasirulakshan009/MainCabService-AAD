@@ -95,22 +95,5 @@ public class FaqServiceIMPL implements FaqService {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public void deleteFAQ(Long id) {
-
-        log.info("Executing deleteFAQ() for ID: " + id);
-        try {
-            Optional<Faq> optionalFAQ = faqRepository.findById(id);
-            if (!optionalFAQ.isPresent()) {
-                throw new RuntimeException("FAQ not found with ID: " + id);
-            }
-
-            faqRepository.deleteById(id);
-            log.info("FAQ deleted successfully for ID: " + id);
-        } catch (Exception e) {
-            log.error("Error in deleteFAQ(): " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
+    
 }

@@ -6,6 +6,7 @@ import lk.ijse.MainCabService.constants.ResponseCode;
 import lk.ijse.MainCabService.constants.ResponseMessage;
 import lk.ijse.MainCabService.dto.VehicleDTO;
 import lk.ijse.MainCabService.enumeratios.VehicleStatus;
+import lk.ijse.MainCabService.enumeratios.WebCategory;
 import lk.ijse.MainCabService.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -82,72 +83,127 @@ public class VehicleController {
             );
             return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonResponse> getVehicleById(@PathVariable Long id){
-        VehicleDTO vehicleDTO = vehicleService.getVehicleById(id);
-        CommonResponse response = new CommonResponse(
-                ResponseCode.OPERATION_SUCCESS,
-                vehicleDTO,
-                ResponseMessage.SUCCESS_MESSAGE
-        );
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            VehicleDTO vehicleDTO = vehicleService.getVehicleById(id);
+            CommonResponse response = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    vehicleDTO,
+                    ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonResponse> getAllVehicles(){
-        List<VehicleDTO> vehicles = vehicleService.getAllVehicles();
-        CommonResponse response = new CommonResponse(
-                ResponseCode.OPERATION_SUCCESS,
-                vehicles,
-                ResponseMessage.SUCCESS_MESSAGE
-        );
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            List<VehicleDTO> vehicles = vehicleService.getAllVehicles();
+            CommonResponse response = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    vehicles,
+                    ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonResponse> getVehiclesByStatus(@PathVariable VehicleStatus status){
-        List<VehicleDTO> vehicles = vehicleService.getVehiclesByStatus(status);
-        CommonResponse response = new CommonResponse(
-                ResponseCode.OPERATION_SUCCESS,
-                vehicles,
-                ResponseMessage.SUCCESS_MESSAGE
-        );
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            List<VehicleDTO> vehicles = vehicleService.getVehiclesByStatus(status);
+            CommonResponse response = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    vehicles,
+                    ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonResponse> searchVehicle(@RequestParam String keyword){
-        List<VehicleDTO> vehicles = vehicleService.searchVehicles(keyword);
-        CommonResponse response = new CommonResponse(
-                ResponseCode.OPERATION_SUCCESS,
-                vehicles,
-                ResponseMessage.SUCCESS_MESSAGE
-        );
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            List<VehicleDTO> vehicles = vehicleService.searchVehicles(keyword);
+            CommonResponse response = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    vehicles,
+                    ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping(value = "/count/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonResponse> getVehicleCountByStatus(@PathVariable VehicleStatus status){
-        long count = vehicleService.getVehicleCountByStatus(status);
-        CommonResponse response = new CommonResponse(
-                ResponseCode.OPERATION_SUCCESS,
-                count,
-                ResponseMessage.SUCCESS_MESSAGE
-        );
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            long count = vehicleService.getVehicleCountByStatus(status);
+            CommonResponse response = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    count,
+                    ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping(value = "/count", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonResponse> getTotalVehicleCount(){
-        long totalCount = vehicleService.getTotalVehicleCount();
-        CommonResponse response = new CommonResponse(
-                ResponseCode.OPERATION_SUCCESS,
-                totalCount,
-                ResponseMessage.SUCCESS_MESSAGE
-        );
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            long totalCount = vehicleService.getTotalVehicleCount();
+            CommonResponse response = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    totalCount,
+                    ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping(value = "/website-fleet", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -157,7 +213,27 @@ public class VehicleController {
             CommonResponse commonResponse = new CommonResponse(
                     ResponseCode.OPERATION_SUCCESS,
                     websiteVehicles,
-                    "Website vehicles fetched successfully!"
+                    ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(commonResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/website/category/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonResponse> getVehiclesByWebCategory(@PathVariable WebCategory category) {
+        try {
+            List<VehicleDTO> vehicles = vehicleService.getVehiclesByWebCategory(category);
+            CommonResponse commonResponse = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    vehicles,
+                    ResponseMessage.SUCCESS_MESSAGE
             );
             return new ResponseEntity<>(commonResponse, HttpStatus.OK);
         } catch (Exception e) {

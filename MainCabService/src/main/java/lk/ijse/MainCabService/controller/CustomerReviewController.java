@@ -1,5 +1,6 @@
 package lk.ijse.MainCabService.controller;
 
+import jakarta.validation.Valid;
 import lk.ijse.MainCabService.constants.CommonResponse;
 import lk.ijse.MainCabService.constants.ResponseCode;
 import lk.ijse.MainCabService.constants.ResponseMessage;
@@ -43,7 +44,7 @@ public class CustomerReviewController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> saveReview(@RequestBody CustomerReviewDTO reviewDTO) {
+    public ResponseEntity<CommonResponse> saveReview(@Valid @RequestBody CustomerReviewDTO reviewDTO) {
         try {
             CustomerReviewDTO saved = reviewService.saveReview(reviewDTO);
             CommonResponse commonResponse = new CommonResponse(

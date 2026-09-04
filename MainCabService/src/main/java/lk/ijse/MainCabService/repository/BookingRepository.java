@@ -11,8 +11,9 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking,Long> {
 
-    @Query("SELECT b FROM Booking b LEFT JOIN b.bookingCustomer c WHERE " +
-            "LOWER(CAST(b.bookingID AS string)) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(c.bookingCustomerName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    @Query(value = "SELECT * FROM bookings b LEFT JOIN booking_customers_info c ON b.booking_customer_id = c.id WHERE " +
+            "LOWER(CAST(b.booking_id AS CHAR)) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(c.customer_name) LIKE LOWER(CONCAT('%', :keyword, '%'))",
+            nativeQuery = true)
     List<Booking> searchBookings(@Param("keyword") String keyword);
 }

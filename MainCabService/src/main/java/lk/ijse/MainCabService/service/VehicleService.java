@@ -2,6 +2,7 @@ package lk.ijse.MainCabService.service;
 
 import lk.ijse.MainCabService.dto.VehicleDTO;
 import lk.ijse.MainCabService.enumeratios.VehicleStatus;
+import lk.ijse.MainCabService.enumeratios.WebCategory;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ public interface VehicleService {
     long getTotalVehicleCount();
 
     List<VehicleDTO> getWebsiteVehicles();
+
+    List<VehicleDTO> getVehiclesByWebCategory(WebCategory webCategory);
 }

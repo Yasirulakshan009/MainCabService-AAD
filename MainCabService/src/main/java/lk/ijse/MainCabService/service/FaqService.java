@@ -9,5 +9,4 @@ public interface FaqService {
     List<FaqDTO> getAllFAQs();
     FaqDTO saveFAQ(FaqDTO faqDTO);
     FaqDTO updateFAQ(Long id, FaqDTO faqDTO);
-    void deleteFAQ(Long id);
 }

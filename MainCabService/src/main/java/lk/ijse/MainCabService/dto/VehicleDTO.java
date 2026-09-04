@@ -3,10 +3,7 @@ package lk.ijse.MainCabService.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lk.ijse.MainCabService.enumeratios.ACType;
-import lk.ijse.MainCabService.enumeratios.Category;
-import lk.ijse.MainCabService.enumeratios.VehicleStatus;
-import lk.ijse.MainCabService.enumeratios.VehicleTag;
+import lk.ijse.MainCabService.enumeratios.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,8 +56,8 @@ public class VehicleDTO {
 
     private boolean showOnWebsite;
 
-    @NotBlank(message = "Web category cannot be blank!")
-    private String webCategory;
+    @NotNull(message = "Web category cannot be null!")
+    private WebCategory webCategory;
 
     private Object vehicleImage;
 }

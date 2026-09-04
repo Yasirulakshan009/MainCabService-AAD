@@ -94,21 +94,4 @@ public class TermsAndConditionServiceIMPL implements TermsAndConditionService {
         }
     }
 
-    @Override
-    public void deleteTermsAndCondition(Long id) {
-
-        log.info("Executing deleteTermsAndCondition() for ID: " + id);
-        try {
-            Optional<TermsAndCondition> optionalTerms = termsAndConditionRepository.findById(id);
-            if (!optionalTerms.isPresent()) {
-                throw new RuntimeException("Terms and Condition not found with ID: " + id);
-            }
-
-            termsAndConditionRepository.deleteById(id);
-            log.info("Terms and Condition deleted successfully for ID: " + id);
-        } catch (Exception e) {
-            log.error("Error in deleteTermsAndCondition(): " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
 }

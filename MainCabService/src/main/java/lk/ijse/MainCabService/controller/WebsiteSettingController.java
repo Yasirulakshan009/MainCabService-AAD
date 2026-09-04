@@ -4,31 +4,29 @@ import jakarta.validation.Valid;
 import lk.ijse.MainCabService.constants.CommonResponse;
 import lk.ijse.MainCabService.constants.ResponseCode;
 import lk.ijse.MainCabService.constants.ResponseMessage;
-import lk.ijse.MainCabService.dto.TermsAndConditionDTO;
-import lk.ijse.MainCabService.service.TermsAndConditionService;
+import lk.ijse.MainCabService.dto.WebsiteSettingDTO;
+import lk.ijse.MainCabService.service.WebsiteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping(value = "v1/terms-condition")
 @RequiredArgsConstructor
+@RequestMapping("/v1/website-settings")
 @CrossOrigin
-public class TermsAndConditionController {
+public class WebsiteSettingController {
 
-    private final TermsAndConditionService termsService;
+    private final WebsiteService websiteService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> getAllTermsAndConditions() {
+    public ResponseEntity<CommonResponse> getWebsiteSettings() {
         try {
-            List<TermsAndConditionDTO> list = termsService.getAllTermsAndConditions();
+            WebsiteSettingDTO dto = websiteService.getWebsiteSettings();
             CommonResponse commonResponse = new CommonResponse(
                     ResponseCode.OPERATION_SUCCESS,
-                    list,
+                    dto,
                     ResponseMessage.SUCCESS_MESSAGE
             );
             return new ResponseEntity<>(commonResponse, HttpStatus.OK);
@@ -42,33 +40,13 @@ public class TermsAndConditionController {
         }
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> saveTermsAndCondition(@Valid @RequestBody TermsAndConditionDTO termsDTO) {
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonResponse> updateWebsiteSettings(@Valid @RequestBody WebsiteSettingDTO websiteSettingDTO) {
         try {
-            TermsAndConditionDTO saved = termsService.saveTermsAndCondition(termsDTO);
+            websiteService.updateWebsiteSettings(websiteSettingDTO);
             CommonResponse commonResponse = new CommonResponse(
                     ResponseCode.OPERATION_SUCCESS,
-                    saved,
-                    ResponseMessage.SAVE_SUCCESS
-            );
-            return new ResponseEntity<>(commonResponse, HttpStatus.CREATED);
-        } catch (Exception e) {
-            CommonResponse errorResponse = new CommonResponse(
-                    ResponseCode.OPERATION_FAILED,
                     null,
-                    e.getMessage()
-            );
-            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> updateTermsAndCondition(@PathVariable Long id, @RequestBody TermsAndConditionDTO termsDTO) {
-        try {
-            TermsAndConditionDTO updated = termsService.updateTermsAndCondition(id, termsDTO);
-            CommonResponse commonResponse = new CommonResponse(
-                    ResponseCode.OPERATION_SUCCESS,
-                    updated,
                     ResponseMessage.UPDATE_SUCCESS
             );
             return new ResponseEntity<>(commonResponse, HttpStatus.OK);
@@ -81,5 +59,4 @@ public class TermsAndConditionController {
             return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

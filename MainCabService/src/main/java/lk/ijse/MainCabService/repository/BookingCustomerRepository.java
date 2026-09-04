@@ -11,9 +11,10 @@ import java.util.List;
 @Repository
 public interface BookingCustomerRepository extends JpaRepository<BookingCustomer,Long> {
 
-    @Query("SELECT b FROM BookingCustomer b WHERE " +
-            "LOWER(CAST(b.customerID AS string)) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(b.customerName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(b.emailAddress) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    @Query(value = "SELECT * FROM booking_customers_info b WHERE " +
+            "LOWER(CAST(b.customer_id AS CHAR)) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(b.customer_name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(b.email_address) LIKE LOWER(CONCAT('%', :keyword, '%'))",
+            nativeQuery = true)
     List<BookingCustomer> searchBookingCustomers(@Param("keyword") String keyword);
 }

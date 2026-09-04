@@ -5,6 +5,7 @@ import lk.ijse.MainCabService.entity.Vehicle;
 import lk.ijse.MainCabService.entity.VehicleCategory;
 import lk.ijse.MainCabService.enumeratios.Category;
 import lk.ijse.MainCabService.enumeratios.VehicleStatus;
+import lk.ijse.MainCabService.enumeratios.WebCategory;
 import lk.ijse.MainCabService.repository.VehicleCategoryRepository;
 import lk.ijse.MainCabService.repository.VehicleRepository;
 import lk.ijse.MainCabService.service.VehicleService;
@@ -431,6 +432,54 @@ public class VehicleServiceIMPL implements VehicleService {
             return vehicleDTOList;
         } catch (Exception e) {
             log.error("Error in getWebsiteVehicles(): " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<VehicleDTO> getVehiclesByWebCategory(WebCategory webCategory) {
+
+        log.info("Executing getVehiclesByWebCategory() with category: " + webCategory);
+        try {
+            List<Vehicle> vehicleList = vehicleRepository.findByShowOnWebsiteTrueAndWebCategoryIgnoreCase(webCategory);
+            List<VehicleDTO> vehicleDTOList = new ArrayList<>();
+
+            for (Vehicle vehicle : vehicleList) {
+                VehicleDTO vehicleDTO = new VehicleDTO();
+
+                vehicleDTO.setVehicleID(vehicle.getVehicleID());
+                vehicleDTO.setVehicleName(vehicle.getVehicleModel());
+                vehicleDTO.setPlateNumber(vehicle.getPlateNO());
+                vehicleDTO.setLicenseNo(vehicle.getLicenseNO());
+                vehicleDTO.setInsuranceNo(vehicle.getInsuranceNO());
+                vehicleDTO.setDailyPrice(vehicle.getDailyRate());
+                vehicleDTO.setSeats(vehicle.getSeats());
+                vehicleDTO.setBags(vehicle.getBags());
+                vehicleDTO.setTagClass(vehicle.getVehicleTag());
+                vehicleDTO.setAcType(vehicle.getAcType());
+                vehicleDTO.setStatus(vehicle.getVehicleStatus());
+                vehicleDTO.setShowOnWebsite(vehicle.isShowOnWebsite());
+                vehicleDTO.setWebCategory(vehicle.getWebCategory());
+
+                VehicleCategory vehicleCategory = vehicle.getVehicleCategory();
+                if (vehicleCategory != null) {
+                    vehicleDTO.setVehicleCategory(vehicleCategory.getVehicleCategory());
+                }
+
+                byte[] imageBytes = vehicle.getVehicleImage();
+                if (imageBytes != null && imageBytes.length > 0) {
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                    vehicleDTO.setVehicleImage(base64Image);
+                } else {
+                    vehicleDTO.setVehicleImage(null);
+                }
+
+                vehicleDTOList.add(vehicleDTO);
+            }
+
+            return vehicleDTOList;
+        } catch (Exception e) {
+            log.error("Error in getVehiclesByWebCategory(): " + e.getMessage());
             throw new RuntimeException(e);
         }
     }

@@ -94,21 +94,4 @@ public class PrivacyPolicyServiceIMPL implements PrivacyPolicyService {
         }
     }
 
-    @Override
-    public void deletePrivacyPolicy(Long id) {
-
-        log.info("Executing deletePrivacyPolicy() for ID: " + id);
-        try {
-            Optional<PrivacyPolicy> optionalPolicy = privacyPolicyRepository.findById(id);
-            if (!optionalPolicy.isPresent()) {
-                throw new RuntimeException("Privacy Policy not found with ID: " + id);
-            }
-
-            privacyPolicyRepository.deleteById(id);
-            log.info("Privacy Policy deleted successfully for ID: " + id);
-        } catch (Exception e) {
-            log.error("Error in deletePrivacyPolicy(): " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
 }

@@ -1,10 +1,7 @@
 package lk.ijse.MainCabService.entity;
 
 import jakarta.persistence.*;
-import lk.ijse.MainCabService.enumeratios.ACType;
-import lk.ijse.MainCabService.enumeratios.Category;
-import lk.ijse.MainCabService.enumeratios.VehicleStatus;
-import lk.ijse.MainCabService.enumeratios.VehicleTag;
+import lk.ijse.MainCabService.enumeratios.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,7 +44,9 @@ public class Vehicle {
     private VehicleCategory vehicleCategory;
 
     private boolean showOnWebsite;
-    private String webCategory;
+
+    @Enumerated(EnumType.STRING)
+    private WebCategory webCategory;
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")
