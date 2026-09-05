@@ -41,6 +41,7 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
+    @Column(name = "permissions", length = 100)
     private List<DashboardSection> permissions;
 
 

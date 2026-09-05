@@ -11,5 +11,10 @@ public enum DashboardSection {
     RENTAL,
     RETURNS,
     PAYMENT,
-    SETTINGS
+    SETTINGS,
+    REGISTER_CUSTOMER,
+    WEBSITE_SETTING,
+    LEGAL_AND_FAQ,
+    CUSTOMER_REVIEWS,
+    WEBSITE
 }

@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDTO {
 
-    private long userID;
+    private Long userID;
     private String userName;
     private String userEmail;
     private String phone;

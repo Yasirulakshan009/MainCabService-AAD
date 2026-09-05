@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -51,10 +52,20 @@ public class AuthServiceIMPL implements AuthService {
         user.setStatus(userDTO.getStatus() != null ? userDTO.getStatus() : UserStatus.ACTIVE);
 
         if (userDTO.getUserRole() != null) {
-            user.setUserRole(userDTO.getUserRole());
+
+            UserRole role = userRoleRepository.findById(
+                    userDTO.getUserRole().getUserRoleID()
+            ).orElseThrow(() ->
+                    new RuntimeException("User role not found!")
+            );
+            user.setUserRole(role);
+
         } else {
+
             UserRole customerRole = userRoleRepository.findByRole(Role.CUSTOMER)
-                    .orElseThrow(() -> new RuntimeException("Default CUSTOMER role not found!"));
+                    .orElseThrow(() ->
+                            new RuntimeException("Default CUSTOMER role not found!")
+                    );
             user.setUserRole(customerRole);
         }
 
@@ -125,60 +136,34 @@ public class AuthServiceIMPL implements AuthService {
     }
 
     @Override
-    public void updateCustomerStatus(Long id, UserStatus status) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
+    public void updateUserStatus(Long id, UserStatus status) {
+        String currentUserEmail = org.springframework.security.core.context.SecurityContextHolder
+                .getContext().getAuthentication().getName();
 
-        if (user.getUserRole().getRole() != Role.CUSTOMER) {
-            throw new RuntimeException("User is not a customer!");
+        User loggedInUser = userRepository.findByUserEmail(currentUserEmail)
+                .orElseThrow(() -> new RuntimeException("Logged-in user not found!"));
+
+        if (loggedInUser.getUserID() == id && status == UserStatus.INACTIVE) {
+            throw new RuntimeException("Action Denied: You cannot deactivate your own currently logged-in account!");
         }
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
         user.setStatus(status);
         userRepository.save(user);
     }
 
     @Override
-    public UserDTO getUserById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-
-        UserDTO dto = new UserDTO();
-        dto.setUserID(user.getUserID());
-        dto.setUserName(user.getUserName());
-        dto.setUserEmail(user.getUserEmail());
-        dto.setPhone(user.getPhone());
-        dto.setStatus(user.getStatus());
-        dto.setUserRole(user.getUserRole());
-        dto.setPermissions(user.getPermissions());
-
-        return dto;
-    }
-
-    @Override
-    public void updateUser(Long id, UserDTO userDTO) {
+    public void updateNameAndPhone(Long id, UserDTO userDTO) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
         user.setUserName(userDTO.getUserName());
-        user.setUserEmail(userDTO.getUserEmail());
         user.setPhone(userDTO.getPhone());
-        user.setStatus(userDTO.getStatus());
-        user.setUserRole(userDTO.getUserRole());
         user.setPermissions(userDTO.getPermissions());
 
-        if (userDTO.getUserPassword() != null && !userDTO.getUserPassword().isEmpty()) {
-            user.setUserPassword(passwordEncoder.encode(userDTO.getUserPassword()));
-        }
-
         userRepository.save(user);
-    }
-
-    @Override
-    public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found with id: " + id);
-        }
-        userRepository.deleteById(id);
     }
 
     @Override

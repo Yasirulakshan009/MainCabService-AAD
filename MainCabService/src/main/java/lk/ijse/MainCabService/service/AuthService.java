@@ -14,12 +14,8 @@ public interface AuthService {
     String authenticate(AuthRequestDTO authRequestDTO);
     List<UserDTO> getAllUsers();
     List<UserDTO> getCustomersOnly();
-
-    void updateCustomerStatus(Long id, UserStatus status);
-
-    UserDTO getUserById(Long id);
-    void updateUser(Long id, UserDTO userDTO);
-    void deleteUser(Long id);
+    void updateUserStatus(Long id, UserStatus status);
+    void updateNameAndPhone(Long id, UserDTO userDTO);
     void changeEmail(ChangeEmailDTO changeEmailDTO);
     void changePassword(ChangePasswordDTO changePasswordDTO);
 }

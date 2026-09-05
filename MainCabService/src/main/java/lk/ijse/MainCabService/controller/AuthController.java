@@ -105,14 +105,14 @@ public class AuthController {
         }
     }
 
-    @PutMapping(value = "/customer-status/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/user-status/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonResponse> updateCustomerStatus(@PathVariable Long id, @RequestParam UserStatus status) {
         try {
-            authService.updateCustomerStatus(id, status);
+            authService.updateUserStatus(id, status);
             CommonResponse commonResponse = new CommonResponse(
                     ResponseCode.OPERATION_SUCCESS,
                     null,
-                    "Customer status updated successfully!"
+                    "User status updated successfully!"
             );
             return new ResponseEntity<>(commonResponse, HttpStatus.OK);
         } catch (Exception e) {
@@ -125,13 +125,13 @@ public class AuthController {
         }
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> getUserById(@PathVariable Long id) {
+    @PutMapping(value = "/update-profile/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonResponse> updateNameAndPhone(@PathVariable Long id, @RequestBody UserDTO userDTO) {
         try {
-            UserDTO userDTO = authService.getUserById(id);
+            authService.updateNameAndPhone(id, userDTO);
             CommonResponse commonResponse = new CommonResponse(
                     ResponseCode.OPERATION_SUCCESS,
-                    userDTO,
+                    null,
                     ResponseMessage.SUCCESS_MESSAGE
             );
             return new ResponseEntity<>(commonResponse, HttpStatus.OK);
@@ -141,49 +141,10 @@ public class AuthController {
                     null,
                     e.getMessage()
             );
-            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        try {
-            authService.updateUser(id, userDTO);
-            CommonResponse commonResponse = new CommonResponse(
-                    ResponseCode.OPERATION_SUCCESS,
-                    null,
-                    "User updated successfully!"
-            );
-            return new ResponseEntity<>(commonResponse, HttpStatus.OK);
-        } catch (Exception e) {
-            CommonResponse errorResponse = new CommonResponse(
-                    ResponseCode.OPERATION_FAILED,
-                    null,
-                    e.getMessage()
-            );
             return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> deleteUser(@PathVariable Long id) {
-        try {
-            authService.deleteUser(id);
-            CommonResponse commonResponse = new CommonResponse(
-                    ResponseCode.OPERATION_SUCCESS,
-                    null,
-                    "User deleted successfully!"
-            );
-            return new ResponseEntity<>(commonResponse, HttpStatus.OK);
-        } catch (Exception e) {
-            CommonResponse errorResponse = new CommonResponse(
-                    ResponseCode.OPERATION_FAILED,
-                    null,
-                    e.getMessage()
-            );
-            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     @PutMapping(value = "/change-email", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonResponse> changeEmail(@RequestBody ChangeEmailDTO changeEmailDTO) {
