@@ -1,6 +1,26 @@
 $(document).ready(function() {
     loadSystemUsers();
+    applySidebarPermissions();
 });
+
+function applySidebarPermissions() {
+    const userRole = localStorage.getItem("userRole");
+    const storedPermissions = JSON.parse(localStorage.getItem("userPermissions")) || [];
+
+    if (userRole === "ADMIN") {
+        return;
+    }
+
+    $('[data-permission]').each(function() {
+        const permission = $(this).attr('data-permission');
+
+        if (storedPermissions.includes(permission)) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    });
+}
 
 function togglePermissions() {
     const roleSelect = document.getElementById('regRole').value;
@@ -250,8 +270,7 @@ function openEditModal(userId, currentName, currentPhone, currentRole, userPermi
             "REGISTER_CUSTOMER",
             "WEBSITE_SETTING",
             "LEGAL_AND_FAQ",
-            "CUSTOMER_REVIEWS",
-            "WEBSITE"
+            "CUSTOMER_REVIEWS"
         ];
         allSections.forEach(section => {
             let isChecked = false;
@@ -326,6 +345,153 @@ function sendUpdateProfileRequest(userId, updateData) {
             let errorMsg = "Failed to update profile!";
             if (xhr.responseJSON && xhr.responseJSON.message) {
                 errorMsg = xhr.responseJSON.message;
+            }
+            Swal.fire({
+                icon: 'error',
+                title: 'Update Failed',
+                text: errorMsg,
+                confirmButtonColor: '#ff4d4d'
+            });
+        }
+    });
+}
+
+
+function updateAdminEmail(event) {
+    event.preventDefault();
+
+    const currentEmail = document.getElementById('currentEmail').value.trim();
+    const newEmail = document.getElementById('newEmail').value.trim();
+    const confirmNewEmail = document.getElementById('confirmEmail').value.trim();
+
+    if (newEmail !== confirmNewEmail) {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'New emails do not match!',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+        return;
+    }
+
+    const emailData = {
+        currentEmail: currentEmail,
+        newEmail: newEmail,
+        confirmNewEmail: confirmNewEmail
+    };
+
+    $.ajax({
+        url: "http://localhost:8080/api/v1/auth/change-email",
+        type: "PUT",
+        contentType: "application/json",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwtToken")
+        },
+        data: JSON.stringify(emailData),
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Email Updated Successfully!',
+                text: 'Please log in again with your new email.',
+                confirmButtonColor: '#007bff',
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem("jwtToken");
+                    localStorage.removeItem("user");
+
+                    window.location.href = "login.html";
+                }
+            });
+        },
+        error: function(xhr) {
+            let errorMsg = "Failed to update email!";
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMsg = xhr.responseJSON.message;
+            } else if (xhr.responseText) {
+                errorMsg = xhr.responseText;
+            }
+            Swal.fire({
+                icon: 'error',
+                title: 'Update Failed',
+                text: errorMsg,
+                confirmButtonColor: '#ff4d4d'
+            });
+        }
+    });
+}
+
+
+function updateAdminPassword(event) {
+    event.preventDefault();
+
+    const emailField = document.getElementById('passVerifyEmail');
+    const currentPassField = document.getElementById('currentPassword');
+    const newPassField = document.getElementById('newPassword');
+    const confirmPassField = document.getElementById('confirmPassword');
+
+    if (!emailField || !currentPassField || !newPassField || !confirmPassField) {
+        console.error("One or more password form elements not found!");
+        return;
+    }
+
+    const email = emailField.value.trim();
+    const currentPassword = currentPassField.value.trim();
+    const newPassword = newPassField.value.trim();
+    const confirmNewPassword = confirmPassField.value.trim();
+
+    if (newPassword !== confirmNewPassword) {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'New passwords do not match!',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+        return;
+    }
+
+    const passwordData = {
+        email: email,
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+        confirmNewPassword: confirmNewPassword
+    };
+
+    $.ajax({
+        url: "http://localhost:8080/api/v1/auth/change-password",
+        type: "PUT",
+        contentType: "application/json",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwtToken")
+        },
+        data: JSON.stringify(passwordData),
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Password Updated Successfully!',
+                text: 'Please log in again with your new password.',
+                confirmButtonColor: '#007bff',
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem("jwtToken");
+                    localStorage.removeItem("user");
+                    window.location.href = "login.html";
+                }
+            });
+        },
+        error: function(xhr) {
+            let errorMsg = "Failed to update password!";
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMsg = xhr.responseJSON.message;
+            } else if (xhr.responseText) {
+                errorMsg = xhr.responseText;
             }
             Swal.fire({
                 icon: 'error',

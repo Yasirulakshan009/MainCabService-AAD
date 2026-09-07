@@ -1,11 +1,9 @@
 package lk.ijse.MainCabService.service.impl;
 
-import lk.ijse.MainCabService.dto.AuthRequestDTO;
-import lk.ijse.MainCabService.dto.ChangeEmailDTO;
-import lk.ijse.MainCabService.dto.ChangePasswordDTO;
-import lk.ijse.MainCabService.dto.UserDTO;
+import lk.ijse.MainCabService.dto.*;
 import lk.ijse.MainCabService.entity.User;
 import lk.ijse.MainCabService.entity.UserRole;
+import lk.ijse.MainCabService.enumeratios.DashboardSection;
 import lk.ijse.MainCabService.enumeratios.Role;
 import lk.ijse.MainCabService.enumeratios.UserStatus;
 import lk.ijse.MainCabService.repository.UserRepository;
@@ -76,7 +74,7 @@ public class AuthServiceIMPL implements AuthService {
     }
 
     @Override
-    public String authenticate(AuthRequestDTO authRequestDTO) {
+    public AuthResponseDTO authenticate(AuthRequestDTO authRequestDTO) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequestDTO.getEmail(), authRequestDTO.getPassword())
         );
@@ -93,7 +91,13 @@ public class AuthServiceIMPL implements AuthService {
         userDTO.setUserEmail(user.getUserEmail());
         userDTO.setUserRole(user.getUserRole());
 
-        return jwtUtil.generateToken(userDTO);
+        String token = jwtUtil.generateToken(userDTO);
+
+        String roleName = user.getUserRole() != null ? user.getUserRole().getRole().name() : "STAFF";
+
+        List<DashboardSection> permissions = user.getPermissions();
+
+        return new AuthResponseDTO(token, roleName, permissions);
     }
 
     @Override
@@ -173,10 +177,10 @@ public class AuthServiceIMPL implements AuthService {
         }
 
         User user = userRepository.findByUserEmail(changeEmailDTO.getCurrentEmail())
-                .orElseThrow(() -> new RuntimeException("Current user not found!"));
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + changeEmailDTO.getCurrentEmail()));
 
         if (userRepository.existsByUserEmail(changeEmailDTO.getNewEmail())) {
-            throw new RuntimeException("New email is already in use!");
+            throw new RuntimeException("New email is already in use by another account!");
         }
 
         user.setUserEmail(changeEmailDTO.getNewEmail());

@@ -3,10 +3,7 @@ package lk.ijse.MainCabService.controller;
 import lk.ijse.MainCabService.constants.CommonResponse;
 import lk.ijse.MainCabService.constants.ResponseCode;
 import lk.ijse.MainCabService.constants.ResponseMessage;
-import lk.ijse.MainCabService.dto.AuthRequestDTO;
-import lk.ijse.MainCabService.dto.ChangeEmailDTO;
-import lk.ijse.MainCabService.dto.ChangePasswordDTO;
-import lk.ijse.MainCabService.dto.UserDTO;
+import lk.ijse.MainCabService.dto.*;
 import lk.ijse.MainCabService.enumeratios.UserStatus;
 import lk.ijse.MainCabService.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -48,10 +45,10 @@ public class AuthController {
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonResponse> login(@RequestBody AuthRequestDTO authRequestDTO) {
         try {
-            String token = authService.authenticate(authRequestDTO);
+            AuthResponseDTO authResponse = authService.authenticate(authRequestDTO);
             CommonResponse commonResponse = new CommonResponse(
                     ResponseCode.OPERATION_SUCCESS,
-                    token,
+                    authResponse, 
                     ResponseMessage.SUCCESS_MESSAGE
             );
             return new ResponseEntity<>(commonResponse, HttpStatus.OK);

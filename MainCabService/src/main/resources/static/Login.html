@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Aura Cabs</title>
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- External CSS -->
+    <link rel="stylesheet" href="pos.css">
+</head>
+<body>
+<section class="login-section">
+    <div class="login-card">
+        <div class="brand-icon">
+            <i class="ri-taxi-line"></i>
+        </div>
+        <div class="brand-title">Aura Cabs</div>
+        <div class="subtitle">Enter your credentials to access dashboard</div>
+
+        <!-- Login Form -->
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="adminEmail" placeholder="admin@gmail.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <div class="password-group">
+                    <input type="password" id="adminPassword" placeholder="••••••••" required>
+                    <i class="ri-eye-off-line password-toggle" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+                </div>
+            </div>
+
+            <div class="forgot-password">
+                <a href="#" onclick="forgotPassword(event)">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-login">Login</button>
+
+            <div id="errorMsg">Invalid Email or Password!</div>
+            <div id="successMsg">Password reset instructions sent to your email!</div>
+        </form>
+
+        <div class="footer-text">
+            &copy; 2026 Aura Cabs System. All rights reserved.
+        </div>
+    </div>
+</section>
+
+<!-- External JavaScript -->
+<script src="Login.js"></script>
+</body>
+</html>

@@ -22,18 +22,22 @@ function handleLogin(event) {
         contentType: "application/json",
         data: JSON.stringify(loginData),
         success: function(response) {
-            console.log("Server Response:", response);
+            console.log("Full Login Response:", response);
+            const resData = response.data || response.body || response;
 
-            const token = response.body || response.data || response.token;
+            const token = resData.token || response.token || "";
+            localStorage.setItem("jwtToken", token);
 
-            if (token) {
-                localStorage.setItem("jwtToken", token);
+            const role = resData.role || response.role || "STAFF";
+            localStorage.setItem("userRole", role);
 
-                window.location.href = "pos.html";
-            } else {
-                errorMsg.style.display = "block";
-                errorMsg.innerText = "Token not found in server response!";
-            }
+            const email = resData.email || resData.userEmail || loginData.email || "admin@auracabs.com";
+            localStorage.setItem("userEmail", email);
+
+            const permissions = resData.permissions || response.permissions || [];
+            localStorage.setItem("userPermissions", JSON.stringify(permissions));
+
+            window.location.href = "pos.html";
         },
         error: function(xhr, status, error) {
             errorMsg.style.display = "block";

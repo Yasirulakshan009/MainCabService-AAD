@@ -15,6 +15,5 @@ public enum DashboardSection {
     REGISTER_CUSTOMER,
     WEBSITE_SETTING,
     LEGAL_AND_FAQ,
-    CUSTOMER_REVIEWS,
-    WEBSITE
+    CUSTOMER_REVIEWS
 }
