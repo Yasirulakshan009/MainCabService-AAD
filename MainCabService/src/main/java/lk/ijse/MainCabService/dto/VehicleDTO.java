@@ -35,7 +35,7 @@ public class VehicleDTO {
     private String insuranceNo;
 
     @NotBlank(message = "License number cannot be blank!")
-    private String LicenseNo;
+    private String licenseNo;
 
     @NotNull(message = "Seats cannot be null!")
     @Min(value = 1, message = "Seats must be at least 1!")

@@ -16,10 +16,10 @@ public interface VehicleRepository extends JpaRepository<Vehicle,Long> {
 
     List<Vehicle> findByVehicleStatus(VehicleStatus vehicleStatus);
 
-    @Query(value = "SELECT * FROM vehicles v LEFT JOIN vehicle_category vc ON v.vehicle_category_id = vc.id WHERE " +
-            "LOWER(v.vehicle_model) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(v.plate_no) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(CAST(v.vehicle_id AS CHAR)) LIKE LOWER(CONCAT('%', :keyword, '%'))",
+    @Query(value = "SELECT v.* FROM vehicles v LEFT JOIN vehicle_category vc ON v.vehicle_category_id = vc.vehicle_category_id " +
+            "WHERE LOWER(v.vehicle_model) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(v.plateno) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(CAST(v.vehicleid AS CHAR)) LIKE LOWER(CONCAT('%', :keyword, '%'))",
             nativeQuery = true)
     List<Vehicle> searchVehicles(@Param("keyword") String keyword);
 

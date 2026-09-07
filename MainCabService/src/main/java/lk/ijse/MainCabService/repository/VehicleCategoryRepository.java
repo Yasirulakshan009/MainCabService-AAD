@@ -10,5 +10,6 @@ import java.util.Optional;
 @Repository
 public interface VehicleCategoryRepository extends JpaRepository<VehicleCategory,Long> {
 
+    boolean existsByVehicleCategory(Category vehicleCategory);
     VehicleCategory findByVehicleCategory(Category vehicleCategory);
 }
