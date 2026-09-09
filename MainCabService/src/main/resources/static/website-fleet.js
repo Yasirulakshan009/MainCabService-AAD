@@ -67,7 +67,7 @@ function fetchVehiclesFromBackend(category) {
 function renderVehicleCards(response) {
     const vehicleGrid = document.querySelector('.vehicle-grid');
     if (!vehicleGrid) {
-        console.error("❌ .vehicle-grid element එක හොයාගන්න බැහැ!");
+        console.error("❌ .Not found vehicle-grid element!");
         return;
     }
 
@@ -82,7 +82,7 @@ function renderVehicleCards(response) {
         vehicles = response.data;
     }
 
-    console.log("🚗 Render කරන්න ලැබුණු Vehicles ලැයිස්තුව:", vehicles);
+    console.log("🚗 Vehicle List:", vehicles);
 
     if (!vehicles || vehicles.length === 0) {
         vehicleGrid.innerHTML = `<p style="text-align: center; width: 100%; grid-column: 1 / -1; padding: 30px; color: #8da4c4; font-weight: 500;">No vehicles available in this category right now.</p>`;

@@ -88,6 +88,15 @@ public class CustomerServiceIMPL implements CustomerService {
                 throw new RuntimeException("customer not found with ID" + id);
             }
 
+            Customer customer = customerOptional.get();
+
+            if (customer.getRentalList() != null && !customer.getRentalList().isEmpty()) {
+                throw new RuntimeException(
+                        "Cannot delete this customer because " + customer.getRentalList().size() +
+                                " rental record(s) are linked to it. Please remove or reassign those rentals first."
+                );
+            }
+
             customerRepository.deleteById(id);
 
 

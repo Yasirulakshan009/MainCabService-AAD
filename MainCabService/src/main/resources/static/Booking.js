@@ -314,11 +314,58 @@ document.getElementById("booking-form")?.addEventListener("submit", function(eve
 
     console.log("Selected Vehicle ID:", selectedVehicle.value);
 
-    alert("Booking Confirmed Successfully! Thank you for choosing Aura Cabs.");
+    const bookingCustomerData = {
+        bookingCustomerName: $('#bcFullName').val(),
+        bookingCustomerEmail: $('#bcEmail').val(),
+        bookingCustomerNumber: $('#bcPhone').val(),
+        bookingCustomerLicenseNumber: $('#bcLicense').val(),
+        bookingCustomerRegisterDate: new Date().toISOString().split('T')[0]
+    };
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+    const submitBtn = document.querySelector('#booking-form .btn-submit');
+    if (submitBtn) submitBtn.disabled = true;
+
+    $.ajax({
+        url: API_BASE_URL + "/v1/bookingCustomers",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(bookingCustomerData),
+        success: function(response) {
+            Swal.fire({
+                icon: "success",
+                title: "Booking Confirmed!",
+                text: "Thank you for choosing Aura Cabs. We will contact you shortly.",
+                confirmButtonColor: "#0d6efd"
+            });
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        },
+        error: function(xhr) {
+            var errObj = xhr.responseJSON;
+            var errorText = "Something went wrong while submitting your booking. Please try again.";
+
+            if (errObj) {
+                if (errObj.body && typeof errObj.body === "object" && !Array.isArray(errObj.body)) {
+                    errorText = Object.values(errObj.body).join("\n");
+                } else if (errObj.message) {
+                    errorText = errObj.message;
+                }
+            }
+
+            Swal.fire({
+                icon: "error",
+                title: "Booking Failed",
+                text: errorText,
+                confirmButtonColor: "#dc3545"
+            });
+            console.error("Booking customer save error: ", xhr);
+        },
+        complete: function() {
+            if (submitBtn) submitBtn.disabled = false;
+        }
     });
 });
 

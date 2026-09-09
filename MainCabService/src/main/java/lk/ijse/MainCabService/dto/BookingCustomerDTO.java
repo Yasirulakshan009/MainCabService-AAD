@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class BookingCustomerDTO {
 
-    private long bookingCustomerID;
+    private Long bookingCustomerID;
 
     @NotNull(message = "Register date cannot be null!")
     private LocalDate bookingCustomerRegisterDate;

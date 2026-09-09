@@ -63,7 +63,7 @@ public class BookingCustomerController {
                     null,
                     e.getMessage()
             );
-            return new ResponseEntity<>(commonResponse,HttpStatus.OK);
+            return new ResponseEntity<>(commonResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

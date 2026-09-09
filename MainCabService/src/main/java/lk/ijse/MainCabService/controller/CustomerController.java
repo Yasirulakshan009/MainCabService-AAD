@@ -79,7 +79,7 @@ public class CustomerController {
                     null,
                     e.getMessage()
             );
-            return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

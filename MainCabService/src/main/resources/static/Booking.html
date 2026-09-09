@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Cabs</title>
+
+    <link rel="stylesheet" href="web.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<section>
+    <nav class="nav scrolled">
+        <div class="logo-container">
+            <div class="logo-circle">
+                <span>AR</span>
+            </div>
+            <div class="logo-text">
+                <span class="brand-name">Aura Cabs</span>
+                <span class="brand-sub">LUXURY RENTALS</span>
+            </div>
+        </div>
+
+        <section class="navbar">
+            <ul class="nav-list">
+                <li><a href="Home.html">Home</a></li>
+                <li><a href="About.html">About</a></li>
+                <div class="nav-item dropdown">
+                    <a href="javascript:void(0)" class="nav-link dropdown-toggle">
+                        Services <i class="ri-arrow-down-s-line"></i>
+                    </a>
+                    <div class="dropdown-menu-box">
+                        <div class="dropdown-grid">
+                            <a href="CarService.html" class="dropdown-item"><span class="bullet-dot"></span> Car Service</a>
+                            <a href="VanService.html" class="dropdown-item"><span class="bullet-dot"></span> Van Service</a>
+                            <a href="BusService.html" class="dropdown-item"><span class="bullet-dot"></span> Bus service</a>
+                            <a href="WeddingService.html" class="dropdown-item"><span class="bullet-dot"></span> Wedding service</a>
+                        </div>
+                    </div>
+                </div>
+                <li><a href="Contact.html">Contact</a></li>
+                <li><a href="FAQ.html">FAQ</a></li>
+            </ul>
+        </section>
+
+        <div class="nav-right">
+            <div class="phone">
+                <i class="fa-solid fa-phone"></i>
+                <span>0764 061 425</span>
+            </div>
+            <a href="Booking.html" class="book-btn">
+                <i class="fa-regular fa-calendar"></i>
+                Book Now
+            </a>
+        </div>
+    </nav>
+
+    <!-- 🌟 1. AUTHENTICATION SECTION (Login & Register) -->
+    <section class="auth-wrapper" id="auth-section">
+        <div class="auth-card">
+            <div class="auth-brand">
+                <div class="auth-logo-circle">AR</div>
+                <h2>Aura Cabs</h2>
+                <p id="auth-caption">If you already have an account, enter your Gmail and password to sign in.</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" onclick="switchAuthTab('login', event)">Login</button>
+                <button class="auth-tab-btn" onclick="switchAuthTab('register', event)">Register</button>
+            </div>
+
+            <!-- Login Form (Gmail and Password only) -->
+            <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Gmail Address</label>
+                    <div class="input-with-icon">
+                        <i class="ri-mail-line"></i>
+                        <input type="email" id="loginEmail" placeholder="name@gmail.com" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="input-with-icon">
+                        <i class="ri-lock-password-line"></i>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-auth-submit">Sign In</button>
+            </form>
+
+            <!-- Register Form (Name, Gmail, and Password) -->
+            <form id="registerForm" class="auth-form" style="display: none;" onsubmit="handleRegister(event)">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <div class="input-with-icon">
+                        <i class="ri-user-line"></i>
+                        <input type="text" id="regName" placeholder="Amal Silva" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Gmail Address</label>
+                    <div class="input-with-icon">
+                        <i class="ri-mail-line"></i>
+                        <input type="email" id="regEmail" placeholder="name@gmail.com" required>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <label>Phone Number</label>
+                    <div class="input-with-icon">
+                        <i class="ri-phone-line"></i>
+                        <input type="text" id="regPhone" placeholder="0712345678" required style="width: 100%; padding-left: 38px;">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="input-with-icon">
+                        <i class="ri-lock-password-line"></i>
+                        <input type="password" id="regPassword" placeholder="Create a password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-auth-submit">Create Account</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 🌟 2. BOOKING SECTION (Multi-Step Form - Hidden initially) -->
+    <section class="booking-section" id="booking-section" style="display: none;">
+        <div class="booking-container">
+
+            <div class="booking-header">
+                <h2>Book Your Ride</h2>
+                <p>Complete the form below to reserve your vehicle</p>
+            </div>
+
+            <!-- Step Indicator (4 Steps) -->
+            <div class="step-indicator">
+                <div class="steps">
+                    <div class="step-item active" data-step="1">
+                        <div class="step-circle"><i class="ri-check-line"></i><span>1</span></div>
+                        <p>Trip</p>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item" data-step="2">
+                        <div class="step-circle"><i class="ri-check-line"></i><span>2</span></div>
+                        <p>Type</p>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item" data-step="3">
+                        <div class="step-circle"><i class="ri-check-line"></i><span>3</span></div>
+                        <p>Vehicle</p>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item" data-step="4">
+                        <div class="step-circle"><i class="ri-check-line"></i><span>4</span></div>
+                        <p>Info</p>
+                    </div>
+                </div>
+                <div class="step-badge">Step <span id="current-step-num">1</span> of 4</div>
+            </div>
+
+            <!-- Simple Multi-Step Form -->
+            <form id="booking-form" class="booking-form-box" novalidate>
+
+                <!-- STEP 1: Trip Details -->
+                <div class="form-step active" data-content="1">
+                    <div class="form-section-title">
+                        <i class="ri-map-pin-line"></i>
+                        <h3>Trip Details & Delivery</h3>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Pickup Method *</label>
+                        <div class="options-row-2">
+                            <label class="selectable-card active-card" onclick="setDeliveryMode('branch', this)">
+                                <input type="radio" name="delivery_mode" value="branch" checked>
+                                <div><strong>Branch Pickup</strong><p>Collect from office</p></div>
+                            </label>
+                            <label class="selectable-card" onclick="setDeliveryMode('doorstep', this)">
+                                <input type="radio" name="delivery_mode" value="doorstep">
+                                <div><strong>Doorstep Delivery</strong><p>Brought to location</p></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label id="location-label">Branch Location *</label>
+                        <input type="text" id="location-input" value="Aura Cabs Main Branch, Bandaragama" disabled>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Pickup Date *</label>
+                            <input type="date" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Pickup Time *</label>
+                            <input type="time" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Return Date *</label>
+                            <input type="date" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Return Time *</label>
+                            <input type="time" required>
+                        </div>
+                    </div>
+
+                    <div class="form-buttons right">
+                        <button type="button" class="btn-next" onclick="nextStep()">Next Step</button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Vehicle Type -->
+                <div class="form-step" data-content="2">
+                    <div class="form-section-title">
+                        <i class="ri-car-line"></i>
+                        <h3>Select Vehicle Type</h3>
+                    </div>
+
+                    <div class="vertical-options-list">
+                        <label class="vertical-card selected" onclick="selectVehicleType('car', this)">
+                            <input type="radio" name="vehicle_type" value="car" checked>
+                            <i class="ri-car-fill"></i>
+                            <div><strong>Car</strong><p>Comfortable cars for city & outstation travel.</p></div>
+                        </label>
+                        <label class="vertical-card" onclick="selectVehicleType('van', this)">
+                            <input type="radio" name="vehicle_type" value="van">
+                            <i class="ri-taxi-fill"></i>
+                            <div><strong>Van</strong><p>Spacious vans for family trips and groups.</p></div>
+                        </label>
+                        <label class="vertical-card" onclick="selectVehicleType('bus', this)">
+                            <input type="radio" name="vehicle_type" value="bus">
+                            <i class="ri-bus-fill"></i>
+                            <div><strong>Bus</strong><p>Large capacity vehicles for long tours.</p></div>
+                        </label>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="button" class="btn-prev" onclick="prevStep()">Previous</button>
+                        <button type="button" class="btn-next" onclick="nextStep()">Next Step</button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Vehicle Model -->
+                <div class="form-step" data-content="3">
+                    <div class="form-section-title">
+                        <i class="ri-steering-line"></i>
+                        <h3 id="specific-vehicle-title">Select Model</h3>
+                    </div>
+
+                    <div class="vehicle-grid-cards" id="vehicle-models-container"></div>
+
+                    <div class="form-buttons">
+                        <button type="button" class="btn-prev" onclick="prevStep()">Previous</button>
+                        <button type="button" class="btn-next" onclick="nextStep()">Next Step</button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Customer Info -->
+                <div class="form-step" data-content="4">
+                    <div class="form-section-title">
+                        <i class="ri-user-settings-line"></i>
+                        <h3>Customer Information</h3>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="bcFullName" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="bcEmail" placeholder="your@email.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="bcPhone" placeholder="+94 7X XXX XXXX" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Driving License Number *</label>
+                        <input type="text" id="bcLicense" placeholder="Enter your valid license number" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Special Requests (Optional)</label>
+                        <textarea rows="3" placeholder="Any specific requirements..."></textarea>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="button" class="btn-prev" onclick="prevStep()">Previous</button>
+                        <button type="submit" class="btn-submit">Confirm Booking</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </section>
+
+    <footer class="footer-section">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3 class="footer-logo">Aura <span>Cabs</span></h3>
+                <p class="footer-desc">Your trusted self-drive car and vehicle rental partner in Sri Lanka.</p>
+                <div class="footer-socials">
+                    <a href="#" class="social-icon" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="About.html">About Aura Cabs</a></li>
+                    <li><a href="Booking.html">Online Booking</a></li>
+                    <li><a href="Contact.html">Contact Aura Cabs</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Our Services</h4>
+                <ul class="footer-links">
+                    <li><a href="CarService.html">Car Rental</a></li>
+                    <li><a href="VanService.html">Van & Family Tours</a></li>
+                    <li><a href="BusService.html">Bus Service</a></li>
+                    <li><a href="WeddingService.html">Wedding Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <ul class="footer-contact">
+                    <li><span><i class="fa-solid fa-location-dot"></i></span> Bandaragama, Sri Lanka</li>
+                    <li><span><i class="fa-solid fa-phone"></i></span> <a href="tel:+94764061425">0764 061 425</a></li>
+                    <li><span><i class="fa-solid fa-envelope"></i></span> <a href="mailto:support@auracabs.lk">support@auracabs.lk</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Aura Cabs. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</section>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="Booking.js"></script>
+<script src="MainJs.js"></script>
+
+</body>
+</html>

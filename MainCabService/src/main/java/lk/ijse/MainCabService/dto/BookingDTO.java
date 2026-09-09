@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class BookingDTO {
 
-    private long bookingID;
+    private Long bookingID;
 
     @NotBlank(message = "Vehicle model cannot be blank!")
     private String vehicleModel;

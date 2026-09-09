@@ -58,6 +58,15 @@ public class BookingCustomerServiceIMPL implements BookingCustomerService {
                 throw new RuntimeException("Booking customer not found id with" + id);
             }
 
+            BookingCustomer bookingCustomer = bookingCustomerOptional.get();
+
+            if (bookingCustomer.getBookingList() != null && !bookingCustomer.getBookingList().isEmpty()) {
+                throw new RuntimeException(
+                        "Cannot delete this booking customer because " + bookingCustomer.getBookingList().size() +
+                                " booking record(s) are linked to it. Please remove or reassign those bookings first."
+                );
+            }
+
             bookingCustomerRepository.deleteById(id);
 
         } catch (Exception e) {

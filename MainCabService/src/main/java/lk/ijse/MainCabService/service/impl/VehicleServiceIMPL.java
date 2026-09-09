@@ -146,6 +146,16 @@ public class VehicleServiceIMPL implements VehicleService {
                 throw new RuntimeException("vehicle not found with ID" + id);
             }
 
+            Vehicle vehicle = optionalVehicle.get();
+
+            if (vehicle.getRentals() != null && !vehicle.getRentals().isEmpty()) {
+                throw new RuntimeException("Cannot delete this vehicle because " + vehicle.getRentals().size() + " rental record(s)...");
+            }
+
+            if (vehicle.getMaintenanceList() != null && !vehicle.getMaintenanceList().isEmpty()) {
+                throw new RuntimeException("Cannot delete this vehicle because " + vehicle.getMaintenanceList().size() + " maintenance record(s)...");
+            }
+
             vehicleRepository.deleteById(id);
 
             log.info("Vehicle deleted successfully for ID: " + id);
