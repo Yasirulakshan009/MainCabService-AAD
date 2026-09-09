@@ -27,5 +27,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle,Long> {
 
     List<Vehicle> findByShowOnWebsiteTrue();
 
-    List<Vehicle> findByShowOnWebsiteTrueAndWebCategoryIgnoreCase(WebCategory webCategory);
+    List<Vehicle> findByShowOnWebsiteTrueAndWebCategory(WebCategory webCategory);
 }

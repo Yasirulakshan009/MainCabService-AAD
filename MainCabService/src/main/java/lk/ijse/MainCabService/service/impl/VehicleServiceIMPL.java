@@ -114,9 +114,12 @@ public class VehicleServiceIMPL implements VehicleService {
                 }
             }
 
-            MultipartFile imageFile = (MultipartFile) vehicleDTO.getVehicleImage();
-            if (imageFile != null && !imageFile.isEmpty()) {
-                vehicle.setVehicleImage(imageFile.getBytes());
+            Object imageObj = vehicleDTO.getVehicleImage();
+            if (imageObj instanceof MultipartFile) {
+                MultipartFile imageFile = (MultipartFile) imageObj;
+                if (imageFile != null && !imageFile.isEmpty()) {
+                    vehicle.setVehicleImage(imageFile.getBytes());
+                }
             }
 
             vehicleRepository.save(vehicle);
@@ -441,7 +444,7 @@ public class VehicleServiceIMPL implements VehicleService {
 
         log.info("Executing getVehiclesByWebCategory() with category: " + webCategory);
         try {
-            List<Vehicle> vehicleList = vehicleRepository.findByShowOnWebsiteTrueAndWebCategoryIgnoreCase(webCategory);
+            List<Vehicle> vehicleList = vehicleRepository.findByShowOnWebsiteTrueAndWebCategory(webCategory);
             List<VehicleDTO> vehicleDTOList = new ArrayList<>();
 
             for (Vehicle vehicle : vehicleList) {

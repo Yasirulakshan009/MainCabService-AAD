@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "v1/vehicles")
+@CrossOrigin
 public class VehicleController {
 
     private final VehicleService vehicleService;
@@ -227,9 +228,11 @@ public class VehicleController {
     }
 
     @GetMapping(value = "/website/category/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> getVehiclesByWebCategory(@PathVariable WebCategory category) {
+    public ResponseEntity<CommonResponse> getVehiclesByWebCategory(@PathVariable String category) {
         try {
-            List<VehicleDTO> vehicles = vehicleService.getVehiclesByWebCategory(category);
+            WebCategory webCategory = WebCategory.valueOf(category.toUpperCase());
+            List<VehicleDTO> vehicles = vehicleService.getVehiclesByWebCategory(webCategory);
+
             CommonResponse commonResponse = new CommonResponse(
                     ResponseCode.OPERATION_SUCCESS,
                     vehicles,

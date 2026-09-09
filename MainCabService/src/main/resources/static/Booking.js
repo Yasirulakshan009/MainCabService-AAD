@@ -1,0 +1,328 @@
+let currentStep = 1;
+const totalSteps = 4;
+
+const API_BASE_URL = "http://localhost:8080";
+
+function switchAuthTab(tab, event) {
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const authCaption = document.getElementById("auth-caption");
+
+    document.querySelectorAll(".auth-tab-btn")
+        .forEach(btn => btn.classList.remove("active"));
+
+    event.currentTarget.classList.add("active");
+
+    if (tab === "login") {
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+
+        if (authCaption) {
+            authCaption.innerText = "If you already have an account, enter your Gmail and password to sign in.";
+        }
+    } else {
+        loginForm.style.display = "none";
+        registerForm.style.display = "block";
+
+        if (authCaption) {
+            authCaption.innerText = "If you don't have an Aura Cabs account yet, please register first.";
+        }
+    }
+}
+
+function handleLogin(event) {
+    event.preventDefault();
+    alert("Login Successful!");
+    proceedToBooking();
+}
+
+function handleRegister(event) {
+    event.preventDefault();
+    alert("Account Created Successfully!");
+    proceedToBooking();
+}
+
+function proceedToBooking() {
+    const authSection = document.getElementById("auth-section");
+    const bookingSection = document.getElementById("booking-section");
+
+    if (!authSection || !bookingSection) {
+        return;
+    }
+
+    authSection.style.display = "none";
+    bookingSection.style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+function showStep(step) {
+    document.querySelectorAll(".form-step")
+        .forEach(formStep => {
+            formStep.classList.remove("active");
+        });
+
+    const targetStep = document.querySelector(`.form-step[data-content="${step}"]`);
+
+    if (targetStep) {
+        targetStep.classList.add("active");
+    }
+
+    document.querySelectorAll(".step-item")
+        .forEach((item, index) => {
+            item.classList.remove("active", "completed");
+
+            if (index + 1 < step) {
+                item.classList.add("completed");
+            } else if (index + 1 === step) {
+                item.classList.add("active");
+            }
+        });
+
+    const currentStepNumber = document.getElementById("current-step-num");
+
+    if (currentStepNumber) {
+        currentStepNumber.innerText = step;
+    }
+
+    window.scrollTo({
+        top: 100,
+        behavior: "smooth"
+    });
+}
+
+function nextStep() {
+    if (currentStep >= totalSteps) {
+        return;
+    }
+
+    currentStep++;
+
+    if (currentStep === 3) {
+        loadVehiclesByWebCategory();
+    }
+
+    showStep(currentStep);
+}
+
+function prevStep() {
+    if (currentStep <= 1) {
+        return;
+    }
+
+    currentStep--;
+    showStep(currentStep);
+}
+
+function setDeliveryMode(mode, element) {
+    document.querySelectorAll(".selectable-card")
+        .forEach(card => {
+            card.classList.remove("active-card");
+        });
+
+    element.classList.add("active-card");
+
+    const radio = element.querySelector('input[type="radio"]');
+
+    if (radio) {
+        radio.checked = true;
+    }
+
+    const label = document.getElementById("location-label");
+    const input = document.getElementById("location-input");
+
+    if (!label || !input) {
+        return;
+    }
+
+    if (mode === "doorstep") {
+        label.innerText = "Enter Doorstep Address *";
+        input.value = "";
+        input.disabled = false;
+        input.required = true;
+    } else {
+        label.innerText = "Branch Location *";
+        input.value = "Aura Cabs Main Branch, Bandaragama";
+        input.disabled = true;
+        input.required = false;
+    }
+}
+
+function selectVehicleType(type, element) {
+    document.querySelectorAll(".vertical-card")
+        .forEach(card => {
+            card.classList.remove("selected");
+        });
+
+    element.classList.add("selected");
+
+    const radio = element.querySelector('input[type="radio"]');
+
+    if (radio) {
+        radio.checked = true;
+    }
+
+    if (currentStep === 3) {
+        loadVehiclesByWebCategory();
+    }
+}
+
+function loadVehiclesByWebCategory() {
+    const selectedType = document.querySelector('input[name="vehicle_type"]:checked');
+    const type = selectedType ? selectedType.value : "car";
+
+    const webCategoryMap = {
+        car: "CAR",
+        van: "VAN",
+        bus: "BUS"
+    };
+
+    const selectedWebCategory = webCategoryMap[type];
+
+    const title = document.getElementById("specific-vehicle-title");
+
+    if (title) {
+        title.innerText = `Select ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+    }
+
+    const container = document.getElementById("vehicle-models-container");
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="vehicle-loading">
+            <i class="ri-loader-4-line"></i>
+            <p>Loading vehicles...</p>
+        </div>
+    `;
+
+    $.ajax({
+        url: `${API_BASE_URL}/v1/vehicles/website-fleet`,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            console.log("Vehicle API Response:", response);
+
+            let vehicles = [];
+
+            if (Array.isArray(response)) {
+                vehicles = response;
+            } else if (response && Array.isArray(response.body)) {
+                vehicles = response.body;
+            } else if (response && Array.isArray(response.data)) {
+                vehicles = response.data;
+            } else if (response && Array.isArray(response.content)) {
+                vehicles = response.content;
+            }
+
+            console.log("All vehicles:", vehicles);
+
+            const filteredVehicles = vehicles.filter(function(vehicle) {
+                const webCategory = String(vehicle.webCategory || "").trim().toUpperCase();
+                return webCategory === selectedWebCategory;
+            });
+
+            console.log("Selected Web Category:", selectedWebCategory);
+            console.log("Filtered Vehicles:", filteredVehicles);
+
+            container.innerHTML = "";
+
+            if (filteredVehicles.length === 0) {
+                container.innerHTML = `
+                    <div class="no-vehicles">
+                        <i class="ri-car-line"></i>
+                        <h4>No Vehicles Available</h4>
+                        <p>No vehicles are available for this category.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredVehicles.forEach(function(vehicle, index) {
+                const vehicleId = vehicle.vehicleID ?? vehicle.vehicleId ?? vehicle.id ?? "";
+                const vehicleName = vehicle.vehicleName ?? vehicle.name ?? "Unknown Vehicle";
+                const vehicleCategory = vehicle.vehicleCategory ?? "N/A";
+                const seats = vehicle.seats ?? vehicle.seatCount ?? "N/A";
+                const acStatus = vehicle.acStatus ?? vehicle.acType ?? vehicle.ac ?? "N/A";
+                const price = vehicle.dailyPrice ?? vehicle.price ?? 0;
+
+                const card = document.createElement("label");
+                card.className = "model-card";
+
+                if (index === 0) {
+                    card.classList.add("selected-model");
+                }
+
+                card.innerHTML = `
+                    <input type="radio" name="specific_vehicle" value="${vehicleId}" ${index === 0 ? "checked" : ""}>
+                    <div class="vehicle-info">
+                        <h4>${vehicleName}</h4>
+                        <span class="vehicle-category">${vehicleCategory}</span>
+                        <div class="model-details">
+                            <span><i class="ri-user-line"></i> ${seats} Seats</span>
+                            <span><i class="ri-snowy-line"></i> ${acStatus}</span>
+                            <span><i class="ri-money-dollar-circle-line"></i> LKR ${Number(price).toLocaleString()}</span>
+                        </div>
+                    </div>
+                `;
+
+                card.addEventListener("click", function() {
+                    document.querySelectorAll(".model-card").forEach(function(item) {
+                        item.classList.remove("selected-model");
+                    });
+
+                    card.classList.add("selected-model");
+
+                    const radio = card.querySelector('input[type="radio"]');
+                    if (radio) {
+                        radio.checked = true;
+                    }
+                });
+
+                container.appendChild(card);
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("Vehicle AJAX Error:", error);
+            console.error("Response:", xhr.responseText);
+
+            container.innerHTML = `
+                <div class="no-vehicles">
+                    <i class="ri-error-warning-line"></i>
+                    <h4>Unable to Load Vehicles</h4>
+                    <p>Please try again later.</p>
+                </div>
+            `;
+        }
+    });
+}
+
+document.getElementById("booking-form")?.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const selectedVehicle = document.querySelector('input[name="specific_vehicle"]:checked');
+
+    if (!selectedVehicle) {
+        alert("Please select a vehicle.");
+        return;
+    }
+
+    console.log("Selected Vehicle ID:", selectedVehicle.value);
+
+    alert("Booking Confirmed Successfully! Thank you for choosing Aura Cabs.");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    currentStep = 1;
+    showStep(currentStep);
+});

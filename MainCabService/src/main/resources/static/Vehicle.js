@@ -1,3 +1,5 @@
+let currentEditingVehicle = null;
+
 function toggleForm() {
     const modal = document.getElementById('vehicleModal');
     if (!modal) return;
@@ -12,10 +14,7 @@ function toggleForm() {
         if (modalTitle) modalTitle.innerText = "Add New Vehicle";
 
         resetImagePreview();
-
-        if (typeof editingCard !== 'undefined') {
-            editingCard = null;
-        }
+        currentEditingVehicle = null;
     }
 }
 
@@ -71,6 +70,7 @@ function loadAllVehiclesFromBackend() {
 }
 
 function loadFleetToGrid(vehicleList) {
+    globalVehicleList = vehicleList || [];
     const vehicleGrid = document.getElementById('vehicleGrid');
     if (!vehicleGrid) return;
 
@@ -78,11 +78,10 @@ function loadFleetToGrid(vehicleList) {
 
     if (!vehicleList || vehicleList.length === 0) {
         vehicleGrid.innerHTML = `<p style="color: #aaa; text-align: center; width: 100%;">No vehicles found.</p>`;
-
         return;
     }
 
-    vehicleList.forEach(vehicle => {
+    vehicleList.forEach((vehicle, index) => {
         let statusClass = vehicle.status ? vehicle.status.toUpperCase() : 'AVAILABLE';
         let statusText = statusClass.charAt(0).toUpperCase() + statusClass.slice(1);
 
@@ -92,18 +91,7 @@ function loadFleetToGrid(vehicleList) {
         let categoryName = categoryVal ? categoryVal.replace('_', ' ') : 'CAR';
 
         const cardHTML = `
-            <div class="vehicle-admin-card" data-status="${statusClass}" data-id="${vehicle.vehicleID}" 
-                 data-name="${vehicle.vehicleName || ''}" 
-                 data-category="${categoryVal}" 
-                 data-plate="${vehicle.plateNumber || ''}" 
-                 data-price="${vehicle.dailyPrice || ''}" 
-                 data-insurance="${vehicle.insuranceNo || ''}" 
-                 data-license="${vehicle.licenseNo || ''}" 
-                 data-seats="${vehicle.seats || ''}" 
-                 data-bags="${vehicle.bags || ''}" 
-                 data-tag="${vehicle.tagClass || ''}" 
-                 data-actype="${vehicle.acType || ''}" 
-                 data-webcategory="${vehicle.webCategory || ''}">
+            <div class="vehicle-admin-card" data-status="${statusClass}" data-id="${vehicle.vehicleID}">
                 
                 <span class="badge-tag">${vehicle.tagClass || 'PREMIUM'}</span>
 
@@ -147,7 +135,7 @@ function loadFleetToGrid(vehicleList) {
                 </div>
 
                 <div class="v-footer-actions">
-                    <button class="btn-edit" onclick="editVehicle(this)">Edit</button>
+                    <button class="btn-edit" onclick="editVehicleByIndex(${index})">Edit</button>
                     <button class="btn-delete" onclick="deleteVehicleData(${vehicle.vehicleID})">Delete</button>
                 </div>
 
@@ -157,44 +145,49 @@ function loadFleetToGrid(vehicleList) {
         vehicleGrid.insertAdjacentHTML('beforeend', cardHTML);
     });
 
-    loadVehicleCountsFromBackend()
+    loadVehicleCountsFromBackend();
 }
 
-let editingCard = null;
+function editVehicleByIndex(index) {
+    const vehicle = globalVehicleList[index];
+    if (!vehicle) return;
 
-function editVehicle(button) {
-    editingCard = button.closest('.vehicle-admin-card');
-    if (!editingCard) return;
-
+    currentEditingVehicle = vehicle;
     toggleForm();
 
     const modalTitle = document.getElementById('modalTitle');
     if (modalTitle) modalTitle.innerText = "Update Vehicle";
 
-    $('#vehicleDisplayId').val(editingCard.getAttribute('data-id'));
-    $('#vName').val(editingCard.getAttribute('data-name'));
-    $('#vCategory').val(editingCard.getAttribute('data-category'));
-    $('#vNumberPlate').val(editingCard.getAttribute('data-plate'));
-    $('#vPrice').val(editingCard.getAttribute('data-price'));
-    $('#vInsurance').val(editingCard.getAttribute('data-insurance'));
-    $('#vLicense').val(editingCard.getAttribute('data-license'));
-    $('#vSeats').val(editingCard.getAttribute('data-seats'));
-    $('#vBags').val(editingCard.getAttribute('data-bags'));
-    $('#vTag').val(editingCard.getAttribute('data-tag'));
-    $('#vStatus').val(editingCard.getAttribute('data-status'));
-    $('#vAcType').val(editingCard.getAttribute('data-actype'));
-    $('#webCategory').val(editingCard.getAttribute('data-webcategory'));
+    $('#vehicleDisplayId').val(vehicle.vehicleID);
+    $('#vName').val(vehicle.vehicleName);
+    $('#vCategory').val(vehicle.vehicleCategory);
+    $('#vNumberPlate').val(vehicle.plateNumber);
+    $('#vPrice').val(vehicle.dailyPrice);
+    $('#vInsurance').val(vehicle.insuranceNo);
+    $('#vLicense').val(vehicle.licenseNo);
+    $('#vSeats').val(vehicle.seats);
+    $('#vBags').val(vehicle.bags);
+    $('#vTag').val(vehicle.tagClass);
+    $('#vStatus').val(vehicle.status);
+    $('#vAcType').val(vehicle.acType);
+    $('#webCategory').val(vehicle.webCategory);
 
-    const imgElement = editingCard.querySelector('.car-img img');
+    // 👈 නිවැරදි ID එක (`isVisibleOnWeb`) සමඟ චෙක්බොක්ස් තත්ත්වය සෙට් කිරීම
+    let showWeb = vehicle.showOnWebsite === true || vehicle.showOnWebsite === "true";
+    $('#isVisibleOnWeb').prop('checked', showWeb);
+
+    const imgElement = vehicle.vehicleImage ? `data:image/jpeg;base64,${vehicle.vehicleImage}` : null;
     const preview = document.getElementById('imagePreview');
     const uploadIcon = document.getElementById('uploadIcon');
     const uploadText = document.getElementById('uploadText');
 
-    if (imgElement && preview && imgElement.src) {
-        preview.src = imgElement.src;
+    if (imgElement && preview) {
+        preview.src = imgElement;
         preview.style.display = 'block';
         if (uploadIcon) uploadIcon.style.display = 'none';
         if (uploadText) uploadText.style.display = 'none';
+    } else {
+        resetImagePreview();
     }
 }
 
@@ -209,7 +202,7 @@ function deleteVehicleData(id) {
             success: function(response) {
                 alert(response.message || "Vehicle deleted successfully!");
                 loadAllVehiclesFromBackend();
-                loadVehicleCountsFromBackend()
+                loadVehicleCountsFromBackend();
             },
             error: function(xhr) {
                 alert("Failed to delete vehicle: " + (xhr.responseJSON?.message || "Error occurred"));
@@ -228,15 +221,12 @@ $(document).ready(function() {
 
             var formData = new FormData();
 
-            if (typeof editingCard !== 'undefined' && editingCard !== null) {
-                let vehicleId = editingCard.getAttribute('data-id');
-                if (vehicleId) {
-                    formData.append('vehicleID', vehicleId);
-                }
+            if (currentEditingVehicle && currentEditingVehicle.vehicleID) {
+                formData.append('vehicleID', currentEditingVehicle.vehicleID);
             }
 
             formData.append('vehicleName', $('#vName').val());
-            formData.append('vehicleCategory', $('#vCategory').val()); // කෙලින්ම Dropdown එකේ value එක (Enum එක) යැවීම
+            formData.append('vehicleCategory', $('#vCategory').val());
             formData.append('plateNumber', $('#vNumberPlate').val());
             formData.append('dailyPrice', $('#vPrice').val());
             formData.append('insuranceNo', $('#vInsurance').val());
@@ -247,7 +237,8 @@ $(document).ready(function() {
             formData.append('status', $('#vStatus').val());
             formData.append('acType', $('#vAcType').val());
 
-            formData.append('showOnWebsite', true);
+            let isShowOnWeb = $('#isVisibleOnWeb').is(':checked');
+            formData.append('showOnWebsite', isShowOnWeb);
             formData.append('webCategory', $('#webCategory').val() || 'CAR');
 
             var imageInput = document.getElementById('vehicleImage');
@@ -256,11 +247,7 @@ $(document).ready(function() {
             }
 
             let ajaxUrl = "http://localhost:8080/v1/vehicles";
-            let ajaxType = "POST";
-
-            if (typeof editingCard !== 'undefined' && editingCard !== null && editingCard.getAttribute('data-id')) {
-                ajaxType = "PUT";
-            }
+            let ajaxType = currentEditingVehicle ? "PUT" : "POST";
 
             $.ajax({
                 url: ajaxUrl,
@@ -275,7 +262,7 @@ $(document).ready(function() {
                     alert(response.message || "Vehicle saved successfully!");
                     toggleForm();
                     loadAllVehiclesFromBackend();
-                    loadVehicleCountsFromBackend()
+                    loadVehicleCountsFromBackend();
                 },
                 error: function(xhr, status, error) {
                     var errObj = xhr.responseJSON;
@@ -287,7 +274,7 @@ $(document).ready(function() {
     }
 
     loadAllVehiclesFromBackend();
-    loadVehicleCountsFromBackend()
+    loadVehicleCountsFromBackend();
 });
 
 function loadVehicleCountsFromBackend() {
