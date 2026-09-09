@@ -172,7 +172,6 @@ function editVehicleByIndex(index) {
     $('#vAcType').val(vehicle.acType);
     $('#webCategory').val(vehicle.webCategory);
 
-    // 👈 නිවැරදි ID එක (`isVisibleOnWeb`) සමඟ චෙක්බොක්ස් තත්ත්වය සෙට් කිරීම
     let showWeb = vehicle.showOnWebsite === true || vehicle.showOnWebsite === "true";
     $('#isVisibleOnWeb').prop('checked', showWeb);
 
@@ -192,24 +191,49 @@ function editVehicleByIndex(index) {
 }
 
 function deleteVehicleData(id) {
-    if (confirm("Are you sure you want to delete this vehicle?")) {
-        $.ajax({
-            url: `http://localhost:8080/v1/vehicles/${id}`,
-            type: "DELETE",
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem("jwtToken")
-            },
-            success: function(response) {
-                alert(response.message || "Vehicle deleted successfully!");
-                loadAllVehiclesFromBackend();
-                loadVehicleCountsFromBackend();
-            },
-            error: function(xhr) {
-                alert("Failed to delete vehicle: " + (xhr.responseJSON?.message || "Error occurred"));
-                console.error(xhr);
-            }
-        });
-    }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This vehicle will be permanently deleted!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ff4d4d',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `http://localhost:8080/v1/vehicles/${id}`,
+                type: "DELETE",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("jwtToken")
+                },
+                success: function(response) {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: response.message || "Vehicle deleted successfully!",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    loadAllVehiclesFromBackend();
+                    loadVehicleCountsFromBackend();
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Delete Failed',
+                        text: xhr.status === 403
+                            ? "You don't have permission to delete this vehicle."
+                            : xhr.responseJSON?.message || "Error occurred",
+                        confirmButtonColor: '#ff4d4d'
+                    });
+                    console.error(xhr);
+                }
+            });
+        }
+    });
 }
 
 $(document).ready(function() {
@@ -259,14 +283,37 @@ $(document).ready(function() {
                     "Authorization": "Bearer " + localStorage.getItem("jwtToken")
                 },
                 success: function(response) {
-                    alert(response.message || "Vehicle saved successfully!");
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: response.message || "Vehicle saved successfully!",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
                     toggleForm();
                     loadAllVehiclesFromBackend();
                     loadVehicleCountsFromBackend();
                 },
                 error: function(xhr, status, error) {
                     var errObj = xhr.responseJSON;
-                    alert("Error: " + (errObj ? errObj.message : error));
+                    var errorText = error;
+
+                    if (errObj) {
+                        if (errObj.body && typeof errObj.body === "object" && !Array.isArray(errObj.body)) {
+                            errorText = Object.values(errObj.body).join("\n");
+                        } else {
+                            errorText = errObj.message;
+                        }
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Save Failed',
+                        text: errorText,
+                        confirmButtonColor: '#ff4d4d'
+                    });
                     console.error("Save error: ", xhr);
                 }
             });

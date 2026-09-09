@@ -12,7 +12,7 @@ function handleLogin(event) {
     }
 
     const loginData = {
-        email: email,
+        identifier: email,
         password: password
     };
 
@@ -28,10 +28,10 @@ function handleLogin(event) {
             const token = resData.token || response.token || "";
             localStorage.setItem("jwtToken", token);
 
-            const role = resData.role || response.role || "STAFF";
+            const role = resData.role || response.role;
             localStorage.setItem("userRole", role);
 
-            const email = resData.email || resData.userEmail || loginData.email || "admin@auracabs.com";
+            const email = resData.email || resData.userEmail || loginData.identifier ;
             localStorage.setItem("userEmail", email);
 
             const permissions = resData.permissions || response.permissions || [];
@@ -42,8 +42,12 @@ function handleLogin(event) {
         error: function(xhr, status, error) {
             errorMsg.style.display = "block";
 
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-                errorMsg.innerText = xhr.responseJSON.message;
+            var errObj = xhr.responseJSON;
+
+            if (errObj && errObj.body && typeof errObj.body === "object" && !Array.isArray(errObj.body)) {
+                errorMsg.innerText = Object.values(errObj.body).join("\n");
+            } else if (errObj && errObj.message) {
+                errorMsg.innerText = errObj.message;
             } else {
                 errorMsg.innerText = "Invalid Email or Password!";
             }

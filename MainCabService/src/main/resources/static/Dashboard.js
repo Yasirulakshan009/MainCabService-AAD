@@ -1,8 +1,8 @@
 $(document).ready(function() {
-    const savedRole = localStorage.getItem("userRole") || "STAFF";
-    $('#sidebarRole').text(savedRole); 
+    const savedRole = localStorage.getItem("userRole");
+    $('#sidebarRole').text(savedRole);
 
-    const savedEmail = localStorage.getItem("userEmail") || "admin@auracabs.com";
+    const savedEmail = localStorage.getItem("userEmail");
     $('#sidebarEmail').text(savedEmail);
 });
 
@@ -144,7 +144,7 @@ function toggleEditMode() {
     const actionBtn = document.getElementById('settingsActionBtn');
 
     if (!isEditing) {
-        inputs.forEach(input => input.removeAttribute('disabled')); // Fields enable කිරීම
+        inputs.forEach(input => input.removeAttribute('disabled')); 
         actionBtn.innerText = "Save Changes";
         actionBtn.style.background = "linear-gradient(135deg, #00c853, #b9f6ca)";
         actionBtn.style.color = "#000";

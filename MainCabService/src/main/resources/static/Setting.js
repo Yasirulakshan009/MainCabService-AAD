@@ -34,7 +34,7 @@ function togglePermissions() {
     }
 }
 
-function handleRegister(event) {
+function handleUserRegister(event) {
     event.preventDefault();
 
     const name = document.getElementById('regName').value.trim();
@@ -104,8 +104,12 @@ function handleRegister(event) {
         },
         error: function(xhr, status, error) {
             let errorMsg = "Registration failed!";
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-                errorMsg = xhr.responseJSON.message;
+            let errObj = xhr.responseJSON;
+
+            if (errObj && errObj.body && typeof errObj.body === "object" && !Array.isArray(errObj.body)) {
+                errorMsg = Object.values(errObj.body).join("\n");
+            } else if (errObj && errObj.message) {
+                errorMsg = errObj.message;
             }
 
             Swal.fire({
@@ -409,8 +413,12 @@ function updateAdminEmail(event) {
         },
         error: function(xhr) {
             let errorMsg = "Failed to update email!";
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-                errorMsg = xhr.responseJSON.message;
+            let errObj = xhr.responseJSON;
+
+            if (errObj && errObj.body && typeof errObj.body === "object" && !Array.isArray(errObj.body)) {
+                errorMsg = Object.values(errObj.body).join("\n");
+            } else if (errObj && errObj.message) {
+                errorMsg = errObj.message;
             } else if (xhr.responseText) {
                 errorMsg = xhr.responseText;
             }
@@ -488,8 +496,12 @@ function updateAdminPassword(event) {
         },
         error: function(xhr) {
             let errorMsg = "Failed to update password!";
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-                errorMsg = xhr.responseJSON.message;
+            let errObj = xhr.responseJSON;
+
+            if (errObj && errObj.body && typeof errObj.body === "object" && !Array.isArray(errObj.body)) {
+                errorMsg = Object.values(errObj.body).join("\n");
+            } else if (errObj && errObj.message) {
+                errorMsg = errObj.message;
             } else if (xhr.responseText) {
                 errorMsg = xhr.responseText;
             }

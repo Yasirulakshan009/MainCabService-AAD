@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Aura Cabs</title>
-    <!-- Remix Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- External CSS -->
     <link rel="stylesheet" href="pos.css">
 </head>
 <body>
@@ -20,11 +17,10 @@
         <div class="brand-title">Aura Cabs</div>
         <div class="subtitle">Enter your credentials to access dashboard</div>
 
-        <!-- Login Form -->
         <form id="loginForm" onsubmit="handleLogin(event)">
             <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="adminEmail" placeholder="admin@gmail.com" required>
+                <label>Username/Email</label>
+                <input type="text" id="adminEmail" placeholder="username/email" required>
             </div>
 
             <div class="form-group">
@@ -51,7 +47,7 @@
     </div>
 </section>
 
-<!-- External JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="Login.js"></script>
 </body>
 </html>

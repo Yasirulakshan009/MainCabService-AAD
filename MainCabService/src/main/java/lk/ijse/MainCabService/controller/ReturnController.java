@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "v1/returns")
+@CrossOrigin
 public class ReturnController {
 
     private final ReturnService returnService;

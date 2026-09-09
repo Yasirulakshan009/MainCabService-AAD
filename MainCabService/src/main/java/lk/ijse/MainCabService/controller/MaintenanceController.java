@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "v1/maintenance")
+@CrossOrigin
 public class MaintenanceController {
 
     private final MaintenanceService maintenanceService;

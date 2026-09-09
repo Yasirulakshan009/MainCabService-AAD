@@ -1,5 +1,6 @@
 package lk.ijse.MainCabService.controller;
 
+import jakarta.validation.Valid;
 import lk.ijse.MainCabService.constants.CommonResponse;
 import lk.ijse.MainCabService.constants.ResponseCode;
 import lk.ijse.MainCabService.constants.ResponseMessage;
@@ -23,7 +24,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> register(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<CommonResponse> register(@Valid @RequestBody UserDTO userDTO) {
         try {
             authService.register(userDTO);
             CommonResponse commonResponse = new CommonResponse(
@@ -48,7 +49,7 @@ public class AuthController {
             AuthResponseDTO authResponse = authService.authenticate(authRequestDTO);
             CommonResponse commonResponse = new CommonResponse(
                     ResponseCode.OPERATION_SUCCESS,
-                    authResponse, 
+                    authResponse,
                     ResponseMessage.SUCCESS_MESSAGE
             );
             return new ResponseEntity<>(commonResponse, HttpStatus.OK);
@@ -144,7 +145,7 @@ public class AuthController {
 
 
     @PutMapping(value = "/change-email", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> changeEmail(@RequestBody ChangeEmailDTO changeEmailDTO) {
+    public ResponseEntity<CommonResponse> changeEmail(@Valid @RequestBody ChangeEmailDTO changeEmailDTO) {
         try {
             authService.changeEmail(changeEmailDTO);
             CommonResponse commonResponse = new CommonResponse(
@@ -164,7 +165,7 @@ public class AuthController {
     }
 
     @PutMapping(value = "/change-password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse> updatePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+    public ResponseEntity<CommonResponse> updatePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
         try {
             authService.changePassword(changePasswordDTO);
             CommonResponse commonResponse = new CommonResponse(

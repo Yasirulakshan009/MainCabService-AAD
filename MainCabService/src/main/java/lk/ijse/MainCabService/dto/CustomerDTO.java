@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CustomerDTO {
 
-    private long customerID;
+    private Long customerID;
 
     @NotBlank(message = "Customer name cannot be blank!")
     private String customerName;

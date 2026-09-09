@@ -75,12 +75,18 @@ public class AuthServiceIMPL implements AuthService {
 
     @Override
     public AuthResponseDTO authenticate(AuthRequestDTO authRequestDTO) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequestDTO.getEmail(), authRequestDTO.getPassword())
-        );
+        String identifier = authRequestDTO.getIdentifier();
 
-        User user = userRepository.findByUserEmail(authRequestDTO.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userRepository.findByUserEmail(identifier)
+                .orElseGet(() -> userRepository.findByUserName(identifier)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found")));
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        user.getUserEmail(),
+                        authRequestDTO.getPassword()
+                )
+        );
 
         if (user.getStatus() == UserStatus.INACTIVE) {
             throw new RuntimeException("Your account is inactive. Please contact the administrator.");
