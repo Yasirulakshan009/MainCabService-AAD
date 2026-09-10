@@ -82,15 +82,22 @@ function deleteBookingCustomerData(id) {
                     loadAllBookingCustomersFromBackend();
                 },
                 error: function (xhr) {
+
+                    let errorMessage = "Unable to delete booking customer.";
+
+                    if (xhr.status === 403) {
+                        errorMessage = "You don't have permission to delete this booking customer.";
+                    } else if (xhr.status === 500) {
+                        errorMessage = "Cannot delete this booking customer because booking records are linked to this customer.";
+                    }
+
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Delete Failed',
-                        text: xhr.status === 403
-                            ? "You don't have permission to delete this Booking Customer."
-                            : xhr.responseJSON?.message || "Error occurred",
-                        confirmButtonColor: '#ff4d4d'
+                        icon: "error",
+                        title: "Delete Failed",
+                        text: errorMessage
                     });
-                    console.error(xhr);
+
+                    console.error("Delete booking customer failed:", xhr);
                 }
             });
         }

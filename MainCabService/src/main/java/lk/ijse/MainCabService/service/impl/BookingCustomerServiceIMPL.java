@@ -21,7 +21,7 @@ public class BookingCustomerServiceIMPL implements BookingCustomerService {
     private final BookingCustomerRepository bookingCustomerRepository;
 
     @Override
-    public void saveBookingCustomer(BookingCustomerDTO bookingCustomerDTO) {
+    public Long saveBookingCustomer(BookingCustomerDTO bookingCustomerDTO) {
 
         log.info("Executing save method!");
 
@@ -35,8 +35,12 @@ public class BookingCustomerServiceIMPL implements BookingCustomerService {
             bookingCustomer.setBookingCustomerNumber(bookingCustomerDTO.getBookingCustomerNumber());
             bookingCustomer.setBookingCustomerLicenseNumber(bookingCustomerDTO.getBookingCustomerLicenseNumber());
 
-            bookingCustomerRepository.save(bookingCustomer);
-            log.info("booking customer saved successfully!");
+            BookingCustomer savedCustomer = bookingCustomerRepository.save(bookingCustomer);
+
+            log.info("Booking customer saved successfully with ID: {}",
+                    savedCustomer.getBookingCustomerID());
+
+            return savedCustomer.getBookingCustomerID();
 
         } catch (Exception e) {
             log.error("error in sve method!");

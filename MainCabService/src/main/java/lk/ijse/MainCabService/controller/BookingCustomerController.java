@@ -22,27 +22,29 @@ public class BookingCustomerController {
 
     private final BookingCustomerService bookingCustomerService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonResponse> saveBookingCustomer(@Valid @RequestBody BookingCustomerDTO bookingCustomerDTO) {
 
         try {
-            bookingCustomerService.saveBookingCustomer(bookingCustomerDTO);
+            Long bookingCustomerId =
+                    bookingCustomerService.saveBookingCustomer(bookingCustomerDTO);
+
             CommonResponse commonResponse = new CommonResponse(
                     ResponseCode.OPERATION_SUCCESS,
-                    null,
+                    bookingCustomerId,
                     ResponseMessage.SAVE_SUCCESS
             );
             return new ResponseEntity<>(commonResponse, HttpStatus.CREATED);
-        } catch (Exception e) {
 
+        } catch (Exception e) {
             CommonResponse commonResponse = new CommonResponse(
                     ResponseCode.OPERATION_FAILED,
                     null,
                     e.getMessage()
             );
-            return new ResponseEntity<>(commonResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(commonResponse, HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
-
     }
 
     @DeleteMapping("/{id}")

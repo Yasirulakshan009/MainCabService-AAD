@@ -183,14 +183,22 @@ function deleteCustomerData(id) {
                     loadAllCustomersFromBackend();
                 },
                 error: function (xhr) {
+
+                    let errorMessage = "Unable to delete customer.";
+
+                    if (xhr.status === 403) {
+                        errorMessage = "You don't have permission to delete this customer.";
+                    } else if (xhr.status === 500) {
+                        errorMessage = "Cannot delete this customer because related records are linked to this customer.";
+                    }
+
                     Swal.fire({
                         icon: 'error',
                         title: 'Delete Failed',
-                        text: xhr.status === 403
-                            ? "You don't have permission to delete this customer."
-                            : xhr.responseJSON?.message || "Error occurred",
+                        text: errorMessage,
                         confirmButtonColor: '#ff4d4d'
                     });
+
                     console.error(xhr);
                 }
             });

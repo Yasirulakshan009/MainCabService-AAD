@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/v1/vehicles/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/v1/bookingCustomers").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/v1/bookingCustomers/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/v1/bookings").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/v1/auth/all").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/v1/auth/user-status/**").authenticated()
@@ -79,7 +80,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
 

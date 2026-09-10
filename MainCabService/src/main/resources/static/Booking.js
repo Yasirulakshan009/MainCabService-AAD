@@ -305,14 +305,22 @@ function loadVehiclesByWebCategory() {
 document.getElementById("booking-form")?.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const selectedVehicle = document.querySelector('input[name="specific_vehicle"]:checked');
+    const selectedVehicle = document.querySelector(
+        'input[name="specific_vehicle"]:checked'
+    );
 
     if (!selectedVehicle) {
-        alert("Please select a vehicle.");
+        Swal.fire({
+            icon: "warning",
+            title: "Select Vehicle",
+            text: "Please select a vehicle first."
+        });
         return;
     }
 
-    console.log("Selected Vehicle ID:", selectedVehicle.value);
+    const vehicleCard = selectedVehicle.closest(".model-card");
+    const vehicleModel =
+        vehicleCard?.querySelector("h4")?.innerText?.trim();
 
     const bookingCustomerData = {
         bookingCustomerName: $('#bcFullName').val(),
@@ -322,38 +330,106 @@ document.getElementById("booking-form")?.addEventListener("submit", function(eve
         bookingCustomerRegisterDate: new Date().toISOString().split('T')[0]
     };
 
+    const bookingData = {
+        vehicleModel: vehicleModel,
+        startDate: $('#pickupDate').val(),
+        endDate: $('#returnDate').val(),
+        pickupAddress: $('#location-input').val(),
+        bookingStatus: "PENDING",
+        bookingCustomerID: null,
+        bookingCustomerName: $('#bcFullName').val()
+    };
+
     const submitBtn = document.querySelector('#booking-form .btn-submit');
-    if (submitBtn) submitBtn.disabled = true;
+
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Processing...";
+    }
 
     $.ajax({
         url: API_BASE_URL + "/v1/bookingCustomers",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(bookingCustomerData),
-        success: function(response) {
-            Swal.fire({
-                icon: "success",
-                title: "Booking Confirmed!",
-                text: "Thank you for choosing Aura Cabs. We will contact you shortly.",
-                confirmButtonColor: "#0d6efd"
-            });
 
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
+        success: function(customerResponse) {
+
+            console.log("Booking Customer Response:", customerResponse);
+
+            const bookingCustomerId = customerResponse.body;
+
+            if (!bookingCustomerId) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Booking Failed",
+                    text: "Booking customer ID was not received."
+                });
+                return;
+            }
+
+            bookingData.bookingCustomerID = bookingCustomerId;
+
+            console.log("Booking Data:", bookingData);
+
+            $.ajax({
+                url: API_BASE_URL + "/v1/bookings",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(bookingData),
+
+                success: function(bookingResponse) {
+
+                    console.log("Booking Response:", bookingResponse);
+
+                    Swal.fire({
+                        icon: "success",
+                        title: "Booking Confirmed!",
+                        text: "Thank you for choosing Aura Cabs. We will contact you shortly.",
+                        confirmButtonColor: "#0d6efd"
+                    });
+
+                    document.getElementById("booking-form").reset();
+
+                    currentStep = 1;
+                    showStep(currentStep);
+
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+                },
+
+                error: function(xhr) {
+
+                    let errorText =
+                        xhr.responseJSON?.message ||
+                        "Unable to create booking.";
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Booking Failed",
+                        text: errorText,
+                        confirmButtonColor: "#dc3545"
+                    });
+
+                    console.error("Booking save error:", xhr);
+                },
+
+                complete: function() {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = "Confirm Booking";
+                    }
+                }
             });
         },
-        error: function(xhr) {
-            var errObj = xhr.responseJSON;
-            var errorText = "Something went wrong while submitting your booking. Please try again.";
 
-            if (errObj) {
-                if (errObj.body && typeof errObj.body === "object" && !Array.isArray(errObj.body)) {
-                    errorText = Object.values(errObj.body).join("\n");
-                } else if (errObj.message) {
-                    errorText = errObj.message;
-                }
-            }
+        error: function(xhr) {
+
+            let errorText =
+                xhr.responseJSON?.message ||
+                "Unable to save customer information.";
 
             Swal.fire({
                 icon: "error",
@@ -361,10 +437,13 @@ document.getElementById("booking-form")?.addEventListener("submit", function(eve
                 text: errorText,
                 confirmButtonColor: "#dc3545"
             });
-            console.error("Booking customer save error: ", xhr);
-        },
-        complete: function() {
-            if (submitBtn) submitBtn.disabled = false;
+
+            console.error("Booking customer save error:", xhr);
+
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Confirm Booking";
+            }
         }
     });
 });

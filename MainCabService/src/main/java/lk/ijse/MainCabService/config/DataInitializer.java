@@ -1,9 +1,9 @@
 package lk.ijse.MainCabService.config;
 
 import lk.ijse.MainCabService.entity.VehicleCategory;
-import lk.ijse.MainCabService.entity.UserRole; // ඔබේ Role Entity එකේ නම මෙයට සමාන විය යුතුය
+import lk.ijse.MainCabService.entity.UserRole;
 import lk.ijse.MainCabService.enumeratios.Category;
-import lk.ijse.MainCabService.enumeratios.Role;     // ඔබේ Role Enum එකේ නම මෙයට සමාන විය යුතුය
+import lk.ijse.MainCabService.enumeratios.Role;
 import lk.ijse.MainCabService.repository.UserRoleRepository;
 import lk.ijse.MainCabService.repository.VehicleCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

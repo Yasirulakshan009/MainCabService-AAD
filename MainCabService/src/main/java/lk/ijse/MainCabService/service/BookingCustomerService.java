@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BookingCustomerService {
 
-    void saveBookingCustomer(BookingCustomerDTO bookingCustomerDTO);
+    Long  saveBookingCustomer(BookingCustomerDTO bookingCustomerDTO);
 
     void deleteBookingCustomer(Long id);
 
