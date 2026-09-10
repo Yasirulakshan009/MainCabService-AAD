@@ -1,5 +1,6 @@
 package lk.ijse.MainCabService.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,11 +14,14 @@ import lombok.Setter;
 public class ChangeEmailDTO {
 
     @NotBlank(message = "Current email cannot be blank!")
+    @Email(message = "Invalid email format!")
     private String currentEmail;
 
     @NotBlank(message = "New email cannot be blank!")
+    @Email(message = "Invalid email format!")
     private String newEmail;
 
     @NotBlank(message = "Confirm new email cannot be blank!")
+    @Email(message = "Invalid email format!")
     private String confirmNewEmail;
 }

@@ -18,6 +18,6 @@ public interface RentalRepository extends JpaRepository<Rental,Long> {
     long countByRentalStatus(RentalStatus rentalStatus);
 
 
-    @Query("SELECT r FROM Rental r WHERE r.rentalID = :id OR r.vehicles.vehicleID = :id")
-    List<Rental> findByRentalIDOrVehicleID(@Param("id") Long id);
+    @Query("SELECT r FROM Rental r WHERE r.rentalID = :id OR r.customer.customerID = :id")
+    List<Rental> findByRentalIDOrCustomerID(@Param("id") Long id);
 }

@@ -277,7 +277,7 @@ public class RentalServiceIMPL implements RentalService {
             try {
 
                 Long id = Long.parseLong(keyword);
-                rentals = rentalRepository.findByRentalIDOrVehicleID(id);
+                rentals = rentalRepository.findByRentalIDOrCustomerID(id);
 
             } catch (NumberFormatException e) {
                 log.warn("Keyword is not a valid number for ID search: " + keyword);

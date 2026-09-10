@@ -245,8 +245,8 @@ public class ReturnServiceIMPL implements ReturnService {
             List<ReturnDTO> returnDTOs = new java.util.ArrayList<>();
             Long rentalId = Long.parseLong(keyword);
 
-            List<Return> returns = returnRepository.findByRental_RentalID(rentalId);
-
+            List<Return> returns = returnRepository.findByReturnIDOrRentalID(rentalId);
+            
             for (Return returnVehicle : returns) {
                 ReturnDTO dto = new ReturnDTO();
                 dto.setReturnID(returnVehicle.getReturnID());

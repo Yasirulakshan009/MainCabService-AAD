@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Cabs</title>
+
+
+    <link rel="stylesheet" href="web.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<body>
+
+<section>
+    <nav class="nav">
+
+        <div class="logo-container">
+            <div class="logo-circle">
+                <span>AR</span>
+            </div>
+            <div class="logo-text">
+                <span class="brand-name">Aura Cabs</span>
+                <span class="brand-sub">LUXURY RENTALS</span>
+            </div>
+        </div>
+
+        <section class="navbar">
+            <ul class="nav-list">
+                <li><a href="Home.html" class="active">Home</a></li>
+                <li><a href="About.html">About</a></li>
+                <div class="nav-item dropdown">
+                    <a href="javascript:void(0)" class="nav-link dropdown-toggle">
+                        Services <i class="ri-arrow-down-s-line"></i>
+                    </a>
+
+                    <div class="dropdown-menu-box">
+                        <div class="dropdown-grid">
+                            <a href="CarService.html" class="dropdown-item">
+                                <span class="bullet-dot"></span> Car Service
+                            </a>
+                            <a href="VanService.html" class="dropdown-item">
+                                <span class="bullet-dot"></span> Van Service
+                            </a>
+                            <a href="BusService.html" class="dropdown-item">
+                                <span class="bullet-dot"></span> Bus service
+                            </a>
+                            <a href="WeddingService.html" class="dropdown-item">
+                                <span class="bullet-dot"></span> Wedding service
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <li><a href="Contact.html">Contact</a></li>
+                <li><a href="FAQ.html">FAQ</a></li>
+            </ul>
+        </section>
+
+        <div class="nav-right">
+
+            <div class="phone">
+                <i class="fa-solid fa-phone"></i>
+                <span>0764 061 425</span>
+            </div>
+
+            <a href="Booking.html" class="book-btn">
+                <i class="fa-regular fa-calendar"></i>
+                Book Now
+            </a>
+
+            <a href="pos.html" id="adminDashboardBtn" class="web-dashboard-btn d-none">
+                Dashboard
+            </a>
+        </div>
+    </nav>
+
+    <section class="hero" id="hero">
+
+        <img src="images/luxury_showroom.jpg" alt="Hero Background Image" class="hero-bg-img">
+
+        <div class="hero-content">
+
+            <h1>AURA CABS</h1>
+            <h2>Rent Your Dream Car Today</h2>
+            <p>Experience premium luxury and ultimate convenience</p>
+
+            <div class="hero-buttons">
+                <a href="Booking.html" class="hero-btn solid-btn">
+                    <i class="fa-regular fa-calendar"></i>
+                    Book Your Ride
+                </a>
+
+                <a href="#services" class="hero-btn outline-btn">
+                    <i class="fa-solid fa-location-dot"></i>
+                    View Services
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <h3>50+</h3>
+                    <p>PREMIUM VEHICLES</p>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <h3>4.9/5</h3>
+                    <p>CUSTOMER RATING</p>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>CUSTOMER SUPPORT</p>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <h3>LKR 5,000</h3>
+                    <p>STARTING PRICE/DAY</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section-light">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <span class="badge-dot"></span>
+                    WHY AURA CABS
+                </div>
+                <h2>Experience Excellence</h2>
+                <p>Discover why thousands of travelers trust Aura Cabs for their self-drive rental needs</p>
+            </div>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+                    <div class="icon-box blue-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3>Safe & Secure</h3>
+                    <p>Well-maintained and fully inspected vehicles for your safe self-drive journey.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon-box orange-icon">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <h3>24/7 Availability</h3>
+                    <p>Round-the-clock vehicle pickup and drop-off services for your convenience.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon-box green-icon">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <h3>Island-wide Coverage</h3>
+                    <p>From Colombo to Jaffna, rent and drive anywhere across Sri Lanka.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon-box purple-icon">
+                        <i class="fa-solid fa-credit-card"></i>
+                    </div>
+                    <h3>Fixed Pricing</h3>
+                    <p>Transparent rental rates with no hidden charges or surge pricing.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="fleet-services-section" id="services">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <span class="badge-dot"></span>
+                    OUR PREMIUM SERVICES
+                </div>
+
+                <h2>Travel in <span class="highlight-text">Style & Comfort</span></h2>
+                <p>Experience total freedom with our self-drive fleet. Tailored rental solutions for every journey.</p>
+            </div>
+
+            <div class="fleet-cards-grid">
+                <div class="fleet-custom-card">
+                    <div class="card-img-container">
+                        <img src="images/20260810_1311_image.jpg" alt="Car Hire Service">
+                        <div class="card-top-icon">
+                            <i class="fa-solid fa-car"></i>
+                        </div>
+                        <div class="img-overlay-title">Car Rental Service
+                            <div class="hover-line"></div>
+                        </div>
+                    </div>
+                    <div class="card-body-content">
+                        <p class="card-desc">Affordable and comfortable self-drive car options.</p>
+
+                        <ul class="feature-list">
+                            <li><i class="fa-solid fa-check"></i> AC Vehicles</li>
+                            <li><i class="fa-solid fa-check"></i> 100% Self-Drive Freedom</li>
+                            <li><i class="fa-solid fa-check"></i> Short & Long Term Rentals</li>
+                        </ul>
+
+                        <a href="CarService.html" class="details-btn">
+                            <span class="text">Details</span>
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="fleet-custom-card">
+                    <div class="card-img-container">
+                        <img src="images/20260810_1320_image.jpg" alt="Van Hire Service">
+                        <div class="card-top-icon">
+                            <i class="fa-solid fa-van-shuttle"></i>
+                        </div>
+                        <div class="img-overlay-title">Van Rental Service
+                            <div class="hover-line"></div>
+                        </div>
+                    </div>
+                    <div class="card-body-content">
+                        <p class="card-desc">Comfortable self-drive vans for groups and families.</p>
+
+                        <ul class="feature-list">
+                            <li><i class="fa-solid fa-check"></i> 6 to 15 Passengers</li>
+                            <li><i class="fa-solid fa-check"></i> AC & Dual AC Options</li>
+                            <li><i class="fa-solid fa-check"></i> Spacious Luggage Space</li>
+                        </ul>
+
+                        <a href="VanService.html" class="details-btn">
+                            <span class="text">Details</span>
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="fleet-custom-card">
+                    <div class="card-img-container">
+                        <img src="images/20260810_1323_image.jpg" alt="Bus Hire Service">
+                        <div class="card-top-icon">
+                            <i class="fa-solid fa-van-shuttle"></i>
+                        </div>
+                        <div class="img-overlay-title">Bus Rental Service
+                            <div class="hover-line"></div>
+                        </div>
+                    </div>
+                    <div class="card-body-content">
+                        <p class="card-desc">Spacious buses for large groups and events.</p>
+
+                        <ul class="feature-list">
+                            <li><i class="fa-solid fa-check"></i> Luxury Seating</li>
+                            <li><i class="fa-solid fa-check"></i> AC Options Available</li>
+                            <li><i class="fa-solid fa-check"></i> Built-in Sound System</li>
+                        </ul>
+
+                        <a href="BusService.html" class="details-btn">
+                            <span class="text">Details</span>
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="fleet-custom-card">
+                    <div class="card-img-container">
+                        <img src="images/129350-car-flowers-decoration-3.jpeg" alt="Wedding Service">
+                        <div class="card-top-icon">
+                            <i class="fa-solid fa-ring"></i>
+                        </div>
+                        <div class="img-overlay-title">Wedding Service
+                            <div class="hover-line"></div>
+                        </div>
+                    </div>
+                    <div class="card-body-content">
+                        <p class="card-desc">Make your special day unforgettable with our luxury vehicle fleet and premium presentation.</p>
+
+                        <ul class="feature-list">
+                            <li><i class="fa-solid fa-check"></i> Luxury Decorated Vehicles</li>
+                            <li><i class="fa-solid fa-check"></i> Premium Presentation</li>
+                            <li><i class="fa-solid fa-check"></i> On-Time Event Guarantee</li>
+                        </ul>
+
+                        <a href="WeddingService.html" class="details-btn">
+                            <span class="text">Details</span>
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="fleet-section">
+        <div class="fleet-container">
+
+            <div class="fleet-header">
+                <span class="badge">OUR FLEET</span>
+                <h2>The Perfect Ride for <span>Every Journey</span></h2>
+            </div>
+
+            <div class="ai-fleet-search-container">
+
+                <div class="ai-search-header">
+                    <h3>✨ AI Trip Advisor</h3>
+                    <p>Not sure which vehicle to choose? Type your travel plan below and let AI pick the best self-drive ride for you.</p>
+                </div>
+
+                <div class="ai-search-box">
+                    <input type="text" id="tripInput" placeholder="e.g., Colombo to Kandy family trip">
+                    <button onclick="findBestVehicle()">Find</button>
+                </div>
+
+                <div id="aiResultBox" class="ai-result-box" style="display: none;"></div>
+            </div>
+
+            <div class="fleet-tabs-wrapper">
+                <div class="fleet-tabs-bar">
+                    <button class="tab-btn active" onclick="filterFleet('cars', this)">🚗 CARS</button>
+                    <button class="tab-btn" onclick="filterFleet('vans', this)">👥 VANS</button>
+                    <button class="tab-btn" onclick="filterFleet('buses', this)">🚌 BUSES</button>
+                </div>
+            </div>
+
+            <div class="category-info" id="categoryInfo">
+                <h3>Cars Services</h3>
+                <p>Comfortable and fuel-efficient cars for city rentals and long journeys</p>
+            </div>
+
+            <div class="vehicle-grid"></div>
+        </div>
+    </section>
+
+    <section class="feedback-section" id="reviews">
+
+        <div class="feedback-header">
+            <span class="feedback-badge">TESTIMONIALS</span>
+            <h2>What Our <span>Customers Say</span></h2>
+            <p>Read genuine reviews from our happy self-drive travelers across Sri Lanka.</p>
+        </div>
+
+        <div class="feedback-grid">
+
+            <div class="feedback-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="review-text">"Aura Cabs made our Sri Lanka road trip unforgettable. The car handover was smooth, and the vehicle was in pristine condition."</p>
+                <div class="customer-info">
+                    <div class="customer-avatar">S</div>
+                    <div>
+                        <h4>Sarah Jenkins</h4>
+                        <span>Tourist from UK</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feedback-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="review-text">"I use their corporate self-drive rentals regularly for client visits. The booking process is fast and seamless."</p>
+                <div class="customer-info">
+                    <div class="customer-avatar">K</div>
+                    <div>
+                        <h4>Kumar Perera</h4>
+                        <span>Business Traveler</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feedback-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="review-text">"Great rental rates for self-drive cars. The pickup process was super easy and the car was extremely fuel-efficient."</p>
+                <div class="customer-info">
+                    <div class="customer-avatar">E</div>
+                    <div>
+                        <h4>Elena Rossi</h4>
+                        <span>Backpacker</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px;">
+            <button onclick="openReviewModal()" style="background: #0071e3; color: white; border: none; padding: 12px 28px; border-radius: 30px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 113, 227, 0.3); transition: transform 0.2s ease;">
+                ⭐ Share Your Experience
+            </button>
+        </div>
+
+        <div id="reviewModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center;">
+
+            <div style="background: var(--card-bg, #1e1e1e); color: var(--text-main, #ffffff); width: 90%; max-width: 450px; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); position: relative; border: 1px solid var(--border-color, #444447); text-align: left;">
+
+                <span onclick="closeReviewModal()" style="position: absolute; top: 15px; right: 20px; font-size: 22px; cursor: pointer; color: var(--text-muted, #a1a1aa);">&times;</span>
+
+                <h3 style="margin-top: 0; margin-bottom: 8px; font-size: 20px; color: var(--text-main, #ffffff);">Share Your Feedback</h3>
+                <p style="color: var(--text-muted, #a1a1aa); font-size: 13px; margin-bottom: 20px;">We value your opinion about Aura Cabs. Let us know how your trip was!</p>
+
+                <form onsubmit="submitReviewForm(event)" style="display: flex; flex-direction: column; gap: 15px;">
+
+                    <div>
+                        <label style="font-size: 12px; color: var(--text-muted, #a1a1aa); display: block; margin-bottom: 5px;">Your Name</label>
+                        <input type="text" id="reviewerName" required placeholder="e.g. John Doe" style="width: 100%; padding: 10px 14px; background: var(--bg-main, #2a2a2a); border: 1px solid var(--border-color, #444447); color: var(--text-main, #ffffff); border-radius: 8px; font-size: 14px; outline: none;">
+                    </div>
+
+                    <div>
+                        <label style="font-size: 12px; color: var(--text-muted, #a1a1aa); display: block; margin-bottom: 5px;">Your Role / Location</label>
+                        <input type="text" id="reviewerRole" required placeholder="e.g. Tourist from UK" style="width: 100%; padding: 10px 14px; background: var(--bg-main, #2a2a2a); border: 1px solid var(--border-color, #444447); color: var(--text-main, #ffffff); border-radius: 8px; font-size: 14px; outline: none;">
+                    </div>
+
+                    <div>
+                        <label style="font-size: 12px; color: var(--text-muted, #a1a1aa); display: block; margin-bottom: 5px;">Rating (1 to 5 Stars)</label>
+                        <select id="reviewerRating" style="width: 100%; padding: 10px 14px; background: var(--bg-main, #2a2a2a); border: 1px solid var(--border-color, #444447); color: var(--text-main, #ffffff); border-radius: 8px; font-size: 14px; outline: none;">
+                            <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐ (5/5 Stars)</option>
+                            <option value="⭐⭐⭐⭐">⭐⭐⭐⭐ (4/5 Stars)</option>
+                            <option value="⭐⭐⭐">⭐⭐⭐ (3/5 Stars)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label style="font-size: 12px; color: var(--text-muted, #a1a1aa); display: block; margin-bottom: 5px;">Your Review Message</label>
+                        <textarea id="reviewerMessage" required rows="4" placeholder="Write your experience here..." style="width: 100%; padding: 10px 14px; background: var(--bg-main, #2a2a2a); border: 1px solid var(--border-color, #444447); color: var(--text-main, #ffffff); border-radius: 8px; font-size: 14px; outline: none; resize: none;"></textarea>
+                    </div>
+
+                    <button type="submit" style="background: #10b981; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 5px;">
+                        Submit Review
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section" id="faq">
+
+        <div class="faq-header">
+            <span class="faq-badge">HELP & SUPPORT</span>
+            <h2>Frequently Asked <span>Questions</span></h2>
+            <p>Find answers to common questions about our self-drive vehicle rentals and booking process.</p>
+        </div>
+
+        <div class="faq-grid">
+
+            <div class="faq-card" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <h4>What is Aura Cabs rental service?</h4>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Aura Cabs is your trusted self-drive car and vehicle rental partner in Sri Lanka, offering flexible self-drive options for your travel needs.</p>
+                </div>
+            </div>
+
+            <div class="faq-card" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <h4>Do you provide vehicles on a pure self-drive basis?</h4>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, we specialize in self-drive rentals, allowing you complete freedom and privacy during your journey across Sri Lanka.</p>
+                </div>
+            </div>
+
+            <div class="faq-card" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <h4>What are the requirements to rent a self-drive vehicle?</h4>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>You need to provide a valid driving license (local or international permit), national ID/passport, and meet our age and verification requirements.</p>
+                </div>
+            </div>
+
+            <div class="faq-card" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <h4>What types of vehicles are available in your fleet?</h4>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Our fleet includes a wide range of well-maintained cars, sedans, SUVs, and spacious vans suitable for family trips, tours, and everyday travel.</p>
+                </div>
+            </div>
+
+            <div class="faq-card" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <h4>How can I book a vehicle with Aura Cabs?</h4>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>You can easily book a vehicle by contacting our hotline, using our online booking form, or using our AI Trip Advisor to pick the best vehicle for your trip instantly.</p>
+                </div>
+            </div>
+
+            <div class="faq-card" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <h4>Are there any mileage limits or extra charges?</h4>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Our rental packages are transparent with clear terms regarding mileage and daily rates. You can discuss your travel distance with us when booking.</p>
+                </div>
+            </div>
+
+            <div class="faq-card" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <h4>Can I get the vehicle delivered to my home or location?</h4>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! When booking your vehicle through Step 1, you can select the "Doorstep Delivery" option. Our team will bring the vehicle directly to your requested location within Sri Lanka.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer-section">
+        <div class="footer-container">
+
+            <div class="footer-col">
+                <h3 class="footer-logo">Aura <span>Cabs</span></h3>
+                <p class="footer-desc">Your trusted self-drive car and vehicle rental partner in Sri Lanka. Offering flexible self-drive options for your safe and independent journey.</p>
+                <div class="footer-socials">
+                    <a href="#" class="social-icon" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="About.html">About Aura Cabs</a></li>
+                    <li><a href=Booking.html>Online Booking</a></li>
+                    <li><a href="Contact.html">Contact Aura Cabs</a></li>
+                    <li><a href="TermsCondition.html">Terms & Conditions</a></li>
+                    <li><a href="PrivacyPolicy.html">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Our Services</h4>
+                <ul class="footer-links">
+                    <li><a href="CarService.html">Car Rental (Self-Drive)</a></li>
+                    <li><a href="VanService.html">Van & Family Tours</a></li>
+                    <li><a href="BusService.html">Bus & Group Service</a></li>
+                    <li><a href="WeddingService.html">Wedding Service</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <ul class="footer-contact">
+                    <li><span><i class="fa-solid fa-location-dot"></i></span> Bandaragama, Sri Lanka</li>
+                    <li><span><i class="fa-solid fa-phone"></i></span> <a href="tel:+94764061425">0764 061 425</a></li>
+                    <li><span><i class="fa-solid fa-envelope"></i></span> <a href="mailto:support@auracabs.lk">support@auracabs.lk</a></li>
+                    <li><span><i class="fa-solid fa-clock"></i></span> Available 24/7</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Aura Cabs. All Rights Reserved. Designed with Professional Excellence.</p>
+        </div>
+    </footer>
+
+    <a href="#" class="scroll-top-btn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+    <div class="whatsapp-widget">
+
+        <div id="waPopupBox" class="wa-popup-card">
+            <div class="wa-popup-header">
+                <div class="wa-profile-info">
+                    <div class="wa-avatar">
+                        <i class="ri-whatsapp-line"></i>
+                    </div>
+                    <div>
+                        <h4>Aura Cabs</h4>
+                        <span>Online - Ready to help!</span>
+                    </div>
+                </div>
+                <button id="waCloseBtn" class="wa-close-btn">&times;</button>
+            </div>
+
+            <div class="wa-popup-body">
+                <div class="wa-message-bubble">
+                    <p>👋 Hi there! Looking to rent a vehicle?</p>
+                    <p>Choose from our premium fleet for your self-drive or dry lease needs. Chat with us to book your ride!</p>
+                    <span class="wa-sender">Aura Cabs Rental Team</span>
+                </div>
+            </div>
+
+            <div class="wa-popup-footer">
+                <a href="https://wa.me/94764061425?text=Hello%20Aura%20Cabs,%20I%20want%20to%20book%20a%20cab." target="_blank" class="wa-start-chat-btn">
+                    <i class="ri-whatsapp-line"></i> Start WhatsApp Chat
+                </a>
+            </div>
+        </div>
+
+        <div id="waTriggerBtn" class="chat-icon-wrapper" title="Chat with us">
+            <i id="waIcon" class="ri-chat-3-line"></i>
+            <span class="notification-badge">1</span>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="website-fleet.js"></script>
+<script>
+
+    window.addEventListener('scroll', function() {
+        const nav = document.querySelector('.nav');
+        if (window.scrollY > 50) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    });
+    
+    const triggerBtn = document.getElementById('waTriggerBtn');
+    const popupBox = document.getElementById('waPopupBox');
+    const closeBtn = document.getElementById('waCloseBtn');
+    const waIcon = document.getElementById('waIcon');
+
+    triggerBtn.addEventListener('click', () => {
+        if (popupBox.style.display === 'block') {
+            closePopup();
+        } else {
+            openPopup();
+        }
+    });
+
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closePopup();
+    });
+
+    function openPopup() {
+        popupBox.style.display = 'block';
+        waIcon.className = 'ri-close-line';
+    }
+
+    function closePopup() {
+        popupBox.style.display = 'none';
+        waIcon.className = 'ri-chat-3-line';
+    }
+
+    function toggleFAQ(element) {
+        const cards = document.querySelectorAll('.faq-card');
+
+        cards.forEach(card => {
+            if (card !== element) {
+                card.classList.remove('active');
+            }
+        });
+
+        element.classList.toggle('active');
+    }
+/*//////////////////////////////////*/
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let isAdmin = localStorage.getItem('isAdminSession');
+
+        if (isAdmin === 'true') {
+            let dashboardBtn = document.getElementById('adminDashboardBtn');
+            if (dashboardBtn) {
+                dashboardBtn.classList.remove('d-none');
+            }
+        }
+    });
+
+    function openReviewModal() {
+        const modal = document.getElementById('reviewModal');
+        modal.style.display = 'flex';
+    }
+
+    function closeReviewModal() {
+        const modal = document.getElementById('reviewModal');
+        modal.style.display = 'none';
+    }
+
+    function submitReviewForm(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('reviewerName').value;
+        const role = document.getElementById('reviewerRole').value;
+        const rating = document.getElementById('reviewerRating').value;
+        const message = document.getElementById('reviewerMessage').value;
+
+        console.log("New Floating Review Submitted:", { name, role, rating, message });
+
+        alert("Thank you! Your review has been submitted successfully and is pending approval.");
+
+        document.getElementById('reviewerName').value = '';
+        document.getElementById('reviewerRole').value = '';
+        document.getElementById('reviewerMessage').value = '';
+        closeReviewModal();
+    }
+
+</script>
+</body>
+</html>

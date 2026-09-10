@@ -8,6 +8,7 @@ import java.util.List;
 public interface AuthService {
 
     void register(UserDTO userDTO);
+    void registerCustomer(CustomerRegisterDTO customerRegisterDTO);
     AuthResponseDTO authenticate(AuthRequestDTO authRequestDTO);
     List<UserDTO> getAllUsers();
     List<UserDTO> getCustomersOnly();

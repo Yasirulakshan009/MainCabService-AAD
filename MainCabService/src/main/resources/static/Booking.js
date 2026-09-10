@@ -30,16 +30,247 @@ function switchAuthTab(tab, event) {
     }
 }
 
-function handleLogin(event) {
+function handleRegister(event) {
+
     event.preventDefault();
-    alert("Login Successful!");
-    proceedToBooking();
+
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const phone = document.getElementById("regPhone").value.trim();
+    const password = document.getElementById("regPassword").value;
+
+    if (!name || !email || !phone || !password) {
+        Swal.fire({
+            icon: "warning",
+            title: "Required Fields",
+            text: "Please fill all registration fields."
+        });
+        return;
+    }
+
+    const registerData = {
+        userName: name,
+        userEmail: email,
+        phone: phone,
+        userPassword: password,
+        confirmPassword: password
+    };
+
+    $.ajax({
+
+        url: API_BASE_URL + "/api/v1/auth/customer-register",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(registerData),
+
+        success: function(response) {
+
+            Swal.fire({
+                icon: "success",
+                title: "Registration Successful!",
+                text: "Your customer account has been created. Please login to continue.",
+                confirmButtonColor: "#0d6efd"
+            }).then(() => {
+
+                document.querySelectorAll(".auth-tab-btn")
+                    .forEach(btn => btn.classList.remove("active"));
+
+                const loginButton =
+                    document.querySelector(
+                        ".auth-tab-btn:first-child"
+                    );
+
+                if (loginButton) {
+                    loginButton.classList.add("active");
+                }
+
+                document.getElementById("loginForm").style.display = "block";
+                document.getElementById("registerForm").style.display = "none";
+
+                document.getElementById("loginEmail").value = email;
+                document.getElementById("loginPassword").value = "";
+
+                const caption =
+                    document.getElementById("auth-caption");
+
+                if (caption) {
+                    caption.innerText =
+                        "Account created successfully. Please login to continue.";
+                }
+            });
+        },
+
+        error: function(xhr) {
+            let message = "Registration failed.";
+
+            if (xhr.responseJSON) {
+                if (xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+
+                if (
+                    xhr.responseJSON.body &&
+                    typeof xhr.responseJSON.body === "string"
+                ) {
+                    message = xhr.responseJSON.body;
+                }
+            }
+
+            Swal.fire({
+                icon: "error",
+                title: "Registration Failed",
+                text: message
+            });
+            console.error("Customer registration error:", xhr);
+        }
+    });
 }
 
-function handleRegister(event) {
+function handleLogin(event) {
+
     event.preventDefault();
-    alert("Account Created Successfully!");
-    proceedToBooking();
+
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    if (!email || !password) {
+        Swal.fire({
+            icon: "warning",
+            title: "Required Fields",
+            text: "Please enter your email and password."
+        });
+        return;
+    }
+
+    const loginData = {
+        identifier: email,
+        password: password
+    };
+
+    $.ajax({
+        url: API_BASE_URL + "/api/v1/auth/login",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(loginData),
+
+        success: function(response) {
+
+            console.log("Customer Login Response:", response);
+
+            const authData =
+                response.data ||
+                response.body ||
+                response;
+
+            const token = authData.token;
+            const role = authData.role;
+
+            if (!token) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Login Failed",
+                    text: "Authentication token was not received."
+                });
+                return;
+            }
+
+            if (role !== "CUSTOMER") {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Access Denied",
+                    text: "This login is only for customer accounts."
+                });
+                return;
+            }
+
+            localStorage.setItem("jwtToken", token);
+            localStorage.setItem("userRole", role);
+            localStorage.setItem("userEmail", email);
+
+            localStorage.setItem(
+                "userPermissions",
+                JSON.stringify(authData.permissions || [])
+            );
+
+            Swal.fire({
+                icon: "success",
+                title: "Login Successful!",
+                text: "You can now continue with your booking.",
+                timer: 1500,
+                showConfirmButton: false
+            }).then(() => {
+                proceedToBooking();
+                loadLoggedInCustomerInformation();
+            });
+        },
+
+        error: function(xhr) {
+            let message = "Invalid email or password.";
+
+            if (xhr.responseJSON) {
+
+                if (xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+
+                if (
+                    xhr.responseJSON.body &&
+                    typeof xhr.responseJSON.body === "string"
+                ) {
+                    message = xhr.responseJSON.body;
+                }
+            }
+            Swal.fire({
+                icon: "error",
+                title: "Login Failed",
+                text: message
+            });
+            console.error("Customer login error:", xhr);
+        }
+    });
+}
+
+function loadLoggedInCustomerInformation() {
+
+    const token = localStorage.getItem("jwtToken");
+
+    if (!token) {
+        return;
+    }
+
+    $.ajax({
+        url: API_BASE_URL + "/api/v1/auth/me",
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+
+        success: function(response) {
+            const customer =
+                response.data ||
+                response.body ||
+                response;
+
+            if (customer.userName) {
+                $("#bcFullName").val(customer.userName);
+            }
+
+            if (customer.userEmail) {
+                $("#bcEmail").val(customer.userEmail);
+            }
+
+            if (customer.phone) {
+                $("#bcPhone").val(customer.phone);
+            }
+        },
+        error: function(xhr) {
+            console.error(
+                "Unable to load logged-in customer information:",
+                xhr
+            );
+        }
+    });
 }
 
 function proceedToBooking() {
@@ -351,6 +582,12 @@ document.getElementById("booking-form")?.addEventListener("submit", function(eve
         url: API_BASE_URL + "/v1/bookingCustomers",
         type: "POST",
         contentType: "application/json",
+
+        headers: {
+            "Authorization":
+                "Bearer " + localStorage.getItem("jwtToken")
+        },
+
         data: JSON.stringify(bookingCustomerData),
 
         success: function(customerResponse) {
@@ -376,6 +613,12 @@ document.getElementById("booking-form")?.addEventListener("submit", function(eve
                 url: API_BASE_URL + "/v1/bookings",
                 type: "POST",
                 contentType: "application/json",
+
+                headers: {
+                    "Authorization":
+                        "Bearer " + localStorage.getItem("jwtToken")
+                },
+
                 data: JSON.stringify(bookingData),
 
                 success: function(bookingResponse) {

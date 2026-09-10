@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Cabs - POS & Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="pos.css">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
+
+<section class="app-container">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-top">
+            <div class="brand-card">
+                <div class="brand-avatar">AR</div>
+                <div class="brand-text">
+                    <h3>AURA CABS</h3>
+                    <span id="sidebarRole">ADMIN</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-menu-scrollable">
+            <div class="menu-group">
+                <span class="menu-label">WORKSPACE</span>
+                <a href="#" class="menu-item active" id="menu-overview" data-permission="OVERVIEW" onclick="showSection('overview', this)">
+                    <i class="ri-dashboard-line"></i> Overview
+                </a>
+            </div>
+
+            <div class="menu-group">
+                <span class="menu-label">OPERATIONS</span>
+                <a href="#" class="menu-item" id="menu-vehicles" data-permission="FLEET" onclick="showSection('fleet', this)">
+                    <i class="ri-car-line"></i> Vehicles
+                </a>
+                <a href="#" class="menu-item" id="menu-bookings" data-permission="BOOKINGS" onclick="showSection('bookings', this)">
+                    <i class="ri-calendar-check-line"></i> Bookings
+                </a>
+                <a href="#" class="menu-item" id="menu-booking-customers" data-permission="BOOKING_CUSTOMER" onclick="showSection('booking-customers', this)">
+                    <i class="ri-user-heart-line"></i> Booking Customers
+                </a>
+                <a href="#" class="menu-item" id="menu-normal-customers" data-permission="CUSTOMER" onclick="showSection('normal-customers', this)">
+                    <i class="ri-user-shared-line"></i> Customers
+                </a>
+                <a href="#" class="menu-item" id="menu-rentals" data-permission="RENTAL" onclick="showSection('rentals', this)">
+                    <i class="ri-key-line"></i> Rentals
+                </a>
+                <a href="#" class="menu-item" id="menu-returns" data-permission="RETURNS" onclick="showSection('returns', this)">
+                    <i class="ri-history-line"></i> Returns
+                </a>
+            </div>
+
+            <div class="menu-group">
+                <span class="menu-label">FINANCE</span>
+                <a href="#" class="menu-item" id="menu-payments" data-permission="PAYMENT" onclick="showSection('payments', this)">
+                    <i class="ri-money-dollar-circle-line"></i> Payments
+                </a>
+            </div>
+
+            <div class="menu-group">
+                <span class="menu-label">SYSTEM</span>
+                <a href="#" class="menu-item" id="menu-maintenance" data-permission="MAINTENANCE" onclick="showSection('maintenance', this)">
+                    <i class="ri-tools-line"></i> Maintenance
+                </a>
+
+                <a href="#" class="menu-item" id="menu-settings" data-permission="SETTINGS" onclick="showSection('settings', this)">
+                    <i class="ri-settings-3-line"></i> System Security
+                </a>
+
+                <a href="#" class="menu-item" id="menu-reg-customers" data-permission="REGISTER_CUSTOMER" onclick="showSection('register-customers', this)">
+                    <i class="ri-user-heart-line"></i> Register Customers
+                </a>
+            </div>
+
+            <div class="menu-group">
+                <span class="menu-label">WEBSITE CONTENT</span>
+                <a href="#" class="menu-item" id="menu-web-setting" data-permission="WEBSITE_SETTING" onclick="showSection('website-settings', this)">
+                    <i class="ri-settings-3-line"></i> Website Settings
+                </a>
+                <a href="#" class="menu-item" id="menu-legal" data-permission="LEGAL_AND_FAQ" onclick="showSection('update-tc', this)">
+                    <i class="ri-file-shield-line"></i> Legal & FAQ
+                </a>
+                <a href="#" class="menu-item" id="menu-update-reviews" data-permission="CUSTOMER_REVIEWS" onclick="showSection('customer-reviews', this)">
+                    <i class="ri-star-line"></i> Customer Reviews
+                </a>
+            </div>
+        </div>
+
+        <div class="sidebar-bottom">
+            <div class="admin-profile-box">
+                <div class="admin-avatar-small">CA</div>
+                <div class="admin-info">
+                    <h4>User Account</h4>
+                    <p id="sidebarEmail"></p>
+                </div>
+            </div>
+            <div class="sidebar-actions">
+                <button class="btn-signout" onclick="window.location.href='Login.html'"><i class="ri-logout-box-r-line"></i> Sign out</button>
+                <a href="Home.html" class="btn-website" onclick="openWebsite()"><i class="ri-global-line"></i>Website</a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <div class="main-area-wrapper">
+
+        <!-- Floating Top Header Bar -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()">
+                    <i class="ri-menu-line"></i>
+                </button>
+                <div class="header-date">Saturday, August 8</div>
+            </div>
+            <div class="header-user-controls">
+                <button class="btn-theme-switch"><i class="ri-sun-line"></i> Light</button>
+                <button class="header-icon-btn" data-permission="SETTINGS" onclick="scrollToSettingsSection()" title="Admin Settings">
+                    <i class="ri-user-settings-line"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="main-content">
+
+            <!-- 1. OVERVIEW SECTION -->
+            <div class="fleet-container" id="overview-section">
+                <div class="dashboard-header">
+                    <h2>Dashboard Overview</h2>
+                    <p class="sub-title">Welcome back, Admin! Here is the live status of Aura Cabs.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="icon-box purple-glow"><i class="fa-solid fa-bookmark"></i></div>
+                        <div class="stat-info">
+                            <p>Total Online Bookings</p>
+                            <h3>24</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon-box blue-glow"><i class="fa-solid fa-car-side"></i></div>
+                        <div class="stat-info">
+                            <p>Active Rentals</p>
+                            <h3>12</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon-box green-glow"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="stat-info">
+                            <p>Completed Rentals</p>
+                            <h3>148</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon-box pink-glow"><i class="fa-solid fa-wallet"></i></div>
+                        <div class="stat-info">
+                            <p>Total Revenue (LKR)</p>
+                            <h3>450,000</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <div class="chart-header">
+                        <h5 class="section-title">Monthly Revenue Overview</h5>
+                        <span class="sub-title">Year 2026</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bottom-grid">
+                    <div class="fleet-card">
+                        <h5 class="section-title" style="margin-bottom: 16px;">Fleet Status Overview</h5>
+                        <div class="glass-chart-wrapper">
+                            <canvas id="fleetPieChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="table-card">
+                        <h5 class="section-title" style="margin-bottom: 16px;">Recent Completed Rentals</h5>
+                        <div class="table-responsive">
+                            <table class="aura-data-table">
+                                <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Vehicle</th>
+                                    <th>Start Date</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Sunil Shantha</td>
+                                    <td>Suzuki WagonR (CAB-1122)</td>
+                                    <td>2026-05-10</td>
+                                    <td><span class="status-badge completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Anura Kumara</td>
+                                    <td>Toyota Prius (CAB-9988)</td>
+                                    <td>2026-05-05</td>
+                                    <td><span class="status-badge completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Ruwan Perera</td>
+                                    <td>Honda Fit (CAB-4455)</td>
+                                    <td>2026-04-28</td>
+                                    <td><span class="status-badge completed">Completed</span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. FLEET SECTION -->
+            <div class="fleet-container" id="fleet-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Fleet Management</h2>
+                        <p class="sub-title">Manage vehicles, status, and daily rates.</p>
+                    </div>
+                    <div class="fleet-controls">
+                        <div class="search-box">
+                            <input type="text" id="vehicleSearch" placeholder="Search by Vehicle ID, name or plate..." onkeyup="searchVehicles()">
+                        </div>
+                        <button class="btn-website" onclick="toggleForm()">+ Add vehicle</button>
+                    </div>
+                </div>
+
+                <div class="stats-bar">
+                    <div class="stat-box">
+                        <span class="stat-label">AVAILABLE</span>
+                        <h3 id="availableCount">1</h3>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">RENTED</span>
+                        <h3 id="rentedCount">0</h3>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">MAINTENANCE</span>
+                        <h3 id="maintCount">0</h3>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">TOTAL FLEET</span>
+                        <h3 id="totalCount">1</h3>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <button class="filter-btn active" onclick="filterVehicles('all', this)">All</button>
+                    <button class="filter-btn" onclick="filterVehicles('available', this)">Available</button>
+                    <button class="filter-btn" onclick="filterVehicles('rented', this)">Rented</button>
+                    <button class="filter-btn" onclick="filterVehicles('maintenance', this)">Maintenance</button>
+                </div>
+
+                <div class="vehicle-grid" id="vehicleGrid">
+
+                </div>
+            </div>
+
+            <!-- 3. BOOKINGS SECTION -->
+            <div class="fleet-container" id="bookings-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Booking Requests</h2>
+                        <p class="sub-title">Review web requests, verify customer info, and forward to rentals.</p>
+                    </div>
+                    <div class="fleet-controls">
+                        <div class="search-box">
+                            <input type="text" id="bookingSearch" placeholder="Search by booking ID or customer name" onkeyup="searchBookings()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-bar">
+                    <div class="stat-box">
+                        <span class="stat-label">PENDING</span>
+                        <h3 id="pendingCount">1</h3>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">CONFIRMED</span>
+                        <h3 id="confirmedCount">0</h3>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">CANCELLED</span>
+                        <h3 id="cancelledCount">0</h3>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">TOTAL REQUESTS</span>
+                        <h3 id="totalBookingCount">1</h3>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <button class="filter-btn active" onclick="filterBookings('all', this)">All</button>
+                    <button class="filter-btn" onclick="filterBookings('pending', this)">Pending</button>
+                    <button class="filter-btn" onclick="filterBookings('confirmed', this)">Confirmed</button>
+                    <button class="filter-btn" onclick="filterBookings('cancelled', this)">Cancelled</button>
+                </div>
+
+                <div class="content-card">
+                    <div class="table-responsive">
+                        <table class="aura-data-table" id="bookingTable">
+                            <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Customer Info</th>
+                                <th>Requested Vehicle</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Pickup Address</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="bookingTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. BOOKING CUSTOMERS SECTION -->
+            <div class="fleet-container" id="booking-customers-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Booking Customer Information</h2>
+                        <p class="sub-title">Detailed records of customers who made booking requests via web.</p>
+                    </div>
+                    <div class="fleet-controls">
+                        <div class="search-box">
+                            <input type="text" id="bookingCustSearch" placeholder="Search by customer ID, name or email..." onkeyup="searchBookingCustomers()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="table-responsive">
+                        <table class="aura-data-table" id="bookingCustTable">
+                            <thead>
+                            <tr>
+                                <th>Customer ID</th>
+                                <th>Booking Date</th>
+                                <th>Customer Name</th>
+                                <th>Email Address</th>
+                                <th>Phone Number</th>
+                                <th>Driving License No</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="bookingCustTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. NORMAL CUSTOMERS SECTION -->
+            <div class="fleet-container" id="normal-customers-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Customer Management</h2>
+                        <p class="sub-title">Manage walk-in and registered direct customers of the rental system.</p>
+                    </div>
+                    <div class="fleet-controls">
+                        <div class="search-box">
+                            <input type="text" id="normalCustSearch" placeholder="Search by ID, name, phone, license or date..." onkeyup="searchNormalCustomers()">
+                        </div>
+                        <button class="btn-website" onclick="toggleCustomerForm()">+ Add Customer</button>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="table-responsive">
+                        <table class="aura-data-table" id="normalCustTable">
+                            <thead>
+                            <tr>
+                                <th>Customer ID</th>
+                                <th>Registered Date</th>
+                                <th>Customer Name</th>
+                                <th>NIC</th>
+                                <th>Driving License No</th>
+                                <th>Phone Number</th>
+                                <th>Address</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="normalCustTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. RENTALS SECTION -->
+            <div class="fleet-container" id="rentals-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Rentals Management</h2>
+                        <p class="sub-title">Manage active vehicle rentals, agreements, and handovers.</p>
+                    </div>
+                    <div class="fleet-controls">
+                        <div class="search-box">
+                            <input type="text" id="rentalSearch" placeholder="Search rentals by rental ID or Customer ID..." onkeyup="searchRentals()">
+                        </div>
+                        <button class="btn-website" onclick="toggleRentalForm()">+ New Rental</button>
+                    </div>
+                </div>
+
+                <div class="stats-bar">
+                    <div class="stat-box">
+                        <span class="stat-label">ACTIVE RENTALS</span>
+                        <h3 id="activeRentalCount">1</h3>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">COMPLETED</span>
+                        <h3 id="completedRentalCount">0</h3>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">TOTAL RENTALS</span>
+                        <h3 id="totalRentalCount">1</h3>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <button class="filter-btn active" onclick="filterRentals('all', this)">All</button>
+                    <button class="filter-btn" onclick="filterRentals('active', this)">Active</button>
+                    <button class="filter-btn" onclick="filterRentals('completed', this)">Completed</button>
+                    <button class="filter-btn" onclick="filterRentals('cancelled', this)">Cancelled</button>
+                </div>
+
+                <div class="content-card">
+                    <div class="table-responsive">
+                        <table class="aura-data-table" id="rentalTable">
+                            <thead>
+                            <tr>
+                                <th>Rental ID</th>
+                                <th>Customer Name (ID)</th>
+                                <th>Vehicle Name (ID)</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Pickup Address</th>
+                                <th>Delivery Fee</th>
+                                <th>Total Amount</th>
+                                <th>Rental Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="rentalTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. RETURNS SECTION -->
+            <div class="fleet-container" id="returns-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Vehicle Returns Management</h2>
+                        <p class="sub-title">Manage vehicle returns, condition notes, and final payments.</p>
+                    </div>
+                    <div class="fleet-controls">
+                        <div class="search-box">
+                            <input type="text" id="returnSearch" placeholder="Search Returns ID or Rental ID..." onkeyup="searchReturns()">
+                        </div>
+                        <button class="btn-website" onclick="toggleReturnForm()">+ Process Return</button>
+                    </div>
+                </div>
+
+                <div class="stats-bar">
+                    <div class="stat-box">
+                        <span class="stat-label">COMPLETED</span>
+                        <h3 id="completedReturnCount">0</h3>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">OVERDUE-RETURNED</span>
+                        <h3 id="overdueReturnCount">0</h3>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">TOTAL RETURNS</span>
+                        <h3 id="totalReturnCount">0</h3>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <button class="filter-btn active" onclick="filterReturns('all', this)">All</button>
+                    <button class="filter-btn" onclick="filterReturns('completed', this)">Completed</button>
+                    <button class="filter-btn" onclick="filterReturns('overdue-returned', this)">Overdue-Returned</button>
+                </div>
+
+                <div class="content-card">
+                    <div class="table-responsive">
+                        <table class="aura-data-table" id="returnTable">
+                            <thead>
+                            <tr>
+                                <th>Return ID</th>
+                                <th>Rental ID</th>
+                                <th>Return Date</th>
+                                <th>Initial Date</th>
+                                <th>Notes</th>
+                                <th>Extra Charges</th>
+                                <th>Final Amount</th>
+                                <th>Return Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="returnTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. PAYMENTS SECTION -->
+            <div class="fleet-container" id="payments-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Payments Management</h2>
+                        <p class="sub-title">Track all transactions, revenue, and payment details.</p>
+                    </div>
+                    <div class="fleet-controls">
+                        <div class="search-box">
+                            <input type="text" id="paymentSearch" placeholder="Search payments by Rental ID..." onkeyup="searchPayments()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-bar">
+                    <div class="stat-box">
+                        <span class="stat-label">TOTAL REVENUE</span>
+                        <h3 id="totalRevenueCount">LKR 0</h3>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">COMPLETED</span>
+                        <h3 id="completedPaymentCount">0</h3>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">THIS MONTH</span>
+                        <h3 id="thisMonthRevenueCount">LKR 0</h3>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <button class="filter-btn active" onclick="filterPayments('all', this)">All</button>
+                    <button class="filter-btn" onclick="filterPayments('completed', this)">Completed</button>
+                    <button class="filter-btn" onclick="filterPayments('failed', this)">Failed</button>
+                </div>
+
+                <div class="content-card">
+                    <div class="table-responsive">
+                        <table class="aura-data-table" id="paymentTable">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Rental</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody id="paymentTableBody">
+                            <tr id="noPaymentsRow">
+                                <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                                    <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">No payments found</div>
+                                    <div style="font-size: 12px;">No payments recorded yet.</div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. MAINTENANCE SECTION -->
+            <div class="fleet-container" id="maintenance-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Vehicle Maintenance</h2>
+                        <p class="sub-title">Jobs sync vehicle status to Maintenance until completed.</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <form id="maintenanceForm" onsubmit="saveMaintenanceJob(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Vehicle</label>
+                                <select id="maintVehicle" required>
+                                    <option value="">Select vehicle</option>
+                                    <option value="V-001">Wagon R (#V-001)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" id="maintTitle" placeholder="e.g. Oil Change & Brake Check" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Description</label>
+                            <textarea id="maintDescription" rows="3" placeholder="Enter maintenance details..."></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Priority</label>
+                                <select id="maintPriority">
+                                    <option value="Low">Low</option>
+                                    <option value="Medium" selected>Medium</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Initial Status</label>
+                                <select id="maintStatus">
+                                    <option value="pending" selected>Pending</option>
+                                    <option value="in progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Scheduled Date</label>
+                                <input type="date" id="maintDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Cost (LKR)</label>
+                                <input type="number" id="maintCost" placeholder="8500.00">
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Vendor</label>
+                            <input type="text" id="maintVendor" placeholder="e.g. Toyota Service Center">
+                        </div>
+
+                        <button type="submit" class="btn-website" style="margin-top: 10px;">SAVE MAINTENANCE JOB</button>
+                    </form>
+                </div>
+
+                <div class="filter-bar">
+                    <button class="filter-btn active" onclick="filterMaintJobs('all', this)">All</button>
+                    <button class="filter-btn" onclick="filterMaintJobs('pending', this)">Pending</button>
+                    <button class="filter-btn" onclick="filterMaintJobs('in progress', this)">In Progress</button>
+                    <button class="filter-btn" onclick="filterMaintJobs('completed', this)">Completed</button>
+                </div>
+
+                <div class="content-card">
+                    <div class="table-responsive">
+                        <table class="aura-data-table" id="maintenanceTable">
+                            <thead>
+                            <tr>
+                                <th>Vehicle</th>
+                                <th>Title</th>
+                                <th>Scheduled</th>
+                                <th>Cost</th>
+                                <th>Vendor</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="maintenanceTableBody">
+                            <tr>
+                                <td>Wagon R</td>
+                                <td>Oil Change</td>
+                                <td>2026-06-15</td>
+                                <td>Rs. 8,500</td>
+                                <td>Toyota Center</td>
+                                <td><span class="status-badge pending">Pending</span></td>
+                                <td>
+                                    <button class="btn-action accept"><i class="ri-pencil-line"></i></button>
+                                    <button class="btn-action reject"><i class="ri-delete-bin-line"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. SYSTEM SECURITY / SETTINGS SECTION -->
+            <div class="fleet-container" id="settings-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>System & Admin Settings</h2>
+                        <p class="sub-title">Manage your login email, and secure your admin credentials.</p>
+                    </div>
+                </div>
+
+                <div id="dashSettingsAlert" style="display: none;" class="status-badge active"></div>
+
+                <!-- Change Email -->
+                <div class="content-card">
+                    <h3 class="section-title" style="margin-bottom: 6px;">
+                        <i class="ri-mail-line"></i> Change Email
+                    </h3>
+                    <p class="sub-title" style="margin-bottom: 20px;">Update your admin panel login email address.</p>
+
+                    <form id="emailForm" onsubmit="updateAdminEmail(event)" novalidate>
+                        <div class="form-group full-width">
+                            <label>Current Email</label>
+                            <input type="email" id="currentEmail" placeholder="current.admin@gmail.com" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>New Email</label>
+                                <input type="email" id="newEmail" placeholder="new.admin@gmail.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Email</label>
+                                <input type="email" id="confirmEmail" placeholder="new.admin@gmail.com" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-website" style="margin-top: 10px;">Update Email</button>
+                    </form>
+                </div>
+
+                <!-- Change Password -->
+                <div class="content-card">
+                    <h3 class="section-title" style="margin-bottom: 6px;">
+                        <i class="ri-lock-password-line"></i> Change Password
+                    </h3>
+                    <p class="sub-title" style="margin-bottom: 20px;">Provide your email, current password, and new password to update security.</p>
+
+                    <form id="passwordForm" onsubmit="updateAdminPassword(event)" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="passVerifyEmail" placeholder="admin@gmail.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" id="currentPassword" placeholder="••••••••" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" id="newPassword" placeholder="••••••••" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="confirmPassword" placeholder="••••••••" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-website" style="margin-top: 10px;">Update Password</button>
+                    </form>
+                </div>
+
+                <!-- Register Staff / User -->
+                <div class="content-card">
+                    <h3 class="section-title" style="margin-bottom: 6px;">
+                        <i class="ri-user-add-line"></i> Register System User (Admin / Staff)
+                    </h3>
+                    <p class="sub-title" style="margin-bottom: 20px;">Create a new Admin or Staff account with complete details and assign permissions.</p>
+
+                    <form id="registerForm" onsubmit="handleUserRegister(event)" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="regName" placeholder="Yasiru Lakshan" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="text" id="regPhone" placeholder="0712345678" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Email Address</label>
+                            <input type="email" id="regEmail" placeholder="example@gmail.com" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Select Role</label>
+                                <select id="regRole" required onchange="togglePermissions()">
+                                    <option value="">Select Role</option>
+                                    <option value="1">Admin</option>
+                                    <option value="2">Staff</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Account Status</label>
+                                <select id="regStatus" required>
+                                    <option value="">Select Status</option>
+                                    <option value="ACTIVE">Active</option>
+                                    <option value="INACTIVE">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="regPassword" placeholder="••••••••" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" id="regConfirmPassword" placeholder="••••••••" required>
+                            </div>
+                        </div>
+
+                        <div id="staffPermissionsBox" style="display: none; margin-top: 15px; margin-bottom: 20px;">
+                            <label style="font-size: 13px; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 10px;">Allowed Dashboard Sections:</label>
+                            <div class="permissions-grid">
+                                <label><input type="checkbox" name="regSection" value="OVERVIEW"> Overview</label>
+                                <label><input type="checkbox" name="regSection" value="FLEET"> Fleet</label>
+                                <label><input type="checkbox" name="regSection" value="BOOKINGS"> Bookings</label>
+                                <label><input type="checkbox" name="regSection" value="BOOKING_CUSTOMER"> Booking Customer</label>
+                                <label><input type="checkbox" name="regSection" value="CUSTOMER"> Customer</label>
+                                <label><input type="checkbox" name="regSection" value="MAINTENANCE"> Maintenance</label>
+                                <label><input type="checkbox" name="regSection" value="RENTAL"> Rental</label>
+                                <label><input type="checkbox" name="regSection" value="RETURNS"> Returns</label>
+                                <label><input type="checkbox" name="regSection" value="PAYMENT"> Payment</label>
+                                <label><input type="checkbox" name="regSection" value="SETTINGS"> Settings</label>
+                                <label><input type="checkbox" name="regSection" value="REGISTER_CUSTOMER"> Register Customer</label>
+                                <label><input type="checkbox" name="regSection" value="WEBSITE_SETTING"> Website Setting</label>
+                                <label><input type="checkbox" name="regSection" value="LEGAL_AND_FAQ"> Legal and FAQ</label>
+                                <label><input type="checkbox" name="regSection" value="CUSTOMER_REVIEWS"> Customer Reviews</label>
+                                <label><input type="checkbox" name="regSection" value="WEBSITE"> Website</label>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button type="submit" class="btn-website" id="submitBtn" style="flex: 2;">Register Account</button>
+                            <button type="button" class="btn-secondary" onclick="resetRegisterForm()" style="flex: 1;">Clear</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Manage Staff Table -->
+                <div class="content-card">
+                    <h3 class="section-title" style="margin-bottom: 6px;">
+                        <i class="ri-team-line"></i> Manage System Users & Permissions
+                    </h3>
+                    <p class="sub-title" style="margin-bottom: 20px;">View all registered Admin and Staff accounts and their assigned access permissions.</p>
+
+                    <div class="table-responsive">
+                        <table class="aura-data-table" id="staffManageTable">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="staffTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. REGISTER CUSTOMERS SECTION -->
+            <div class="fleet-container" id="register-customers-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Register Customer Details</h2>
+                        <p class="sub-title">Manage Customer Active and Inactive accounts.</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="section-title" style="margin-bottom: 6px;">
+                        <i class="ri-team-line"></i> Register Customers
+                    </h3>
+                    <p class="sub-title" style="margin-bottom: 20px;">View all registered Customer accounts.</p>
+
+                    <div class="table-responsive">
+                        <table class="aura-data-table" id="customerRegisterTable">
+                            <thead>
+                            <tr>
+                                <th>Customer ID</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12. WEBSITE LEGAL & FAQ MANAGEMENT SECTION -->
+            <div class="fleet-container" id="update-tc-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Website Legal & FAQ Management</h2>
+                        <p class="sub-title">Manage terms, privacy policies, and frequently asked questions in one place.</p>
+                    </div>
+
+                    <div class="filter-bar">
+                        <button id="tab-terms-btn" onclick="switchLegalTab('terms')" class="filter-btn active">
+                            Terms & Conditions
+                        </button>
+                        <button id="tab-privacy-btn" onclick="switchLegalTab('privacy')" class="filter-btn">
+                            Privacy Policy
+                        </button>
+                        <button id="tab-faq-btn" onclick="switchLegalTab('faq')" class="filter-btn">
+                            FAQ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Terms Sub-section -->
+                <div id="terms-sub-section">
+                    <div class="legal-grid">
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Terms Item #1</span>
+                                <button id="btn_1" onclick="toggleEdit(1, 'TERMS')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_1" value="Acceptance of Terms" disabled>
+                                <textarea id="content_1" rows="3" disabled>By accessing and using our service, you accept and agree to be bound by the terms and provision of this agreement.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Terms Item #2</span>
+                                <button id="btn_2" onclick="toggleEdit(2, 'TERMS')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_2" value="User Account Security" disabled>
+                                <textarea id="content_2" rows="3" disabled>You are responsible for maintaining the confidentiality of your account login information and password.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Terms Item #3</span>
+                                <button id="btn_3" onclick="toggleEdit(3, 'TERMS')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_3" value="Rental & Booking Rules" disabled>
+                                <textarea id="content_3" rows="3" disabled>All vehicle bookings require proper verification documents including a valid driver's license and national identity card.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Terms Item #4</span>
+                                <button id="btn_4" onclick="toggleEdit(4, 'TERMS')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_4" value="Payment & Deposits" disabled>
+                                <textarea id="content_4" rows="3" disabled>Advance payments and security deposits must be cleared prior to handing over the vehicle.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Terms Item #5</span>
+                                <button id="btn_5" onclick="toggleEdit(5, 'TERMS')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_5" value="Vehicle Condition & Returns" disabled>
+                                <textarea id="content_5" rows="3" disabled>Vehicles must be returned in the same condition as received, on or before the agreed return time.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Terms Item #6</span>
+                                <button id="btn_6" onclick="toggleEdit(6, 'TERMS')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_6" value="Cancellation Policy" disabled>
+                                <textarea id="content_6" rows="3" disabled>Cancellations made within 24 hours of the booking schedule may incur a nominal cancellation fee.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Terms Item #7</span>
+                                <button id="btn_7" onclick="toggleEdit(7, 'TERMS')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_7" value="Limitation of Liability" disabled>
+                                <textarea id="content_7" rows="3" disabled>We are not liable for any indirect or consequential damages arising from the use of our vehicle rental services.</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Privacy Sub-section -->
+                <div id="privacy-sub-section" style="display: none;">
+                    <div class="legal-grid">
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Privacy Item #1</span>
+                                <button id="btn_privacy_1" onclick="toggleEdit(1, 'PRIVACY')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_privacy_1" value="Information We Collect" disabled>
+                                <textarea id="content_privacy_1" rows="3" disabled>We collect personal information such as your name, email, phone number, and driving license details during registration.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Privacy Item #2</span>
+                                <button id="btn_privacy_2" onclick="toggleEdit(2, 'PRIVACY')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_privacy_2" value="How We Use Information" disabled>
+                                <textarea id="content_privacy_2" rows="3" disabled>Your information is used to process bookings, verify customer identities, and provide customer support.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Privacy Item #3</span>
+                                <button id="btn_privacy_3" onclick="toggleEdit(3, 'PRIVACY')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_privacy_3" value="Data Security" disabled>
+                                <textarea id="content_privacy_3" rows="3" disabled>We implement robust security measures to protect your personal information from unauthorized access.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Privacy Item #4</span>
+                                <button id="btn_privacy_4" onclick="toggleEdit(4, 'PRIVACY')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_privacy_4" value="Sharing with Third Parties" disabled>
+                                <textarea id="content_privacy_4" rows="3" disabled>We do not sell or trade your personal data to external parties except when required by law enforcement.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Privacy Item #5</span>
+                                <button id="btn_privacy_5" onclick="toggleEdit(5, 'PRIVACY')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_privacy_5" value="Cookies and Tracking" disabled>
+                                <textarea id="content_privacy_5" rows="3" disabled>Our website uses cookies to improve user experience and analyze web traffic performance.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Privacy Item #6</span>
+                                <button id="btn_privacy_6" onclick="toggleEdit(6, 'PRIVACY')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_privacy_6" value="User Rights" disabled>
+                                <textarea id="content_privacy_6" rows="3" disabled>You have the right to request access to or deletion of your personal data stored in our system.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">Privacy Item #7</span>
+                                <button id="btn_privacy_7" onclick="toggleEdit(7, 'PRIVACY')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_privacy_7" value="Policy Updates" disabled>
+                                <textarea id="content_privacy_7" rows="3" disabled>We reserve the right to modify this privacy policy at any time, with updates posted directly on this page.</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Sub-section -->
+                <div id="faq-sub-section" style="display: none;">
+                    <div class="legal-grid">
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">FAQ Question #1</span>
+                                <button id="btn_faq_1" onclick="toggleEdit(1, 'FAQ')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_faq_1" value="What is Aura Cabs rental service?" disabled>
+                                <textarea id="content_faq_1" rows="3" disabled>Aura Cabs is your trusted self-drive car and vehicle rental partner in Sri Lanka, offering flexible self-drive options for your travel needs.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">FAQ Question #2</span>
+                                <button id="btn_faq_2" onclick="toggleEdit(2, 'FAQ')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_faq_2" value="Do you provide vehicles on a pure self-drive basis?" disabled>
+                                <textarea id="content_faq_2" rows="3" disabled>Yes, we provide fully maintained vehicles on an independent self-drive basis for your convenience.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">FAQ Question #3</span>
+                                <button id="btn_faq_3" onclick="toggleEdit(3, 'FAQ')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_faq_3" value="What are the requirements to rent a self-drive vehicle?" disabled>
+                                <textarea id="content_faq_3" rows="3" disabled>A valid driving license, National Identity Card (NIC) or Passport, and verified utility bills for address confirmation.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">FAQ Question #4</span>
+                                <button id="btn_faq_4" onclick="toggleEdit(4, 'FAQ')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_faq_4" value="What types of vehicles are available in your fleet?" disabled>
+                                <textarea id="content_faq_4" rows="3" disabled>We offer a wide range of vehicles including luxury cars, compact hatchbacks, SUVs, and standard sedans.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">FAQ Question #5</span>
+                                <button id="btn_faq_5" onclick="toggleEdit(5, 'FAQ')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_faq_5" value="How can I book a vehicle with Aura Cabs?" disabled>
+                                <textarea id="content_faq_5" rows="3" disabled>You can easily book online through our website by choosing your preferred vehicle and rental dates.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">FAQ Question #6</span>
+                                <button id="btn_faq_6" onclick="toggleEdit(6, 'FAQ')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_faq_6" value="Are there any mileage limits or extra charges?" disabled>
+                                <textarea id="content_faq_6" rows="3" disabled>Mileage packages depend on your chosen rental plan. Extra charges apply only for additional kilometers exceeded.</textarea>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="legal-card-header">
+                                <span class="legal-card-title">FAQ Question #7</span>
+                                <button id="btn_faq_7" onclick="toggleEdit(7, 'FAQ')" class="btn-primary">Edit</button>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="heading_faq_7" value="Can I get the vehicle delivered to my home or location?" disabled>
+                                <textarea id="content_faq_7" rows="3" disabled>Yes, we offer vehicle delivery and pickup services to your doorstep or any preferred location for an additional fee.</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 13. CUSTOMER REVIEWS SECTION -->
+            <div class="fleet-container" id="customer-reviews-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Customer Reviews Management</h2>
+                        <p class="sub-title">Approve, manage or remove customer testimonials shown on the website.</p>
+                    </div>
+                    <div>
+                        <span class="status-badge completed">Total: 3 Reviews</span>
+                    </div>
+                </div>
+
+                <div class="reviews-grid">
+                    <div class="content-card">
+                        <div class="legal-card-header">
+                            <div class="review-author">
+                                <div class="author-avatar">S</div>
+                                <div>
+                                    <h4 style="font-size: 14px; font-weight: 700; color: var(--text-main);">Sarah Jenkins</h4>
+                                    <span class="sub-title">Tourist from UK • Rating: ⭐⭐⭐⭐⭐ (5/5)</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button onclick="approveReview(1)" id="btn_approve_1" class="status-badge accept" style="cursor: pointer;">Approved</button>
+                                <button onclick="deleteReview(1)" class="btn-danger">Delete</button>
+                            </div>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-muted); font-style: italic; margin-top: 10px;">"Aura Cabs made our Sri Lanka road trip unforgettable. The car handover was smooth, and the vehicle was in pristine condition."</p>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="legal-card-header">
+                            <div class="review-author">
+                                <div class="author-avatar">K</div>
+                                <div>
+                                    <h4 style="font-size: 14px; font-weight: 700; color: var(--text-main);">Kumar Perera</h4>
+                                    <span class="sub-title">Business Traveler • Rating: ⭐⭐⭐⭐⭐ (5/5)</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button onclick="approveReview(2)" id="btn_approve_2" class="status-badge accept" style="cursor: pointer;">Approved</button>
+                                <button onclick="deleteReview(2)" class="btn-danger">Delete</button>
+                            </div>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-muted); font-style: italic; margin-top: 10px;">"I use their corporate self-drive rentals regularly for client visits. The booking process is fast and seamless."</p>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="legal-card-header">
+                            <div class="review-author">
+                                <div class="author-avatar">E</div>
+                                <div>
+                                    <h4 style="font-size: 14px; font-weight: 700; color: var(--text-main);">Elena Rossi</h4>
+                                    <span class="sub-title">Backpacker • Rating: ⭐⭐⭐⭐⭐ (5/5)</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button onclick="approveReview(3)" id="btn_approve_3" class="status-badge pending" style="cursor: pointer;">Pending</button>
+                                <button onclick="deleteReview(3)" class="btn-danger">Delete</button>
+                            </div>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-muted); font-style: italic; margin-top: 10px;">"Great rental rates for self-drive cars. The pickup process was super easy and the car was extremely fuel-efficient."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 14. WEBSITE SETTINGS SECTION -->
+            <div class="fleet-container" id="website-settings-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Website Settings</h2>
+                        <p class="sub-title">Manage your company details, contact information, and social media links displayed across the main website.</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="section-title" style="margin-bottom: 6px;">
+                        <i class="ri-building-line"></i> Company Information
+                    </h3>
+                    <p class="sub-title" style="margin-bottom: 20px;">View or update your company name, main phone number, WhatsApp, email, and address.</p>
+
+                    <form id="websiteSettingsForm" onsubmit="handleWebsiteSettingsAction(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                <input type="text" id="companyName" placeholder="Aura Cabs" disabled required>
+                            </div>
+                            <div class="form-group">
+                                <label>Main Phone Number</label>
+                                <input type="text" id="phoneNumber" placeholder="+94 71 234 5678" disabled required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>WhatsApp Number / Link</label>
+                                <input type="text" id="whatsappNumber" placeholder="+94 71 234 5678" disabled required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="email" placeholder="info@auracabs.com" disabled required>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Company Address</label>
+                            <textarea id="address" rows="3" placeholder="No 123, Main Street, Colombo" disabled required></textarea>
+                        </div>
+
+                        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
+
+                        <h3 class="section-title" style="margin-bottom: 6px;">
+                            <i class="ri-share-line"></i> Social Media Links
+                        </h3>
+                        <p class="sub-title" style="margin-bottom: 20px;">Provide the target URLs for your website social icons.</p>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Facebook Page URL</label>
+                                <input type="url" id="facebookUrl" placeholder="https://facebook.com/yourpage" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Instagram Profile URL</label>
+                                <input type="url" id="instagramUrl" placeholder="https://instagram.com/yourprofile" disabled>
+                            </div>
+                        </div>
+
+                        <button type="button" id="settingsActionBtn" class="btn-website" style="margin-top: 15px;" onclick="toggleEditMode()">Edit Website Settings</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- MODAL 1: VEHICLE MODAL -->
+<div class="modal-overlay" id="vehicleModal">
+    <div class="apple-modal">
+        <div class="modal-header">
+            <div class="mac-controls">
+                <span class="control close" onclick="toggleForm()"></span>
+                <span class="control minimize"></span>
+                <span class="control maximize"></span>
+            </div>
+            <h3 id="modalTitle">Add New Vehicle</h3>
+        </div>
+        <div class="modal-body">
+            <form novalidate id="addVehicleForm">
+                <div class="form-layout" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="upload-section" style="flex: 0 0 180px;">
+                        <div class="form-group">
+                            <label>Vehicle ID</label>
+                            <input type="text" id="vehicleDisplayId" readonly placeholder="Auto-generated (e.g. V-001)">
+                        </div>
+
+                        <div class="image-upload-box" id="uploadBox" style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); background: var(--input-bg); height: 160px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden;">
+                            <span class="upload-icon" id="uploadIcon" style="font-size: 28px; color: var(--primary-blue);">＋</span>
+                            <span class="upload-text" id="uploadText" style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Upload Photo</span>
+                            <img id="imagePreview" src="" alt="Preview" style="display: none; width: 100%; height: 100%; object-fit: contain;">
+                            <input type="file" accept="image/*" id="vehicleImage" onchange="previewImage(this)" style="position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+                        </div>
+                    </div>
+
+                    <div class="fields-section" style="flex: 1; min-width: 280px;">
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--text-main);">
+                                <input type="checkbox" id="isVisibleOnWeb" style="width: auto;"> Show this vehicle on Website Fleet
+                            </label>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Vehicle Name</label>
+                                <input type="text" id="vName" placeholder="e.g. Wagon R" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Web Category</label>
+                                <select id="webCategory">
+                                    <option value="">Select Web Category</option>
+                                    <option value="CAR">Car</option>
+                                    <option value="VAN">Van</option>
+                                    <option value="BUS">Bus</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Plate Number</label>
+                                <input type="text" id="vNumberPlate" placeholder="WP-CAB-1234" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Daily Price (LKR)</label>
+                                <input type="number" id="vPrice" placeholder="6000" min="100" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Insurance No</label>
+                                <input type="text" id="vInsurance" placeholder="INS-987654">
+                            </div>
+                            <div class="form-group">
+                                <label>Revenue License No</label>
+                                <input type="text" id="vLicense" placeholder="LIC-123456">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Seats</label>
+                                <input type="number" id="vSeats" placeholder="4" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Bags</label>
+                                <input type="number" id="vBags" placeholder="2" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Vehicle Category</label>
+                                <select id="vCategory">
+                                    <option value="">Select Category</option>
+                                    <option value="MINI_CAR">Mini Car</option>
+                                    <option value="SEDAN">Sedan</option>
+                                    <option value="SUV">SUV</option>
+                                    <option value="JEEP">Jeep</option>
+                                    <option value="MINI_VAN">Mini Van</option>
+                                    <option value="VAN">Van</option>
+                                    <option value="BUS">Bus</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select id="vStatus">
+                                    <option value="">Select Status</option>
+                                    <option value="AVAILABLE">Available</option>
+                                    <option value="RENTED">Rented</option>
+                                    <option value="MAINTENANCE">Maintenance</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Tag / Class</label>
+                                <select id="vTag">
+                                    <option value="">Select Class</option>
+                                    <option value="BUDGET">Budget</option>
+                                    <option value="PREMIUM">Premium</option>
+                                    <option value="LUXURY">Luxury</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>AC Type</label>
+                                <select id="vAcType">
+                                    <option value="">Select AC Type</option>
+                                    <option value="AC">AC (Air Conditioned)</option>
+                                    <option value="DUAL_AC">Dual-AC</option>
+                                    <option value="NON_AC">Non-AC</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="toggleForm()">Cancel</button>
+                    <button type="submit" class="btn-website">Save Vehicle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL 2: ADD CUSTOMER MODAL -->
+<div class="modal-overlay" id="addCustomerModal">
+    <div class="apple-modal">
+        <div class="modal-header">
+            <div class="mac-controls">
+                <span class="control close" onclick="toggleCustomerForm()"></span>
+                <span class="control minimize"></span>
+                <span class="control maximize"></span>
+            </div>
+            <h3>Add New Customer</h3>
+        </div>
+        <div class="modal-body">
+            <form id="addCustomerForm" onsubmit="saveCustomer(event)" novalidate>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Customer ID</label>
+                        <input type="text" id="customerDisplayId" readonly placeholder="Auto-generated (e.g. BC-001)">
+                    </div>
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input type="text" id="newCustName" placeholder="Enter full name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>NIC</label>
+                        <input type="text" id="newCustNic" placeholder="Enter NIC" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Driving License No</label>
+                        <input type="text" id="newCustLicense" placeholder="Enter license number" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" id="newCustPhone" placeholder="Enter phone number" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="newCustAddress" placeholder="Enter address" required>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="toggleCustomerForm()">Cancel</button>
+                    <button type="submit" class="btn-website">Save Customer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL 3: RENTAL MODAL -->
+<div class="modal-overlay" id="rentalModal">
+    <div class="apple-modal">
+        <div class="modal-header">
+            <div class="mac-controls">
+                <span class="control close" onclick="toggleRentalForm()"></span>
+                <span class="control minimize"></span>
+                <span class="control maximize"></span>
+            </div>
+            <h3>Add New Rental Agreement</h3>
+        </div>
+        <div class="modal-body">
+            <form id="addRentalForm" onsubmit="saveRental(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Rental ID</label>
+                        <input type="text" id="rentalDisplayId" readonly placeholder="Auto-generated (e.g. RNT-001)">
+                    </div>
+                    <div class="form-group">
+                        <label>Customer Name (ID) *</label>
+                        <select id="rentalCustomer" required>
+                            <option value="" disabled selected>Select Customer</option>
+                            <option value="BC-001">Kasun Perera (#BC-001)</option>
+                            <option value="BC-002">Amal Silva (#BC-002)</option>
+                            <option value="BC-003">Nimal Perera (#BC-003)</option>
+                            <option value="BC-004">Chaminda Mendis (#BC-004)</option>
+                            <option value="BC-005">Sunil Hettiarachchi (#BC-005)</option>
+                            <option value="BC-006">Nuwan Gunasekara (#BC-006)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle Name (ID) *</label>
+                        <select id="rentalVehicle" required>
+                            <option value="" disabled selected>Select Vehicle</option>
+                            <option value="V-001">Wagon R (#V-001)</option>
+                            <option value="V-002">Micro Alto (#V-002)</option>
+                            <option value="V-003">Toyota Prius (#V-003)</option>
+                            <option value="V-004">Standard Van - KDH (#V-004)</option>
+                            <option value="V-005">Mini Bus (#V-005)</option>
+                            <option value="V-006">Luxury Coach (#V-006)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date *</label>
+                        <input type="date" id="rentalStartDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>End Date *</label>
+                        <input type="date" id="rentalEndDate" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Delivery Fee (LKR) *</label>
+                        <input type="number" id="rentalDeliveryFee" placeholder="1500" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Amount (LKR) *</label>
+                        <input type="number" id="rentalTotalAmount" placeholder="31500" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Payment Method *</label>
+                        <select id="rentalPaymentMethod" required>
+                            <option value="" disabled selected>Select Payment Method</option>
+                            <option value="Cash" selected>Cash</option>
+                            <option value="Card">Card</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Rental Status *</label>
+                        <select id="rentalStatus" required>
+                            <option value="Active" selected>Active</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Overdue">Overdue</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Pickup Address *</label>
+                    <input type="text" id="rentalPickupAddress" placeholder="e.g. Bandaragama" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="toggleRentalForm()">Cancel</button>
+                    <button type="submit" class="btn-website">Save Rental</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL 4: RETURN MODAL -->
+<div class="modal-overlay" id="returnModal">
+    <div class="apple-modal">
+        <div class="modal-header">
+            <div class="mac-controls">
+                <span class="control close" onclick="toggleReturnForm()"></span>
+                <span class="control minimize"></span>
+                <span class="control maximize"></span>
+            </div>
+            <h3 id="returnModalTitle">Process Vehicle Return</h3>
+        </div>
+        <div class="modal-body">
+            <form id="addReturnForm" onsubmit="saveReturn(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Return ID</label>
+                        <input type="text" id="returnDisplayId" readonly placeholder="Auto-generated (e.g. RET-001)">
+                    </div>
+                    <div class="form-group">
+                        <label>Rental ID *</label>
+                        <select id="returnRentalId" required>
+                            <option value="" disabled selected>Select Rental Agreement</option>
+                            <option value="RNT-001">#RNT-001 (Kasun Perera - Wagon R)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Return Date</label>
+                        <input type="date" id="returnDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Initial Return Date</label>
+                        <input type="date" id="returnInitialDate" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Extra Charges (LKR)</label>
+                        <input type="number" id="returnExtraCharges" placeholder="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Final Total Amount (LKR) *</label>
+                        <input type="number" id="returnFinalAmount" placeholder="31500" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Payment Method *</label>
+                        <select id="returnPaymentMethod" required>
+                            <option value="" disabled selected>Select Payment Method</option>
+                            <option value="Cash" selected>Cash</option>
+                            <option value="Card">Card</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Return Status *</label>
+                        <select id="returnStatus" required>
+                            <option value="Completed" selected>Completed</option>
+                            <option value="Overdue-Returned">Overdue-Returned</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Notes (Damages, Issues or Pickup info)</label>
+                    <input type="text" id="returnNotes" placeholder="e.g. Driver went to customer location and picked up. Minor scratch.">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="toggleReturnForm()">Cancel</button>
+                    <button type="submit" class="btn-website">Save Return</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        if (sidebar) sidebar.classList.toggle('mobile-open');
+        if (overlay) overlay.classList.toggle('mobile-open');
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="Dashboard.js"></script>
+<script src="Vehicle.js"></script>
+<script src="BookingCustomers.js"></script>
+<script src="Bookings.js"></script>
+<script src="Customers.js"></script>
+<script src="RegisterCustomer.js"></script>
+<script src="Rental.js"></script>
+<script src="Return.js"></script>
+<script src="Payment.js"></script>
+<script src="Setting.js"></script>
+<script src="OverView.js"></script>
+</body>
+</html>

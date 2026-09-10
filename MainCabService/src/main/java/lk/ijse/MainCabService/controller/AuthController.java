@@ -43,6 +43,33 @@ public class AuthController {
         }
     }
 
+    @PostMapping(
+            value = "/customer-register",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<CommonResponse> registerCustomer(@Valid @RequestBody CustomerRegisterDTO customerRegisterDTO) {
+        try {
+            authService.registerCustomer(customerRegisterDTO);
+            CommonResponse commonResponse = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    null,
+                    ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(commonResponse, HttpStatus.CREATED
+            );
+
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonResponse> login(@RequestBody AuthRequestDTO authRequestDTO) {
         try {
