@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 @Slf4j
@@ -57,6 +58,10 @@ public class RentalServiceIMPL implements RentalService {
             Vehicle vehicle = vehicleRepository.findById(rentalDTO.getVehicleID())
                     .orElseThrow(() -> new RuntimeException("Vehicle not found with ID: " + rentalDTO.getVehicleID()));
 
+            if (vehicle.getVehicleStatus() != VehicleStatus.AVAILABLE) {
+                throw new RuntimeException("Vehicle #" + vehicle.getVehicleID() + " is not available for rental.");
+            }
+
             VehicleStatus vehicleStatus;
             PaymentStatus paymentStatus;
 
@@ -76,7 +81,7 @@ public class RentalServiceIMPL implements RentalService {
             vehicleRepository.save(vehicle);
             rental.setVehicles(vehicle);
 
-            long days = java.time.temporal.ChronoUnit.DAYS.between(rentalDTO.getStartDate(), rentalDTO.getEndDate());
+            long days = DAYS.between(rentalDTO.getStartDate(), rentalDTO.getEndDate());
             if (days <= 0) {
                 days = 1;
             }
@@ -148,6 +153,10 @@ public class RentalServiceIMPL implements RentalService {
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
         if (oldVehicle != null && oldVehicle.getVehicleID() != vehicle.getVehicleID()) {
+            if (vehicle.getVehicleStatus() != VehicleStatus.AVAILABLE) {
+                throw new RuntimeException("Selected vehicle #" + vehicle.getVehicleID() + " is not available."
+                );
+            }
             oldVehicle.setVehicleStatus(VehicleStatus.AVAILABLE);
             vehicleRepository.save(oldVehicle);
         }
@@ -171,7 +180,7 @@ public class RentalServiceIMPL implements RentalService {
         vehicleRepository.save(vehicle);
         rental.setVehicles(vehicle);
 
-        long days = java.time.temporal.ChronoUnit.DAYS.between(rentalDTO.getStartDate(), rentalDTO.getEndDate());
+        long days = DAYS.between(rentalDTO.getStartDate(), rentalDTO.getEndDate());
         if (days <= 0) {
             days = 1;
         }

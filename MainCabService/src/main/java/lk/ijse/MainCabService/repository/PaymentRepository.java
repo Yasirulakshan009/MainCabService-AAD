@@ -1,6 +1,7 @@
 package lk.ijse.MainCabService.repository;
 
 import lk.ijse.MainCabService.entity.Payment;
+import lk.ijse.MainCabService.enumeratios.PaymentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,6 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     Optional<Payment> findByRental_RentalID(Long rentalID);
 
     void deleteByRental_RentalID(Long rentalID);
+
+    long countByPaymentStatus(PaymentStatus status);
 }

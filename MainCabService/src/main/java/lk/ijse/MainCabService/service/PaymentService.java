@@ -17,6 +17,8 @@ public interface PaymentService {
 
     List<PaymentDTO> getPaymentsByStatus(PaymentStatus status);
 
+    long getPaymentCountByStatus(PaymentStatus status);
+
     List<PaymentDTO> searchPayments(String keyword);
 
     double getTotalRevenue();

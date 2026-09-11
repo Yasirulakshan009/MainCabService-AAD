@@ -234,7 +234,7 @@ function deleteMaintenanceData(id) {
 }
 
 function filterMaintJobs(status, buttonElement) {
-    $('.filter-btn').removeClass('active');
+    $('#maintenance-section .filter-btn').removeClass('active');
     if (buttonElement) $(buttonElement).addClass('active');
 
     if (!status || status.toLowerCase() === 'all') {

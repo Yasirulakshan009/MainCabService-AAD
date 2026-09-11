@@ -593,7 +593,7 @@
                 </div>
 
                 <div class="content-card">
-                    <form id="maintenanceForm" onsubmit="saveMaintenanceJob(event)">
+                    <form id="maintenanceForm" onsubmit="saveMaintenanceJob(event)" novalidate>
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Vehicle</label>
@@ -1475,7 +1475,7 @@
             <h3>Add New Rental Agreement</h3>
         </div>
         <div class="modal-body">
-            <form id="addRentalForm" onsubmit="saveRental(event)">
+            <form id="addRentalForm" onsubmit="saveRental(event)" novalidate>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Rental ID</label>
@@ -1509,7 +1509,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Delivery Fee (LKR) *</label>
-                        <input type="number" id="rentalDeliveryFee" placeholder="1500" min="0" required>
+                        <input type="number" id="rentalDeliveryFee" placeholder="1500" min="0">
                     </div>
                     <div class="form-group">
                         <label>Total Amount (LKR)</label>
@@ -1539,7 +1539,7 @@
 
                 <div class="form-group full-width">
                     <label>Pickup Address *</label>
-                    <input type="text" id="rentalPickupAddress" placeholder="e.g. Bandaragama" required>
+                    <input type="text" id="rentalPickupAddress" placeholder="e.g. Bandaragama">
                 </div>
 
                 <div class="modal-actions">
@@ -1563,7 +1563,7 @@
             <h3 id="returnModalTitle">Process Vehicle Return</h3>
         </div>
         <div class="modal-body">
-            <form id="addReturnForm" onsubmit="saveReturn(event)">
+            <form id="addReturnForm" onsubmit="saveReturn(event)" novalidate>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Return ID</label>
@@ -1573,7 +1573,6 @@
                         <label>Rental ID *</label>
                         <select id="returnRentalId" required>
                             <option value="" disabled selected>Select Rental Agreement</option>
-                            <option value="RNT-001">#RNT-001 (Kasun Perera - Wagon R)</option>
                         </select>
                     </div>
                 </div>
@@ -1604,17 +1603,17 @@
                     <div class="form-group">
                         <label>Payment Method *</label>
                         <select id="returnPaymentMethod" required>
-                            <option value="" disabled selected>Select Payment Method</option>
-                            <option value="Cash" selected>Cash</option>
-                            <option value="Card">Card</option>
-                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="" disabled>Select Payment Method</option>
+                            <option value="CASH" selected>Cash</option>
+                            <option value="CARD">Card</option>
+                            <option value="BANK_TRANSFER">Bank Transfer</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Return Status *</label>
                         <select id="returnStatus" required>
-                            <option value="Completed" selected>Completed</option>
-                            <option value="Overdue-Returned">Overdue-Returned</option>
+                            <option value="COMPLETED" selected>Completed</option>
+                            <option value="OVERDUE_RETURNED">Overdue Returned</option>
                         </select>
                     </div>
                 </div>

@@ -177,7 +177,7 @@ function updateBookingStats(bookings) {
 
 function filterBookings(status, button) {
 
-    document.querySelectorAll(".filter-btn").forEach(btn => {
+    document.querySelectorAll("#bookings-section .filter-btn").forEach(btn => {
         btn.classList.remove("active");
     });
 

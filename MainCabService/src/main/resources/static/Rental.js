@@ -182,9 +182,10 @@ function saveRental(event) {
                 toast: true,
                 position: "top-end",
                 icon: "success",
-                title: response.message || (isUpdate ? "Rental updated successfully!" : "Rental saved successfully!"),
+                title: response.message || "Rental saved successfully!",
                 showConfirmButton: false,
-                timer: 2500
+                timer: 3000,
+                timerProgressBar: true
             });
 
             toggleRentalForm();
@@ -194,26 +195,42 @@ function saveRental(event) {
             if (typeof loadAllVehiclesFromBackend === "function") {
                 loadAllVehiclesFromBackend();
             }
-
             if (typeof loadVehicleCountsFromBackend === "function") {
                 loadVehicleCountsFromBackend();
             }
+            if (typeof loadAllPaymentsFromBackend === "function") {
+                loadAllPaymentsFromBackend();
+            }
+            if (typeof loadRevenueStatsFromBackend === "function") {
+                loadRevenueStatsFromBackend();
+            }
+            if (typeof loadCompletedPaymentCountFromBackend === "function") {
+                loadCompletedPaymentCountFromBackend();
+            }
         },
         error: function (xhr) {
-            console.error("Rental save error:", xhr);
-            let message = "Unable to save rental.";
-            if (xhr.responseJSON) {
-                message = xhr.responseJSON.message || message;
+            const errObj = xhr.responseJSON;
+            let errorText = "Something went wrong";
+
+            if (errObj) {
+                if (errObj.body && typeof errObj.body === "object" && !Array.isArray(errObj.body)) {
+                    errorText = Object.values(errObj.body).join("\n");
+                } else {
+                    errorText = errObj.message;
+                }
             }
+
             Swal.fire({
                 icon: "error",
-                title: "Rental Failed",
-                text: message
+                title: "Save Failed",
+                text: errorText,
+                confirmButtonColor: "#ff4d4d"
             });
+
+            console.error("Save error: ", xhr);
         }
     });
 }
-
 function loadAllRentalsFromBackend() {
     $.ajax({
         url: RENTAL_API_URL,
@@ -354,6 +371,18 @@ function deleteRental(id) {
                 if (typeof loadVehicleCountsFromBackend === "function") {
                     loadVehicleCountsFromBackend();
                 }
+
+                if (typeof loadAllPaymentsFromBackend === "function") {
+                    loadAllPaymentsFromBackend();
+                }
+
+                if (typeof loadRevenueStatsFromBackend === "function") {
+                    loadRevenueStatsFromBackend();
+                }
+
+                if (typeof loadCompletedPaymentCountFromBackend === "function") {
+                    loadCompletedPaymentCountFromBackend();
+                }
             },
             error: function (xhr) {
                 console.error("Delete rental error:", xhr);
@@ -390,7 +419,7 @@ function searchRentals() {
 }
 
 function filterRentals(status, button) {
-    $(".filter-btn").removeClass("active");
+    $("#rentals-section .filter-btn").removeClass("active");
 
     if (button) {
         $(button).addClass("active");

@@ -92,7 +92,8 @@ function loadFleetToGrid(vehicleList) {
 
         const cardHTML = `
             <div class="vehicle-admin-card" data-status="${statusClass}" data-id="${vehicle.vehicleID}">
-                
+
+                <span class="card-id-badge">#V-${vehicle.vehicleID}</span>
                 <span class="badge-tag">${vehicle.tagClass || 'PREMIUM'}</span>
 
                 <div class="card-top-section">
@@ -400,7 +401,7 @@ function searchVehicles() {
 }
 
 function filterVehicles(status, buttonElement) {
-    $('.filter-btn').removeClass('active');
+    $('#fleet-section .filter-btn').removeClass('active');
     $(buttonElement).addClass('active');
 
     let headers = { "Authorization": "Bearer " + localStorage.getItem("jwtToken") };

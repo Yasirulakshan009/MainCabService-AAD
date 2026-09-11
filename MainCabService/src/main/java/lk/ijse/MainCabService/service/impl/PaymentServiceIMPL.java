@@ -179,6 +179,17 @@ public class PaymentServiceIMPL implements PaymentService {
     }
 
     @Override
+    public long getPaymentCountByStatus(PaymentStatus status) {
+        log.info("Getting payment count by status: " + status);
+        try {
+            return paymentRepository.countByPaymentStatus(status);
+        } catch (Exception e) {
+            log.error("Error in getPaymentCountByStatus(): " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public List<PaymentDTO> searchPayments(String keyword) {
         log.info("Searching payments with keyword: " + keyword);
         try {

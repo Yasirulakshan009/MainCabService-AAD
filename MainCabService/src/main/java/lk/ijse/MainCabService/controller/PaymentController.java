@@ -5,6 +5,7 @@ import lk.ijse.MainCabService.constants.CommonResponse;
 import lk.ijse.MainCabService.constants.ResponseCode;
 import lk.ijse.MainCabService.constants.ResponseMessage;
 import lk.ijse.MainCabService.dto.PaymentDTO;
+import lk.ijse.MainCabService.enumeratios.PaymentStatus;
 import lk.ijse.MainCabService.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -49,6 +50,46 @@ public class PaymentController {
             CommonResponse commonResponse = new CommonResponse(
                     ResponseCode.OPERATION_SUCCESS,
                     paymentDTOList,
+                    ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(commonResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonResponse> getPaymentsByStatus(@PathVariable PaymentStatus status) {
+        try {
+            List<PaymentDTO> paymentDTOList = paymentService.getPaymentsByStatus(status);
+            CommonResponse commonResponse = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    paymentDTOList,
+                    ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(commonResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/count/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonResponse> getPaymentCountByStatus(@PathVariable PaymentStatus status) {
+        try {
+            long count = paymentService.getPaymentCountByStatus(status);
+            CommonResponse commonResponse = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    count,
                     ResponseMessage.SUCCESS_MESSAGE
             );
             return new ResponseEntity<>(commonResponse, HttpStatus.OK);

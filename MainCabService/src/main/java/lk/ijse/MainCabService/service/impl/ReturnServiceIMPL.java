@@ -156,6 +156,8 @@ public class ReturnServiceIMPL implements ReturnService {
                 Vehicle vehicle = rental.getVehicles();
                 vehicle.setVehicleStatus(VehicleStatus.RENTED);
                 vehicleRepository.save(vehicle);
+                rental.setRentalStatus(RentalStatus.ACTIVE);
+                rentalRepository.save(rental);
             }
 
             returnRepository.deleteById(id);
@@ -246,7 +248,7 @@ public class ReturnServiceIMPL implements ReturnService {
             Long rentalId = Long.parseLong(keyword);
 
             List<Return> returns = returnRepository.findByReturnIDOrRentalID(rentalId);
-            
+
             for (Return returnVehicle : returns) {
                 ReturnDTO dto = new ReturnDTO();
                 dto.setReturnID(returnVehicle.getReturnID());

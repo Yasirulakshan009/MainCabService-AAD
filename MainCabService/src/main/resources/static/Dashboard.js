@@ -35,6 +35,28 @@ function showSection(sectionName, element) {
     const menuItems = document.querySelectorAll('.sidebar-menu-scrollable .menu-item, .menu-group .menu-item');
     menuItems.forEach(item => item.classList.remove('active'));
     element.classList.add('active');
+
+    resetSectionFilterToAll(sectionName);
+}
+
+function resetSectionFilterToAll(sectionName) {
+    const filterableSections = {
+        'fleet': 'fleet-section',
+        'bookings': 'bookings-section',
+        'rentals': 'rentals-section',
+        'returns': 'returns-section',
+        'payments': 'payments-section',
+        'maintenance': 'maintenance-section'
+    };
+
+    const sectionId = filterableSections[sectionName];
+    if (!sectionId) return;
+
+    const sectionEl = document.getElementById(sectionId);
+    if (!sectionEl) return;
+
+    const allButton = sectionEl.querySelector('.filter-bar .filter-btn');
+    if (allButton) allButton.click();
 }
 
 const themeToggleBtn = document.querySelector('.btn-theme-switch');
