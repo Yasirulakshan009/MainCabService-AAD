@@ -1,9 +1,12 @@
 package lk.ijse.MainCabService.config;
 
+import lk.ijse.MainCabService.entity.PaymentMethod;
 import lk.ijse.MainCabService.entity.VehicleCategory;
 import lk.ijse.MainCabService.entity.UserRole;
 import lk.ijse.MainCabService.enumeratios.Category;
+import lk.ijse.MainCabService.enumeratios.Method;
 import lk.ijse.MainCabService.enumeratios.Role;
+import lk.ijse.MainCabService.repository.PaymentMethodRepository;
 import lk.ijse.MainCabService.repository.UserRoleRepository;
 import lk.ijse.MainCabService.repository.VehicleCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,9 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private UserRoleRepository roleRepository;
+
+    @Autowired
+    private PaymentMethodRepository paymentMethodRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -41,6 +47,16 @@ public class DataInitializer implements CommandLineRunner {
             }
         }
         System.out.println("✅ User Roles initialized successfully!");
+
+        for (Method m : Method.values()) {
+            PaymentMethod existing = paymentMethodRepository.findByPaymentMethod(m);
+            if (existing == null) {
+                PaymentMethod paymentMethod = new PaymentMethod();
+                paymentMethod.setPaymentMethod(m);
+                paymentMethodRepository.save(paymentMethod);
+            }
+        }
+        System.out.println("✅ Payment Methods initialized successfully!");
 
     }
 }

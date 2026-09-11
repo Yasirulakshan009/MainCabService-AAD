@@ -142,8 +142,15 @@ public class RentalServiceIMPL implements RentalService {
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
         rental.setCustomer(customer);
 
+        Vehicle oldVehicle = rental.getVehicles();
+
         Vehicle vehicle = vehicleRepository.findById(rentalDTO.getVehicleID())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        if (oldVehicle != null && oldVehicle.getVehicleID() != vehicle.getVehicleID()) {
+            oldVehicle.setVehicleStatus(VehicleStatus.AVAILABLE);
+            vehicleRepository.save(oldVehicle);
+        }
 
         VehicleStatus vehicleStatus;
         PaymentStatus paymentStatus;

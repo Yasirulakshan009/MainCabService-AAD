@@ -417,15 +417,19 @@
                 <div class="stats-bar">
                     <div class="stat-box">
                         <span class="stat-label">ACTIVE RENTALS</span>
-                        <h3 id="activeRentalCount">1</h3>
+                        <h3 id="activeRentalCount">0</h3>
                     </div>
                     <div class="stat-box">
                         <span class="stat-label">COMPLETED</span>
                         <h3 id="completedRentalCount">0</h3>
                     </div>
                     <div class="stat-box">
+                        <span class="stat-label">CANCELLED</span>
+                        <h3 id="cancelledRentalCount">0</h3>
+                    </div>
+                    <div class="stat-box">
                         <span class="stat-label">TOTAL RENTALS</span>
-                        <h3 id="totalRentalCount">1</h3>
+                        <h3 id="totalRentalCount">0</h3>
                     </div>
                 </div>
 
@@ -1481,24 +1485,12 @@
                         <label>Customer Name (ID) *</label>
                         <select id="rentalCustomer" required>
                             <option value="" disabled selected>Select Customer</option>
-                            <option value="BC-001">Kasun Perera (#BC-001)</option>
-                            <option value="BC-002">Amal Silva (#BC-002)</option>
-                            <option value="BC-003">Nimal Perera (#BC-003)</option>
-                            <option value="BC-004">Chaminda Mendis (#BC-004)</option>
-                            <option value="BC-005">Sunil Hettiarachchi (#BC-005)</option>
-                            <option value="BC-006">Nuwan Gunasekara (#BC-006)</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Vehicle Name (ID) *</label>
                         <select id="rentalVehicle" required>
                             <option value="" disabled selected>Select Vehicle</option>
-                            <option value="V-001">Wagon R (#V-001)</option>
-                            <option value="V-002">Micro Alto (#V-002)</option>
-                            <option value="V-003">Toyota Prius (#V-003)</option>
-                            <option value="V-004">Standard Van - KDH (#V-004)</option>
-                            <option value="V-005">Mini Bus (#V-005)</option>
-                            <option value="V-006">Luxury Coach (#V-006)</option>
                         </select>
                     </div>
                 </div>
@@ -1520,8 +1512,8 @@
                         <input type="number" id="rentalDeliveryFee" placeholder="1500" min="0" required>
                     </div>
                     <div class="form-group">
-                        <label>Total Amount (LKR) *</label>
-                        <input type="number" id="rentalTotalAmount" placeholder="31500" min="0" required>
+                        <label>Total Amount (LKR)</label>
+                        <input type="number" id="rentalTotalAmount" placeholder="0.00" min="0" readonly>
                     </div>
                 </div>
 
@@ -1530,19 +1522,17 @@
                         <label>Payment Method *</label>
                         <select id="rentalPaymentMethod" required>
                             <option value="" disabled selected>Select Payment Method</option>
-                            <option value="Cash" selected>Cash</option>
-                            <option value="Card">Card</option>
-                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="CASH">Cash</option>
+                            <option value="CARD">Card</option>
+                            <option value="BANK_TRANSFER">Bank Transfer</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Rental Status *</label>
                         <select id="rentalStatus" required>
-                            <option value="Active" selected>Active</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Overdue">Overdue</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Pending">Pending</option>
+                            <option value="ACTIVE" selected>Active</option>
+                            <option value="COMPLETED">Completed</option>
+                            <option value="CANCELLED">Cancelled</option>
                         </select>
                     </div>
                 </div>
@@ -1653,7 +1643,6 @@
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="Dashboard.js"></script>
 <script src="LegalFaq.js"></script>
