@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class MaintenanceDTO {
 
-    private long maintenanceID;
+    private Long maintenanceID;
 
     @NotNull(message = "Vehicle ID cannot be null!")
     private Long vehicleID;

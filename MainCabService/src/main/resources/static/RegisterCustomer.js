@@ -90,15 +90,11 @@ function displayRegisteredCustomers(customers) {
 
         if (status === "ACTIVE") {
             statusBadge = `
-                <span class="badge bg-success">
-                    Active
-                </span>
+                <span style="color: green; font-weight: bold;">Active</span>
             `;
         } else {
             statusBadge = `
-                <span class="badge bg-danger">
-                    Inactive
-                </span>
+                <span style="color: red; font-weight: bold;">Inactive</span>
             `;
         }
 
@@ -106,20 +102,20 @@ function displayRegisteredCustomers(customers) {
 
         if (status === "ACTIVE") {
             actionButton = `
-                <button
-                    class="btn btn-sm btn-danger"
-                    onclick="changeCustomerStatus(${userId}, 'INACTIVE')">
-                    Make Inactive
-                </button>
-            `;
+                            <button
+                                style="padding: 5px 10px; background-color: #ff4d4d; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                                onclick="changeCustomerStatus(${userId}, 'INACTIVE')">
+                                Make Inactive
+                            </button>
+                        `;
         } else {
             actionButton = `
-                <button
-                    class="btn btn-sm btn-success"
-                    onclick="changeCustomerStatus(${userId}, 'ACTIVE')">
-                    Make Active
-                </button>
-            `;
+                            <button
+                                style="padding: 5px 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                                onclick="changeCustomerStatus(${userId}, 'ACTIVE')">
+                                Make Active
+                            </button>
+                        `;
         }
 
         const row = `

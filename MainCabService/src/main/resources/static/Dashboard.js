@@ -60,64 +60,6 @@ function openWebsite() {
     localStorage.setItem('isAdminSession', 'true');
 }
 
-function switchLegalTab(type) {
-    const termsSub = document.getElementById('terms-sub-section');
-    const privacySub = document.getElementById('privacy-sub-section');
-    const faqSub = document.getElementById('faq-sub-section');
-
-    const termsBtn = document.getElementById('tab-terms-btn');
-    const privacyBtn = document.getElementById('tab-privacy-btn');
-    const faqBtn = document.getElementById('tab-faq-btn');
-
-    termsSub.style.display = (type === 'terms') ? 'block' : 'none';
-    privacySub.style.display = (type === 'privacy') ? 'block' : 'none';
-    faqSub.style.display = (type === 'faq') ? 'block' : 'none';
-
-    termsBtn.style.background = (type === 'terms') ? '#3b82f6' : 'transparent';
-    termsBtn.style.color = (type === 'terms') ? 'white' : '#94a3b8';
-
-    privacyBtn.style.background = (type === 'privacy') ? '#3b82f6' : 'transparent';
-    privacyBtn.style.color = (type === 'privacy') ? 'white' : '#94a3b8';
-
-    faqBtn.style.background = (type === 'faq') ? '#3b82f6' : 'transparent';
-    faqBtn.style.color = (type === 'faq') ? 'white' : '#94a3b8';
-}
-
-function toggleEdit(id, type) {
-    let headingInput, contentTextarea, editBtn;
-
-    if (type === 'TERMS') {
-        headingInput = document.getElementById(`heading_${id}`);
-        contentTextarea = document.getElementById(`content_${id}`);
-        editBtn = document.getElementById(`btn_${id}`);
-    } else if (type === 'PRIVACY') {
-        headingInput = document.getElementById(`heading_privacy_${id}`);
-        contentTextarea = document.getElementById(`content_privacy_${id}`);
-        editBtn = document.getElementById(`btn_privacy_${id}`);
-    } else if (type === 'FAQ') {
-        headingInput = document.getElementById(`heading_faq_${id}`);
-        contentTextarea = document.getElementById(`content_faq_${id}`);
-        editBtn = document.getElementById(`btn_faq_${id}`);
-    }
-
-    if (headingInput.disabled) {
-        headingInput.disabled = false;
-        contentTextarea.disabled = false;
-        headingInput.focus();
-
-        editBtn.innerText = 'Save';
-        editBtn.style.background = '#10b981';
-    } else {
-        headingInput.disabled = true;
-        contentTextarea.disabled = true;
-
-        editBtn.innerText = 'Edit';
-        editBtn.style.background = '#3b82f6';
-
-        console.log(`Item ${id} (${type}) saved successfully!`);
-    }
-}
-
 function approveReview(id) {
     const btn = document.getElementById(`btn_approve_${id}`);
     if (btn.innerText === 'Pending' || btn.innerText === 'Approve') {
@@ -144,7 +86,7 @@ function toggleEditMode() {
     const actionBtn = document.getElementById('settingsActionBtn');
 
     if (!isEditing) {
-        inputs.forEach(input => input.removeAttribute('disabled')); 
+        inputs.forEach(input => input.removeAttribute('disabled'));
         actionBtn.innerText = "Save Changes";
         actionBtn.style.background = "linear-gradient(135deg, #00c853, #b9f6ca)";
         actionBtn.style.color = "#000";

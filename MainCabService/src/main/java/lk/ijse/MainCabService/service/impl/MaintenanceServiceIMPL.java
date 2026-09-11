@@ -50,7 +50,7 @@ public class MaintenanceServiceIMPL implements MaintenanceService {
             if (status == MaintenanceStatus.IN_PROGRESS) {
                 vehicle.setVehicleStatus(VehicleStatus.MAINTENANCE);
                 vehicleRepository.save(vehicle);
-            } else if (status == MaintenanceStatus.COMPLETED) {
+            } else if (status == MaintenanceStatus.COMPLETED || status == MaintenanceStatus.PENDING) {
                 vehicle.setVehicleStatus(VehicleStatus.AVAILABLE);
                 vehicleRepository.save(vehicle);
             }
@@ -95,7 +95,7 @@ public class MaintenanceServiceIMPL implements MaintenanceService {
             if (newStatus == MaintenanceStatus.IN_PROGRESS) {
                 vehicle.setVehicleStatus(VehicleStatus.MAINTENANCE);
                 vehicleRepository.save(vehicle);
-            } else if (newStatus == MaintenanceStatus.COMPLETED) {
+            } else if (newStatus == MaintenanceStatus.COMPLETED || newStatus == MaintenanceStatus.PENDING) {
                 vehicle.setVehicleStatus(VehicleStatus.AVAILABLE);
                 vehicleRepository.save(vehicle);
             }
