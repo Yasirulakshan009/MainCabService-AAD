@@ -164,8 +164,15 @@ function renderServiceVehicleCards(vehicles) {
 }
 
 function bookServiceVehicle(vehicleId) {
-    console.log("Booking vehicle:", vehicleId);
-    window.location.href = `Booking.html?vehicleId=${vehicleId}`;
+    const token = localStorage.getItem("jwtToken");
+    const role = localStorage.getItem("userRole");
+    const bookingTarget = `Booking.html?vehicleId=${vehicleId}`;
+
+    if (token && role === "CUSTOMER") {
+        window.location.href = bookingTarget;
+    } else {
+        window.location.href = "SignIn.html?redirect=" + encodeURIComponent(bookingTarget);
+    }
 }
 
 $(document).ready(function() {

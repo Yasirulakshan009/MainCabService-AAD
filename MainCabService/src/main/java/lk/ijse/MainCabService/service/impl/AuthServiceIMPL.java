@@ -161,6 +161,26 @@ public class AuthServiceIMPL implements AuthService {
     }
 
     @Override
+    public UserDTO getCurrentUser() {
+        String currentUserEmail = org.springframework.security.core.context.SecurityContextHolder
+                .getContext().getAuthentication().getName();
+
+        User user = userRepository.findByUserEmail(currentUserEmail)
+                .orElseThrow(() -> new RuntimeException("Logged-in user not found!"));
+
+        UserDTO dto = new UserDTO();
+        dto.setUserID(user.getUserID());
+        dto.setUserName(user.getUserName());
+        dto.setUserEmail(user.getUserEmail());
+        dto.setPhone(user.getPhone());
+        dto.setStatus(user.getStatus());
+        dto.setUserRole(user.getUserRole());
+        dto.setPermissions(user.getPermissions());
+
+        return dto;
+    }
+
+    @Override
     public void updateUserStatus(Long id, UserStatus status) {
         String currentUserEmail = org.springframework.security.core.context.SecurityContextHolder
                 .getContext().getAuthentication().getName();

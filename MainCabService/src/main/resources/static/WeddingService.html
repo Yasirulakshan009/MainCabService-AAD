@@ -12,7 +12,6 @@
 
 </head>
 <body>
-
 <section>
   <nav class="nav">
 
@@ -69,7 +68,19 @@
         Book Now
       </a>
 
-      <a href="SignIn.html" class="signin-link web-dashboard-btn">Sign In</a>
+      <div class="nav-auth-status" id="navAuthStatus">
+        <a href="SignIn.html" class="signin-link web-dashboard-btn" id="signInLink">Sign In</a>
+
+        <div class="customer-avatar-wrapper" id="customerAvatarWrapper" style="display:none; position:relative;">
+          <button type="button" id="customerAvatarBtn" class="web-dashboard-btn" title="My Account" style="width:38px; height:38px; border-radius:50%; color:#fff;  font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;">A</button>
+
+          <div id="customerAvatarDropdown" style="display:none; position:absolute; top:48px; right:0; background:#fff; color:#111; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.18); min-width:220px; padding:14px; z-index:999;">
+            <div id="customerAvatarName" style="font-weight:700; margin-bottom:2px;">Customer Name</div>
+            <div id="customerAvatarEmail" style="font-size:13px; color:#666; margin-bottom:12px; word-break:break-all;">email.com</div>
+            <button type="button" onclick="logoutCustomer()" style="width:100%; padding:9px; border:none; border-radius:6px; background:#dc3545; color:#fff; font-weight:600; cursor:pointer;">Log out</button>
+          </div>
+        </div>
+      </div>
 
     </div>
   </nav>
@@ -278,7 +289,7 @@
 </section>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script src="service-fleet.js"></script>
+<script src="ServiceFleet.js"></script>
 <script src="BookingAuth.js"></script>
 <script src="SiteSettings.js"></script>
 <script src="MainJs.js"></script>

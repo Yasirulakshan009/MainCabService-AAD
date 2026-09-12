@@ -1,5 +1,6 @@
 let currentStep = 1;
 const totalSteps = 4;
+let preselectVehicleId = null;
 
 const API_BASE_URL = "http://localhost:8080";
 
@@ -94,6 +95,10 @@ function nextStep() {
         return;
     }
 
+    if (!validateCurrentStep()) {
+        return;
+    }
+
     currentStep++;
 
     if (currentStep === 3) {
@@ -101,6 +106,30 @@ function nextStep() {
     }
 
     showStep(currentStep);
+}
+
+function validateCurrentStep() {
+    const activeStepEl = document.querySelector(`.form-step[data-content="${currentStep}"]`);
+
+    if (!activeStepEl) {
+        return true;
+    }
+
+    const requiredFields = activeStepEl.querySelectorAll("[required]");
+
+    for (const field of requiredFields) {
+        if (!field.value || !field.value.trim()) {
+            Swal.fire({
+                icon: "warning",
+                title: "Missing Information",
+                text: "Please fill in all required fields before continuing."
+            });
+            field.focus();
+            return false;
+        }
+    }
+
+    return true;
 }
 
 function prevStep() {
@@ -246,15 +275,19 @@ function loadVehiclesByWebCategory() {
                 const acStatus = vehicle.acStatus ?? vehicle.acType ?? vehicle.ac ?? "N/A";
                 const price = vehicle.dailyPrice ?? vehicle.price ?? 0;
 
+                const shouldPreselect = preselectVehicleId
+                    ? String(vehicleId) === String(preselectVehicleId)
+                    : index === 0;
+
                 const card = document.createElement("label");
                 card.className = "model-card";
 
-                if (index === 0) {
+                if (shouldPreselect) {
                     card.classList.add("selected-model");
                 }
 
                 card.innerHTML = `
-                    <input type="radio" name="specific_vehicle" value="${vehicleId}" ${index === 0 ? "checked" : ""}>
+                    <input type="radio" name="specific_vehicle" value="${vehicleId}" ${shouldPreselect ? "checked" : ""}>
                     <div class="vehicle-info">
                         <h4>${vehicleName}</h4>
                         <span class="vehicle-category">${vehicleCategory}</span>
@@ -281,6 +314,8 @@ function loadVehiclesByWebCategory() {
 
                 container.appendChild(card);
             });
+            
+            preselectVehicleId = null;
         },
         error: function(xhr, status, error) {
             console.error("Vehicle AJAX Error:", error);
@@ -455,8 +490,52 @@ document.getElementById("booking-form")?.addEventListener("submit", function(eve
     });
 });
 
+function preselectVehicleFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const vehicleId = params.get("vehicleId");
+
+    if (!vehicleId) {
+        return;
+    }
+
+    $.ajax({
+        url: `${API_BASE_URL}/v1/vehicles/${vehicleId}`,
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwtToken")
+        },
+        success: function (response) {
+            const vehicle = response.body || response;
+
+            if (!vehicle || !vehicle.webCategory) {
+                return;
+            }
+
+            const categoryMap = { CAR: "car", VAN: "van", BUS: "bus" };
+            const type = categoryMap[String(vehicle.webCategory).toUpperCase()] || "car";
+
+            const typeRadio = document.querySelector(`input[name="vehicle_type"][value="${type}"]`);
+            if (typeRadio) {
+                typeRadio.checked = true;
+
+                const typeCard = typeRadio.closest(".vertical-card");
+                if (typeCard) {
+                    document.querySelectorAll(".vertical-card").forEach(c => c.classList.remove("selected"));
+                    typeCard.classList.add("selected");
+                }
+            }
+
+            preselectVehicleId = vehicleId;
+        },
+        error: function (xhr) {
+            console.error("Could not preselect vehicle from URL:", xhr);
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     currentStep = 1;
     showStep(currentStep);
     loadLoggedInCustomerInformation();
+    preselectVehicleFromUrl();
 });

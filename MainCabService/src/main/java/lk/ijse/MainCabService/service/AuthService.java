@@ -12,6 +12,7 @@ public interface AuthService {
     AuthResponseDTO authenticate(AuthRequestDTO authRequestDTO);
     List<UserDTO> getAllUsers();
     List<UserDTO> getCustomersOnly();
+    UserDTO getCurrentUser();
     void updateUserStatus(Long id, UserStatus status);
     void updateNameAndPhone(Long id, UserDTO userDTO);
     void changeEmail(ChangeEmailDTO changeEmailDTO);
