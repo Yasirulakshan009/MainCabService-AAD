@@ -3,6 +3,7 @@ package lk.ijse.MainCabService.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lk.ijse.MainCabService.entity.UserRole;
 import lk.ijse.MainCabService.enumeratios.DashboardSection;
 import lk.ijse.MainCabService.enumeratios.Role;
@@ -30,6 +31,9 @@ public class UserDTO {
     private String userEmail;
 
     @NotBlank(message = "Phone number cannot be blank!")
+    @Pattern(regexp = "^07[0-9]{8}$",
+            message = "Invalid Sri Lankan phone number"
+    )
     private String phone;
 
     @NotBlank(message = "Password cannot be blank!")

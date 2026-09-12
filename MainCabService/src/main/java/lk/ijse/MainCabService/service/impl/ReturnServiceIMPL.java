@@ -42,8 +42,19 @@ public class ReturnServiceIMPL implements ReturnService {
             Return returnVehicle = new Return();
 
             Rental rental = rentalRepository.findById(returnDTO.getRentalID())
-                    .orElseThrow(() -> new RuntimeException("rental not found with ID" + returnDTO.getRentalID()));
-            returnVehicle.setRental(rental);
+                    .orElseThrow(() -> new RuntimeException("Rental not found with ID: " + returnDTO.getRentalID()));
+
+            if (rental.getRentalStatus() != RentalStatus.ACTIVE) {
+                throw new RuntimeException(
+                        "Return cannot be created. Rental status is " + rental.getRentalStatus()
+                );
+            }
+
+            if (returnRepository.existsByRental_RentalID(rental.getRentalID())) {
+                throw new RuntimeException(
+                        "Return already exists for Rental ID: " + rental.getRentalID()
+                );
+            }
 
             returnVehicle.setReturnDate(LocalDate.now());
             returnVehicle.setInitialReturnDate(rental.getEndDate());
@@ -108,6 +119,16 @@ public class ReturnServiceIMPL implements ReturnService {
 
             Rental rental = returnVehicle.getRental();
 
+            if (rental == null) {
+                throw new RuntimeException("Rental not found for Return ID: " + returnDTO.getReturnID());
+            }
+
+            if (rental.getRentalStatus() != RentalStatus.COMPLETED) {
+                throw new RuntimeException(
+                        "Return cannot be updated. Rental status is " + rental.getRentalStatus()
+                );
+            }
+
             returnVehicle.setNotes(returnDTO.getNotes());
             returnVehicle.setExtraCharges(returnDTO.getExtraCharges());
 
@@ -147,21 +168,40 @@ public class ReturnServiceIMPL implements ReturnService {
     public void deleteReturn(Long id) {
 
         log.info("Deleting return with ID: " + id);
+
         try {
+
             Return returnVehicle = returnRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Return not found with ID: " + id));
+                    .orElseThrow(() ->
+                            new RuntimeException("Return not found with ID: " + id));
 
             Rental rental = returnVehicle.getRental();
-            if (rental != null && rental.getVehicles() != null) {
-                Vehicle vehicle = rental.getVehicles();
-                vehicle.setVehicleStatus(VehicleStatus.RENTED);
-                vehicleRepository.save(vehicle);
+
+            if (rental != null) {
+                if (rental.getVehicles() != null) {
+                    Vehicle vehicle = rental.getVehicles();
+                    vehicle.setVehicleStatus(VehicleStatus.RENTED);
+                    vehicleRepository.save(vehicle);
+                }
                 rental.setRentalStatus(RentalStatus.ACTIVE);
                 rentalRepository.save(rental);
+
+                PaymentDTO paymentDTO = new PaymentDTO();
+
+                paymentDTO.setRentalID(rental.getRentalID());
+                paymentDTO.setAmount(rental.getTotalAmount());
+                paymentDTO.setStatus(PaymentStatus.RENT_PAID_DONE);
+
+                if (returnVehicle.getPaymentMethod() != null) {
+                    paymentDTO.setPaymentMethod(
+                            returnVehicle.getPaymentMethod().getPaymentMethod()
+                    );
+                }
+                paymentService.updatePayment(paymentDTO);
             }
 
             returnRepository.deleteById(id);
-            log.info("Return deleted successfully!");
+            log.info("Return deleted, rental reactivated, vehicle set to RENTED and payment reversed successfully!");
 
         } catch (Exception e) {
             log.error("Error in delete Return(): " + e.getMessage());

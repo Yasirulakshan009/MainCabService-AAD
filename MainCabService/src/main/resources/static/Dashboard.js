@@ -6,6 +6,30 @@ $(document).ready(function() {
     $('#sidebarEmail').text(savedEmail);
 });
 
+function handleSignOut() {
+    Swal.fire({
+        title: "Sign out?",
+        text: "Are you sure you want to sign out of the dashboard?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, sign out",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#ff4d4d"
+    }).then(function (result) {
+        if (!result.isConfirmed) {
+            return;
+        }
+
+        localStorage.removeItem("jwtToken");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("userPermissions");
+        localStorage.removeItem("isAdminSession");
+
+        window.location.href = "Login.html";
+    });
+}
+
 function showSection(sectionName, element) {
     const sections = [
         'overview-section',
@@ -75,29 +99,6 @@ function scrollToSettingsSection() {
     const settingsMenuBtn = document.getElementById('menu-settings');
     if (settingsMenuBtn) {
         showSection('settings', settingsMenuBtn);
-    }
-}
-
-function openWebsite() {
-    localStorage.setItem('isAdminSession', 'true');
-}
-
-function approveReview(id) {
-    const btn = document.getElementById(`btn_approve_${id}`);
-    if (btn.innerText === 'Pending' || btn.innerText === 'Approve') {
-        btn.innerText = 'Approved';
-        btn.style.background = '#10b981';
-        console.log(`Review #${id} Approved!`);
-    } else {
-        btn.innerText = 'Pending';
-        btn.style.background = '#f59e0b';
-        console.log(`Review #${id} set to Pending.`);
-    }
-}
-
-function deleteReview(id) {
-    if (confirm('Are you sure you want to delete this review?')) {
-        console.log(`Review #${id} deleted.`);
     }
 }
 

@@ -52,79 +52,17 @@
                 <i class="fa-solid fa-phone"></i>
                 <span>0764 061 425</span>
             </div>
-            <a href="Booking.html" class="book-btn">
+            <a href="javascript:void(0)" onclick="goToBooking()" class="book-btn">
                 <i class="fa-regular fa-calendar"></i>
                 Book Now
             </a>
+
+            <a href="SignIn.html" class="signin-link web-dashboard-btn">Sign In</a>
+
         </div>
     </nav>
 
-    <section class="auth-wrapper" id="auth-section">
-        <div class="auth-card">
-            <div class="auth-brand">
-                <div class="auth-logo-circle">AR</div>
-                <h2>Aura Cabs</h2>
-                <p id="auth-caption">If you already have an account, enter your Gmail and password to sign in.</p>
-            </div>
-
-            <div class="auth-tabs">
-                <button class="auth-tab-btn active" onclick="switchAuthTab('login', event)">Login</button>
-                <button class="auth-tab-btn" onclick="switchAuthTab('register', event)">Register</button>
-            </div>
-
-            <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
-                <div class="input-group">
-                    <label>Gmail Address</label>
-                    <div class="input-with-icon">
-                        <i class="ri-mail-line"></i>
-                        <input type="email" id="loginEmail" placeholder="name@gmail.com" required>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <div class="input-with-icon">
-                        <i class="ri-lock-password-line"></i>
-                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn-auth-submit">Sign In</button>
-            </form>
-
-            <form id="registerForm" class="auth-form" style="display: none;" onsubmit="handleRegister(event)">
-                <div class="input-group">
-                    <label>Full Name</label>
-                    <div class="input-with-icon">
-                        <i class="ri-user-line"></i>
-                        <input type="text" id="regName" placeholder="Amal Silva" required>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label>Gmail Address</label>
-                    <div class="input-with-icon">
-                        <i class="ri-mail-line"></i>
-                        <input type="email" id="regEmail" placeholder="name@gmail.com" required>
-                    </div>
-                </div>
-                <div class="input-group" style="margin-bottom: 15px;">
-                    <label>Phone Number</label>
-                    <div class="input-with-icon">
-                        <i class="ri-phone-line"></i>
-                        <input type="text" id="regPhone" placeholder="0712345678" required style="width: 100%; padding-left: 38px;">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <div class="input-with-icon">
-                        <i class="ri-lock-password-line"></i>
-                        <input type="password" id="regPassword" placeholder="Create a password" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn-auth-submit">Create Account</button>
-            </form>
-        </div>
-    </section>
-
-    <section class="booking-section" id="booking-section" style="display: none;">
+    <section class="booking-section" id="booking-section">
         <div class="booking-container">
 
             <div class="booking-header">
@@ -348,6 +286,7 @@
 </section>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="BookingAuth.js"></script>
 <script src="Booking.js"></script>
 <script src="MainJs.js"></script>
 

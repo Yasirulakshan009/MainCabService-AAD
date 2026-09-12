@@ -49,6 +49,34 @@ public class CustomerReviewServiceIMPL implements CustomerReviewService {
     }
 
     @Override
+    public List<CustomerReviewDTO> getApprovedReviews() {
+
+        log.info("Executing getApprovedReviews()");
+        try {
+            List<CustomerReview> reviewList = customerReviewsRepository.findByStatus(ReviewStatus.APPROVED);
+            List<CustomerReviewDTO> dtoList = new ArrayList<>();
+
+            for (CustomerReview review : reviewList) {
+                CustomerReviewDTO dto = new CustomerReviewDTO();
+                dto.setId(review.getId());
+                dto.setCustomerName(review.getCustomerName());
+                dto.setReviewerRole(review.getReviewerRole());
+                dto.setRating(review.getRating());
+                dto.setMessage(review.getMessage());
+                dto.setStatus(review.getStatus());
+
+                dtoList.add(dto);
+            }
+
+            log.info("Fetched " + dtoList.size() + " approved reviews successfully.");
+            return dtoList;
+        } catch (Exception e) {
+            log.error("Error in getApprovedReviews(): " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public CustomerReviewDTO saveReview(CustomerReviewDTO reviewDTO) {
 
         log.info("Executing saveReview()");

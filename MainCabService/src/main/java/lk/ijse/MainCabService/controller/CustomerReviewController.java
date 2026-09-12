@@ -43,6 +43,26 @@ public class CustomerReviewController {
         }
     }
 
+    @GetMapping(value = "/approved", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonResponse> getApprovedReviews() {
+        try {
+            List<CustomerReviewDTO> list = reviewService.getApprovedReviews();
+            CommonResponse commonResponse = new CommonResponse(
+                    ResponseCode.OPERATION_SUCCESS,
+                    list,
+                    ResponseMessage.SUCCESS_MESSAGE
+            );
+            return new ResponseEntity<>(commonResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            CommonResponse errorResponse = new CommonResponse(
+                    ResponseCode.OPERATION_FAILED,
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonResponse> saveReview(@Valid @RequestBody CustomerReviewDTO reviewDTO) {
         try {

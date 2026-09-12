@@ -64,14 +64,12 @@
                 <span>0764 061 425</span>
             </div>
 
-            <a href="Booking.html" class="book-btn">
+            <a href="javascript:void(0)" onclick="goToBooking()" class="book-btn">
                 <i class="fa-regular fa-calendar"></i>
                 Book Now
             </a>
 
-            <a href="pos.html" id="adminDashboardBtn" class="web-dashboard-btn d-none">
-                Dashboard
-            </a>
+            <a href="SignIn.html" class="signin-link web-dashboard-btn">Sign In</a>
         </div>
     </nav>
 
@@ -86,7 +84,7 @@
             <p>Experience premium luxury and ultimate convenience</p>
 
             <div class="hero-buttons">
-                <a href="Booking.html" class="hero-btn solid-btn">
+                <a href="javascript:void(0)" onclick="goToBooking()" class="hero-btn solid-btn">
                     <i class="fa-regular fa-calendar"></i>
                     Book Your Ride
                 </a>
@@ -338,44 +336,7 @@
             <p>Read genuine reviews from our happy self-drive travelers across Sri Lanka.</p>
         </div>
 
-        <div class="feedback-grid">
-
-            <div class="feedback-card">
-                <div class="stars">⭐⭐⭐⭐⭐</div>
-                <p class="review-text">"Aura Cabs made our Sri Lanka road trip unforgettable. The car handover was smooth, and the vehicle was in pristine condition."</p>
-                <div class="customer-info">
-                    <div class="customer-avatar">S</div>
-                    <div>
-                        <h4>Sarah Jenkins</h4>
-                        <span>Tourist from UK</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="feedback-card">
-                <div class="stars">⭐⭐⭐⭐⭐</div>
-                <p class="review-text">"I use their corporate self-drive rentals regularly for client visits. The booking process is fast and seamless."</p>
-                <div class="customer-info">
-                    <div class="customer-avatar">K</div>
-                    <div>
-                        <h4>Kumar Perera</h4>
-                        <span>Business Traveler</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="feedback-card">
-                <div class="stars">⭐⭐⭐⭐⭐</div>
-                <p class="review-text">"Great rental rates for self-drive cars. The pickup process was super easy and the car was extremely fuel-efficient."</p>
-                <div class="customer-info">
-                    <div class="customer-avatar">E</div>
-                    <div>
-                        <h4>Elena Rossi</h4>
-                        <span>Backpacker</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="feedback-grid"></div>
 
         <div style="text-align: center; margin-top: 50px;">
             <button onclick="openReviewModal()" style="background: #0071e3; color: white; border: none; padding: 12px 28px; border-radius: 30px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 113, 227, 0.3); transition: transform 0.2s ease;">
@@ -407,9 +368,11 @@
                     <div>
                         <label style="font-size: 12px; color: var(--text-muted, #a1a1aa); display: block; margin-bottom: 5px;">Rating (1 to 5 Stars)</label>
                         <select id="reviewerRating" style="width: 100%; padding: 10px 14px; background: var(--bg-main, #2a2a2a); border: 1px solid var(--border-color, #444447); color: var(--text-main, #ffffff); border-radius: 8px; font-size: 14px; outline: none;">
-                            <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐ (5/5 Stars)</option>
-                            <option value="⭐⭐⭐⭐">⭐⭐⭐⭐ (4/5 Stars)</option>
-                            <option value="⭐⭐⭐">⭐⭐⭐ (3/5 Stars)</option>
+                            <option value="5">⭐⭐⭐⭐⭐ (5/5 Stars)</option>
+                            <option value="4">⭐⭐⭐⭐ (4/5 Stars)</option>
+                            <option value="3">⭐⭐⭐ (3/5 Stars)</option>
+                            <option value="2">⭐⭐ (2/5 Stars)</option>
+                            <option value="1">⭐ (1/5 Stars)</option>
                         </select>
                     </div>
 
@@ -451,7 +414,7 @@
             </div>
 
         </div>
-        
+
     </section>
 
     <footer class="footer-section">
@@ -471,7 +434,7 @@
                 <ul class="footer-links">
                     <li><a href="Home.html">Home</a></li>
                     <li><a href="About.html">About Aura Cabs</a></li>
-                    <li><a href=Booking.html>Online Booking</a></li>
+                    <li><a href="javascript:void(0)" onclick="goToBooking()">Online Booking</a></li>
                     <li><a href="Contact.html">Contact Aura Cabs</a></li>
                     <li><a href="TermsCondition.html">Terms & Conditions</a></li>
                     <li><a href="PrivacyPolicy.html">Privacy Policy</a></li>
@@ -546,9 +509,12 @@
     </div>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="BookingAuth.js"></script>
 <script src="WebsiteLegalFaq.js"></script>
 <script src="website-fleet.js"></script>
+<script src="WebsiteReviews.js"></script>
 <script>
 
     window.addEventListener('scroll', function() {
@@ -559,7 +525,7 @@
             nav.classList.remove('scrolled');
         }
     });
-    
+
     const triggerBtn = document.getElementById('waTriggerBtn');
     const popupBox = document.getElementById('waPopupBox');
     const closeBtn = document.getElementById('waCloseBtn');
@@ -586,58 +552,6 @@
     function closePopup() {
         popupBox.style.display = 'none';
         waIcon.className = 'ri-chat-3-line';
-    }
-
-    function toggleFAQ(element) {
-        const cards = document.querySelectorAll('.faq-card');
-
-        cards.forEach(card => {
-            if (card !== element) {
-                card.classList.remove('active');
-            }
-        });
-
-        element.classList.toggle('active');
-    }
-/*//////////////////////////////////*/
-
-    document.addEventListener("DOMContentLoaded", function () {
-        let isAdmin = localStorage.getItem('isAdminSession');
-
-        if (isAdmin === 'true') {
-            let dashboardBtn = document.getElementById('adminDashboardBtn');
-            if (dashboardBtn) {
-                dashboardBtn.classList.remove('d-none');
-            }
-        }
-    });
-
-    function openReviewModal() {
-        const modal = document.getElementById('reviewModal');
-        modal.style.display = 'flex';
-    }
-
-    function closeReviewModal() {
-        const modal = document.getElementById('reviewModal');
-        modal.style.display = 'none';
-    }
-
-    function submitReviewForm(event) {
-        event.preventDefault();
-
-        const name = document.getElementById('reviewerName').value;
-        const role = document.getElementById('reviewerRole').value;
-        const rating = document.getElementById('reviewerRating').value;
-        const message = document.getElementById('reviewerMessage').value;
-
-        console.log("New Floating Review Submitted:", { name, role, rating, message });
-
-        alert("Thank you! Your review has been submitted successfully and is pending approval.");
-
-        document.getElementById('reviewerName').value = '';
-        document.getElementById('reviewerRole').value = '';
-        document.getElementById('reviewerMessage').value = '';
-        closeReviewModal();
     }
 
 </script>

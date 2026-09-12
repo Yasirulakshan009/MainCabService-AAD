@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Aura Cabs</title>
+
+    <link rel="stylesheet" href="web.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<section>
+    <nav class="nav scrolled">
+        <div class="logo-container">
+            <div class="logo-circle">
+                <span>AR</span>
+            </div>
+            <div class="logo-text">
+                <span class="brand-name">Aura Cabs</span>
+                <span class="brand-sub">LUXURY RENTALS</span>
+            </div>
+        </div>
+
+        <section class="navbar">
+            <ul class="nav-list">
+                <li><a href="Home.html">Home</a></li>
+                <li><a href="About.html">About</a></li>
+                <div class="nav-item dropdown">
+                    <a href="javascript:void(0)" class="nav-link dropdown-toggle">
+                        Services <i class="ri-arrow-down-s-line"></i>
+                    </a>
+                    <div class="dropdown-menu-box">
+                        <div class="dropdown-grid">
+                            <a href="CarService.html" class="dropdown-item"><span class="bullet-dot"></span> Car Service</a>
+                            <a href="VanService.html" class="dropdown-item"><span class="bullet-dot"></span> Van Service</a>
+                            <a href="BusService.html" class="dropdown-item"><span class="bullet-dot"></span> Bus service</a>
+                            <a href="WeddingService.html" class="dropdown-item"><span class="bullet-dot"></span> Wedding service</a>
+                        </div>
+                    </div>
+                </div>
+                <li><a href="Contact.html">Contact</a></li>
+                <li><a href="FAQ.html">FAQ</a></li>
+            </ul>
+        </section>
+
+        <div class="nav-right">
+            <div class="phone">
+                <i class="fa-solid fa-phone"></i>
+                <span>0764 061 425</span>
+            </div>
+            <a href="javascript:void(0)" onclick="goToBooking()" class="book-btn">
+                <i class="fa-regular fa-calendar"></i>
+                Book Now
+            </a>
+        </div>
+    </nav>
+
+    <section class="auth-wrapper" id="auth-section">
+        <div class="auth-card">
+            <div class="auth-brand">
+                <div class="auth-logo-circle">AR</div>
+                <h2>Aura Cabs</h2>
+                <p id="auth-caption">If you already have an account, enter your Gmail and password to sign in.</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" onclick="switchAuthTab('login', event)">Login</button>
+                <button class="auth-tab-btn" onclick="switchAuthTab('register', event)">Register</button>
+            </div>
+
+            <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Gmail Address</label>
+                    <div class="input-with-icon">
+                        <i class="ri-mail-line"></i>
+                        <input type="email" id="loginEmail" placeholder="name@gmail.com" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="input-with-icon">
+                        <i class="ri-lock-password-line"></i>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-auth-submit">Sign In</button>
+            </form>
+
+            <form id="registerForm" class="auth-form" style="display: none;" onsubmit="handleRegister(event)">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <div class="input-with-icon">
+                        <i class="ri-user-line"></i>
+                        <input type="text" id="regName" placeholder="Amal Silva" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Gmail Address</label>
+                    <div class="input-with-icon">
+                        <i class="ri-mail-line"></i>
+                        <input type="email" id="regEmail" placeholder="name@gmail.com" required>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <label>Phone Number</label>
+                    <div class="input-with-icon">
+                        <i class="ri-phone-line"></i>
+                        <input type="text" id="regPhone" placeholder="0712345678" required style="width: 100%; padding-left: 38px;">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="input-with-icon">
+                        <i class="ri-lock-password-line"></i>
+                        <input type="password" id="regPassword" placeholder="Create a password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-auth-submit">Create Account</button>
+            </form>
+        </div>
+    </section>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="BookingAuth.js"></script>
+<script src="SignIn.js"></script>
+</body>
+</html>

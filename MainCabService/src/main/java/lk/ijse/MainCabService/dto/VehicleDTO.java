@@ -3,6 +3,7 @@ package lk.ijse.MainCabService.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lk.ijse.MainCabService.enumeratios.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,9 +33,15 @@ public class VehicleDTO {
     private Double dailyPrice;
 
     @NotBlank(message = "Insurance number cannot be blank!")
+    @Pattern(regexp = "^[A-Za-z0-9/-]{5,30}$",
+            message = "Invalid insurance number"
+    )
     private String insuranceNo;
 
     @NotBlank(message = "License number cannot be blank!")
+    @Pattern(regexp = "^([0-9]{9}[A-Za-z]|[0-9]{9})$",
+            message = "Invalid driving license number"
+    )
     private String licenseNo;
 
     @NotNull(message = "Seats cannot be null!")

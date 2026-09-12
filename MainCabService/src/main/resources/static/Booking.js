@@ -3,233 +3,14 @@ const totalSteps = 4;
 
 const API_BASE_URL = "http://localhost:8080";
 
-function switchAuthTab(tab, event) {
-    const loginForm = document.getElementById("loginForm");
-    const registerForm = document.getElementById("registerForm");
-    const authCaption = document.getElementById("auth-caption");
+(function guardBookingPage() {
+    const token = localStorage.getItem("jwtToken");
+    const role = localStorage.getItem("userRole");
 
-    document.querySelectorAll(".auth-tab-btn")
-        .forEach(btn => btn.classList.remove("active"));
-
-    event.currentTarget.classList.add("active");
-
-    if (tab === "login") {
-        loginForm.style.display = "block";
-        registerForm.style.display = "none";
-
-        if (authCaption) {
-            authCaption.innerText = "If you already have an account, enter your Gmail and password to sign in.";
-        }
-    } else {
-        loginForm.style.display = "none";
-        registerForm.style.display = "block";
-
-        if (authCaption) {
-            authCaption.innerText = "If you don't have an Aura Cabs account yet, please register first.";
-        }
+    if (!token || role !== "CUSTOMER") {
+        window.location.href = "SignIn.html?redirect=Booking.html";
     }
-}
-
-function handleRegister(event) {
-
-    event.preventDefault();
-
-    const name = document.getElementById("regName").value.trim();
-    const email = document.getElementById("regEmail").value.trim();
-    const phone = document.getElementById("regPhone").value.trim();
-    const password = document.getElementById("regPassword").value;
-
-    if (!name || !email || !phone || !password) {
-        Swal.fire({
-            icon: "warning",
-            title: "Required Fields",
-            text: "Please fill all registration fields."
-        });
-        return;
-    }
-
-    const registerData = {
-        userName: name,
-        userEmail: email,
-        phone: phone,
-        userPassword: password,
-        confirmPassword: password
-    };
-
-    $.ajax({
-
-        url: API_BASE_URL + "/api/v1/auth/customer-register",
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(registerData),
-
-        success: function(response) {
-
-            Swal.fire({
-                icon: "success",
-                title: "Registration Successful!",
-                text: "Your customer account has been created. Please login to continue.",
-                confirmButtonColor: "#0d6efd"
-            }).then(() => {
-
-                document.querySelectorAll(".auth-tab-btn")
-                    .forEach(btn => btn.classList.remove("active"));
-
-                const loginButton =
-                    document.querySelector(
-                        ".auth-tab-btn:first-child"
-                    );
-
-                if (loginButton) {
-                    loginButton.classList.add("active");
-                }
-
-                document.getElementById("loginForm").style.display = "block";
-                document.getElementById("registerForm").style.display = "none";
-
-                document.getElementById("loginEmail").value = email;
-                document.getElementById("loginPassword").value = "";
-
-                const caption =
-                    document.getElementById("auth-caption");
-
-                if (caption) {
-                    caption.innerText =
-                        "Account created successfully. Please login to continue.";
-                }
-            });
-        },
-
-        error: function(xhr) {
-            let message = "Registration failed.";
-
-            if (xhr.responseJSON) {
-                if (xhr.responseJSON.message) {
-                    message = xhr.responseJSON.message;
-                }
-
-                if (
-                    xhr.responseJSON.body &&
-                    typeof xhr.responseJSON.body === "string"
-                ) {
-                    message = xhr.responseJSON.body;
-                }
-            }
-
-            Swal.fire({
-                icon: "error",
-                title: "Registration Failed",
-                text: message
-            });
-            console.error("Customer registration error:", xhr);
-        }
-    });
-}
-
-function handleLogin(event) {
-
-    event.preventDefault();
-
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
-
-    if (!email || !password) {
-        Swal.fire({
-            icon: "warning",
-            title: "Required Fields",
-            text: "Please enter your email and password."
-        });
-        return;
-    }
-
-    const loginData = {
-        identifier: email,
-        password: password
-    };
-
-    $.ajax({
-        url: API_BASE_URL + "/api/v1/auth/login",
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(loginData),
-
-        success: function(response) {
-
-            console.log("Customer Login Response:", response);
-
-            const authData =
-                response.data ||
-                response.body ||
-                response;
-
-            const token = authData.token;
-            const role = authData.role;
-
-            if (!token) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Login Failed",
-                    text: "Authentication token was not received."
-                });
-                return;
-            }
-
-            if (role !== "CUSTOMER") {
-
-                Swal.fire({
-                    icon: "error",
-                    title: "Access Denied",
-                    text: "This login is only for customer accounts."
-                });
-                return;
-            }
-
-            localStorage.setItem("jwtToken", token);
-            localStorage.setItem("userRole", role);
-            localStorage.setItem("userEmail", email);
-
-            localStorage.setItem(
-                "userPermissions",
-                JSON.stringify(authData.permissions || [])
-            );
-
-            Swal.fire({
-                icon: "success",
-                title: "Login Successful!",
-                text: "You can now continue with your booking.",
-                timer: 1500,
-                showConfirmButton: false
-            }).then(() => {
-                proceedToBooking();
-                loadLoggedInCustomerInformation();
-            });
-        },
-
-        error: function(xhr) {
-            let message = "Invalid email or password.";
-
-            if (xhr.responseJSON) {
-
-                if (xhr.responseJSON.message) {
-                    message = xhr.responseJSON.message;
-                }
-
-                if (
-                    xhr.responseJSON.body &&
-                    typeof xhr.responseJSON.body === "string"
-                ) {
-                    message = xhr.responseJSON.body;
-                }
-            }
-            Swal.fire({
-                icon: "error",
-                title: "Login Failed",
-                text: message
-            });
-            console.error("Customer login error:", xhr);
-        }
-    });
-}
+})();
 
 function loadLoggedInCustomerInformation() {
 
@@ -270,23 +51,6 @@ function loadLoggedInCustomerInformation() {
                 xhr
             );
         }
-    });
-}
-
-function proceedToBooking() {
-    const authSection = document.getElementById("auth-section");
-    const bookingSection = document.getElementById("booking-section");
-
-    if (!authSection || !bookingSection) {
-        return;
-    }
-
-    authSection.style.display = "none";
-    bookingSection.style.display = "block";
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
     });
 }
 
@@ -694,4 +458,5 @@ document.getElementById("booking-form")?.addEventListener("submit", function(eve
 document.addEventListener("DOMContentLoaded", function() {
     currentStep = 1;
     showStep(currentStep);
+    loadLoggedInCustomerInformation();
 });

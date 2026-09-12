@@ -14,6 +14,7 @@ public interface ReturnRepository extends JpaRepository<Return,Long> {
 
     List<Return> findByReturnStatus(ReturnStatus returnStatus);
 
+    boolean existsByRental_RentalID(Long rentalID);
 
     @Query(" SELECT r FROM Return r WHERE r.returnID = :id OR r.rental.rentalID = :id ")
     List<Return> findByReturnIDOrRentalID(@Param("id") Long id);

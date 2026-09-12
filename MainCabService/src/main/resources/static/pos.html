@@ -94,14 +94,14 @@
 
         <div class="sidebar-bottom">
             <div class="admin-profile-box">
-                <div class="admin-avatar-small">CA</div>
+                <div class="admin-avatar-small">UA</div>
                 <div class="admin-info">
                     <h4>User Account</h4>
                     <p id="sidebarEmail"></p>
                 </div>
             </div>
             <div class="sidebar-actions">
-                <button class="btn-signout" onclick="window.location.href='Login.html'"><i class="ri-logout-box-r-line"></i> Sign out</button>
+                <button class="btn-signout" onclick="handleSignOut()"><i class="ri-logout-box-r-line"></i> Sign out</button>
                 <a href="Home.html" class="btn-website" onclick="openWebsite()"><i class="ri-global-line"></i>Website</a>
             </div>
         </div>
@@ -1151,61 +1151,11 @@
                         <p class="sub-title">Approve, manage or remove customer testimonials shown on the website.</p>
                     </div>
                     <div>
-                        <span class="status-badge completed">Total: 3 Reviews</span>
+                        <span class="status-badge completed">Total: 0 Reviews</span>
                     </div>
                 </div>
 
                 <div class="reviews-grid">
-                    <div class="content-card">
-                        <div class="legal-card-header">
-                            <div class="review-author">
-                                <div class="author-avatar">S</div>
-                                <div>
-                                    <h4 style="font-size: 14px; font-weight: 700; color: var(--text-main);">Sarah Jenkins</h4>
-                                    <span class="sub-title">Tourist from UK • Rating: ⭐⭐⭐⭐⭐ (5/5)</span>
-                                </div>
-                            </div>
-                            <div style="display: flex; gap: 8px;">
-                                <button onclick="approveReview(1)" id="btn_approve_1" class="status-badge accept" style="cursor: pointer;">Approved</button>
-                                <button onclick="deleteReview(1)" class="btn-danger">Delete</button>
-                            </div>
-                        </div>
-                        <p style="font-size: 13px; color: var(--text-muted); font-style: italic; margin-top: 10px;">"Aura Cabs made our Sri Lanka road trip unforgettable. The car handover was smooth, and the vehicle was in pristine condition."</p>
-                    </div>
-
-                    <div class="content-card">
-                        <div class="legal-card-header">
-                            <div class="review-author">
-                                <div class="author-avatar">K</div>
-                                <div>
-                                    <h4 style="font-size: 14px; font-weight: 700; color: var(--text-main);">Kumar Perera</h4>
-                                    <span class="sub-title">Business Traveler • Rating: ⭐⭐⭐⭐⭐ (5/5)</span>
-                                </div>
-                            </div>
-                            <div style="display: flex; gap: 8px;">
-                                <button onclick="approveReview(2)" id="btn_approve_2" class="status-badge accept" style="cursor: pointer;">Approved</button>
-                                <button onclick="deleteReview(2)" class="btn-danger">Delete</button>
-                            </div>
-                        </div>
-                        <p style="font-size: 13px; color: var(--text-muted); font-style: italic; margin-top: 10px;">"I use their corporate self-drive rentals regularly for client visits. The booking process is fast and seamless."</p>
-                    </div>
-
-                    <div class="content-card">
-                        <div class="legal-card-header">
-                            <div class="review-author">
-                                <div class="author-avatar">E</div>
-                                <div>
-                                    <h4 style="font-size: 14px; font-weight: 700; color: var(--text-main);">Elena Rossi</h4>
-                                    <span class="sub-title">Backpacker • Rating: ⭐⭐⭐⭐⭐ (5/5)</span>
-                                </div>
-                            </div>
-                            <div style="display: flex; gap: 8px;">
-                                <button onclick="approveReview(3)" id="btn_approve_3" class="status-badge pending" style="cursor: pointer;">Pending</button>
-                                <button onclick="deleteReview(3)" class="btn-danger">Delete</button>
-                            </div>
-                        </div>
-                        <p style="font-size: 13px; color: var(--text-muted); font-style: italic; margin-top: 10px;">"Great rental rates for self-drive cars. The pickup process was super easy and the car was extremely fuel-efficient."</p>
-                    </div>
                 </div>
             </div>
 
@@ -1656,5 +1606,6 @@
 <script src="Payment.js"></script>
 <script src="Setting.js"></script>
 <script src="OverView.js"></script>
+<script src="CustomerReviews.js"></script>
 </body>
 </html>
