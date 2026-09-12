@@ -140,28 +140,28 @@
                         <div class="icon-box purple-glow"><i class="fa-solid fa-bookmark"></i></div>
                         <div class="stat-info">
                             <p>Total Online Bookings</p>
-                            <h3>24</h3>
+                            <h3 id="overviewTotalBookings">--</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="icon-box blue-glow"><i class="fa-solid fa-car-side"></i></div>
                         <div class="stat-info">
                             <p>Active Rentals</p>
-                            <h3>12</h3>
+                            <h3 id="overviewActiveRentals">--</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="icon-box green-glow"><i class="fa-solid fa-circle-check"></i></div>
                         <div class="stat-info">
                             <p>Completed Rentals</p>
-                            <h3>148</h3>
+                            <h3 id="overviewCompletedRentals">--</h3>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="icon-box pink-glow"><i class="fa-solid fa-wallet"></i></div>
                         <div class="stat-info">
                             <p>Total Revenue (LKR)</p>
-                            <h3>450,000</h3>
+                            <h3 id="overviewTotalRevenue">--</h3>
                         </div>
                     </div>
                 </div>
@@ -169,7 +169,7 @@
                 <div class="chart-section">
                     <div class="chart-header">
                         <h5 class="section-title">Monthly Revenue Overview</h5>
-                        <span class="sub-title">Year 2026</span>
+                        <span class="sub-title">Year <span id="overviewYearLabel">2026</span></span>
                     </div>
                     <div class="chart-container">
                         <canvas id="revenueChart"></canvas>
@@ -196,24 +196,9 @@
                                     <th>Status</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="recentRentalsTableBody">
                                 <tr>
-                                    <td>Sunil Shantha</td>
-                                    <td>Suzuki WagonR (CAB-1122)</td>
-                                    <td>2026-05-10</td>
-                                    <td><span class="status-badge completed">Completed</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Anura Kumara</td>
-                                    <td>Toyota Prius (CAB-9988)</td>
-                                    <td>2026-05-05</td>
-                                    <td><span class="status-badge completed">Completed</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Ruwan Perera</td>
-                                    <td>Honda Fit (CAB-4455)</td>
-                                    <td>2026-04-28</td>
-                                    <td><span class="status-badge completed">Completed</span></td>
+                                    <td colspan="4" style="text-align:center; color:#aaa;">Loading...</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -221,7 +206,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- 2. FLEET SECTION -->
             <div class="fleet-container" id="fleet-section" style="display: none;">
                 <div class="page-header">
