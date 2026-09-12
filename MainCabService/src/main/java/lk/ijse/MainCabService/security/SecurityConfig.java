@@ -65,7 +65,8 @@ public class SecurityConfig {
                         .requestMatchers("/v1/returns/**", "/v1/returns").hasAnyRole("ADMIN", "STAFF")
                         .requestMatchers("/v1/payments/**", "/v1/payments").hasAnyRole("ADMIN", "STAFF")
                         .requestMatchers("/v1/maintenance/**", "/v1/maintenance").hasAnyRole("ADMIN", "STAFF")
-                        .requestMatchers("/v1/website-settings/**", "/v1/website-settings").hasAnyRole("ADMIN", "STAFF")
+                        .requestMatchers(HttpMethod.GET, "/v1/website-settings").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/v1/website-settings/**", "/v1/website-settings").hasAnyRole("ADMIN", "STAFF")
                         .requestMatchers(HttpMethod.POST, "/v1/terms-condition", "/v1/privacy-policy", "/v1/faqs").hasAnyRole("ADMIN", "STAFF")
                         .requestMatchers(HttpMethod.PUT, "/v1/terms-condition/**", "/v1/privacy-policy/**", "/v1/faqs/**").hasAnyRole("ADMIN", "STAFF")
 

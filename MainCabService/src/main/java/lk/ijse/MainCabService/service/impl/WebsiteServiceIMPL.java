@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -20,11 +22,13 @@ public class WebsiteServiceIMPL implements WebsiteService {
         log.info("Executing getWebsiteSettings()");
 
         try {
-            WebsiteSetting setting = websiteSettingRepository.findById(1L).orElse(null);
+            Optional<WebsiteSetting> optionalSetting = websiteSettingRepository.findById(1L);
 
-            if (setting == null) {
+            if (!optionalSetting.isPresent()) {
                 return null;
             }
+
+            WebsiteSetting setting = optionalSetting.get();
 
             WebsiteSettingDTO dto = new WebsiteSettingDTO();
             dto.setId(setting.getId());
@@ -49,18 +53,32 @@ public class WebsiteServiceIMPL implements WebsiteService {
         log.info("Executing updateWebsiteSettings()");
 
         try {
-            WebsiteSetting setting = websiteSettingRepository.findById(1L).orElse(new WebsiteSetting());
+            Optional<WebsiteSetting> optionalSetting = websiteSettingRepository.findById(1L);
 
-            setting.setId(1L);
-            setting.setCompanyName(websiteSettingDTO.getCompanyName());
-            setting.setPhoneNumber(websiteSettingDTO.getPhoneNumber());
-            setting.setWhatsappNumber(websiteSettingDTO.getWhatsappNumber());
-            setting.setEmail(websiteSettingDTO.getEmail());
-            setting.setAddress(websiteSettingDTO.getAddress());
-            setting.setFacebookUrl(websiteSettingDTO.getFacebookUrl());
-            setting.setInstagramUrl(websiteSettingDTO.getInstagramUrl());
+            if (optionalSetting.isPresent()) {
+                WebsiteSetting setting = optionalSetting.get();
+                setting.setCompanyName(websiteSettingDTO.getCompanyName());
+                setting.setPhoneNumber(websiteSettingDTO.getPhoneNumber());
+                setting.setWhatsappNumber(websiteSettingDTO.getWhatsappNumber());
+                setting.setEmail(websiteSettingDTO.getEmail());
+                setting.setAddress(websiteSettingDTO.getAddress());
+                setting.setFacebookUrl(websiteSettingDTO.getFacebookUrl());
+                setting.setInstagramUrl(websiteSettingDTO.getInstagramUrl());
 
-            websiteSettingRepository.save(setting);
+                websiteSettingRepository.save(setting);
+            } else {
+                WebsiteSetting setting = new WebsiteSetting();
+                setting.setCompanyName(websiteSettingDTO.getCompanyName());
+                setting.setPhoneNumber(websiteSettingDTO.getPhoneNumber());
+                setting.setWhatsappNumber(websiteSettingDTO.getWhatsappNumber());
+                setting.setEmail(websiteSettingDTO.getEmail());
+                setting.setAddress(websiteSettingDTO.getAddress());
+                setting.setFacebookUrl(websiteSettingDTO.getFacebookUrl());
+                setting.setInstagramUrl(websiteSettingDTO.getInstagramUrl());
+
+                websiteSettingRepository.save(setting);
+            }
+
             log.info("Website settings updated successfully!");
 
         } catch (Exception e) {

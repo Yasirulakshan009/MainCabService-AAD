@@ -61,6 +61,10 @@ function showSection(sectionName, element) {
     element.classList.add('active');
 
     resetSectionFilterToAll(sectionName);
+
+    if (sectionName === 'website-settings') {
+        loadWebsiteSettings();
+    }
 }
 
 function resetSectionFilterToAll(sectionName) {
@@ -104,6 +108,40 @@ function scrollToSettingsSection() {
 
 let isEditing = false;
 
+const WEBSITE_SETTINGS_API_URL = "http://localhost:8080/v1/website-settings";
+
+function loadWebsiteSettings() {
+    $.ajax({
+        url: WEBSITE_SETTINGS_API_URL,
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwtToken")
+        },
+        success: function (response) {
+            const settings = response.body;
+            if (!settings) {
+                return;
+            }
+
+            document.getElementById("companyName").value = settings.companyName || "";
+            document.getElementById("phoneNumber").value = settings.phoneNumber || "";
+            document.getElementById("whatsappNumber").value = settings.whatsappNumber || "";
+            document.getElementById("email").value = settings.email || "";
+            document.getElementById("address").value = settings.address || "";
+            document.getElementById("facebookUrl").value = settings.facebookUrl || "";
+            document.getElementById("instagramUrl").value = settings.instagramUrl || "";
+        },
+        error: function (xhr) {
+            console.error("Failed to load website settings:", xhr);
+            Swal.fire({
+                icon: "error",
+                title: "Load Failed",
+                text: "Could not load current website settings."
+            });
+        }
+    });
+}
+
 function toggleEditMode() {
     const inputs = document.querySelectorAll('#websiteSettingsForm input, #websiteSettingsForm textarea');
     const actionBtn = document.getElementById('settingsActionBtn');
@@ -113,24 +151,71 @@ function toggleEditMode() {
         actionBtn.innerText = "Save Changes";
         actionBtn.style.background = "linear-gradient(135deg, #00c853, #b9f6ca)";
         actionBtn.style.color = "#000";
-        actionBtn.type = "submit";
         isEditing = true;
-    } else {
-
-        inputs.forEach(input => input.setAttribute('disabled', 'true'));
-        actionBtn.innerText = "Edit Website Settings";
-        actionBtn.style.background = "";
-        actionBtn.style.color = "";
-        actionBtn.type = "button";
-        isEditing = false;
-
-        alert("Website settings updated successfully!");
+        return;
     }
+
+    saveWebsiteSettings(inputs, actionBtn);
+}
+
+function saveWebsiteSettings(inputs, actionBtn) {
+    const settingsData = {
+        companyName: document.getElementById("companyName").value.trim(),
+        phoneNumber: document.getElementById("phoneNumber").value.trim(),
+        whatsappNumber: document.getElementById("whatsappNumber").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        facebookUrl: document.getElementById("facebookUrl").value.trim(),
+        instagramUrl: document.getElementById("instagramUrl").value.trim()
+    };
+
+    actionBtn.disabled = true;
+    actionBtn.innerText = "Saving...";
+
+    $.ajax({
+        url: WEBSITE_SETTINGS_API_URL,
+        type: "PUT",
+        contentType: "application/json",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwtToken")
+        },
+        data: JSON.stringify(settingsData),
+
+        success: function () {
+            inputs.forEach(input => input.setAttribute('disabled', 'true'));
+            actionBtn.disabled = false;
+            actionBtn.innerText = "Edit Website Settings";
+            actionBtn.style.background = "";
+            actionBtn.style.color = "";
+            isEditing = false;
+
+            Swal.fire({
+                icon: "success",
+                title: "Saved!",
+                text: "Website settings updated successfully. Changes are now live on the main website.",
+                confirmButtonColor: "#28a745"
+            });
+        },
+
+        error: function (xhr) {
+            actionBtn.disabled = false;
+            actionBtn.innerText = "Save Changes";
+
+            let message = "Failed to update website settings.";
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                message = xhr.responseJSON.message;
+            }
+
+            Swal.fire({
+                icon: "error",
+                title: "Update Failed",
+                text: message
+            });
+            console.error("Website settings update error:", xhr);
+        }
+    });
 }
 
 function handleWebsiteSettingsAction(event) {
     event.preventDefault();
-    if (isEditing) {
-        toggleEditMode();
-    }
 }

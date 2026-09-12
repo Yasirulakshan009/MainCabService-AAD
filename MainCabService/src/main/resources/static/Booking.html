@@ -20,7 +20,7 @@
                 <span>AR</span>
             </div>
             <div class="logo-text">
-                <span class="brand-name">Aura Cabs</span>
+                <span class="brand-name" data-field-text="companyName">Aura Cabs</span>
                 <span class="brand-sub">LUXURY RENTALS</span>
             </div>
         </div>
@@ -50,7 +50,7 @@
         <div class="nav-right">
             <div class="phone">
                 <i class="fa-solid fa-phone"></i>
-                <span>0764 061 425</span>
+                <span data-field-text="phone">0764 061 425</span>
             </div>
             <a href="javascript:void(0)" onclick="goToBooking()" class="book-btn">
                 <i class="fa-regular fa-calendar"></i>
@@ -247,8 +247,8 @@
                 <h3 class="footer-logo">Aura <span>Cabs</span></h3>
                 <p class="footer-desc">Your trusted self-drive car and vehicle rental partner in Sri Lanka.</p>
                 <div class="footer-socials">
-                    <a href="#" class="social-icon" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon" title="Facebook" data-field-href="facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon" title="Instagram" data-field-href="instagram"><i class="fa-brands fa-instagram"></i></a>
                 </div>
             </div>
             <div class="footer-col">
@@ -273,13 +273,13 @@
                 <h4>Contact Us</h4>
                 <ul class="footer-contact">
                     <li><span><i class="fa-solid fa-location-dot"></i></span> Bandaragama, Sri Lanka</li>
-                    <li><span><i class="fa-solid fa-phone"></i></span> <a href="tel:+94764061425">0764 061 425</a></li>
-                    <li><span><i class="fa-solid fa-envelope"></i></span> <a href="mailto:support@auracabs.lk">support@auracabs.lk</a></li>
+                    <li><span><i class="fa-solid fa-phone"></i></span> <a href="tel:+94764061425" data-field-text="phone" data-field-href="phone">0764 061 425</a></li>
+                    <li><span><i class="fa-solid fa-envelope"></i></span> <a href="mailto:support@auracabs.lk" data-field-text="email" data-field-href="email">support@auracabs.lk</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Aura Cabs. All Rights Reserved.</p>
+            <p>&copy; 2026 <span data-field-text="companyName">Aura Cabs</span>. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -287,6 +287,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="BookingAuth.js"></script>
+<script src="SiteSettings.js"></script>
 <script src="Booking.js"></script>
 <script src="MainJs.js"></script>
 

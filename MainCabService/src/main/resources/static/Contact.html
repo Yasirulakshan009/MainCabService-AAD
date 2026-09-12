@@ -22,7 +22,7 @@
                 <span>AR</span>
             </div>
             <div class="logo-text">
-                <span class="brand-name">Aura Cabs</span>
+                <span class="brand-name" data-field-text="companyName">Aura Cabs</span>
                 <span class="brand-sub">LUXURY RENTALS</span>
             </div>
         </div>
@@ -62,7 +62,7 @@
 
             <div class="phone">
                 <i class="fa-solid fa-phone"></i>
-                <span>0764 061 425</span>
+                <span data-field-text="phone">0764 061 425</span>
             </div>
 
             <a href="javascript:void(0)" onclick="goToBooking()" class="book-btn">
@@ -90,11 +90,11 @@
 
             <div class="contact-phone-display">
                 <i class="ri-phone-fill phone-main-icon"></i>
-                <span>0766 221 422</span>
+                <span data-field-text="phone">0766 221 422</span>
             </div>
 
             <div class="contact-hero-buttons">
-                <a href="tel:0766221422" class="btn-call-outline">
+                <a href="tel:0766221422" class="btn-call-outline" data-field-href="phone">
                     <i class="ri-phone-line"></i> Call Now
                 </a>
             </div>
@@ -122,7 +122,7 @@
                         <div class="info-icon"><i class="ri-map-pin-line"></i></div>
                         <div>
                             <h4>Address</h4>
-                            <p>All Sri Lanka</p>
+                            <p data-field-text="address">All Sri Lanka</p>
                         </div>
                     </div>
 
@@ -130,7 +130,7 @@
                         <div class="info-icon"><i class="ri-phone-line"></i></div>
                         <div>
                             <h4>Phone</h4>
-                            <p><a href="tel:0766221422" class="contact-inline-link">0766 221 422</a></p>
+                            <p><a href="tel:0766221422" class="contact-inline-link" data-field-text="phone" data-field-href="phone">0766 221 422</a></p>
                         </div>
                     </div>
 
@@ -139,7 +139,7 @@
                         <div>
                             <h4>Email</h4>
                             <p>
-                                <a href="mailto:bookings@auracabs.lk" class="contact-inline-link">bookings@auracabs.lk</a>
+                                <a href="mailto:bookings@auracabs.lk" class="contact-inline-link" data-field-text="email" data-field-href="email">bookings@auracabs.lk</a>
                             </p>
                         </div>
                     </div>
@@ -156,7 +156,7 @@
                 <div class="whatsapp-box">
                     <h4>WhatsApp Us</h4>
                     <p>For quick responses, message us on WhatsApp</p>
-                    <a href="https://wa.me/94764061425?text=Hello%20Star%20Cabs,%20I%20want%20to%20book%20a%20cab." target="_blank" class="whatsapp-chat-btn">
+                    <a href="https://wa.me/94764061425?text=Hello%20Aura%20Cabs,%20I%20want%20to%20book%20a%20cab." target="_blank" class="whatsapp-chat-btn" data-field-href="whatsapp">
                         <i class="ri-whatsapp-line"></i> Chat on WhatsApp
                     </a>
                 </div>
@@ -223,8 +223,8 @@
                 <h3 class="footer-logo">Aura <span>Cabs</span></h3>
                 <p class="footer-desc">Your trusted self-drive car and vehicle rental partner in Sri Lanka. Offering flexible self-drive options for your safe and independent journey.</p>
                 <div class="footer-socials">
-                    <a href="#" class="social-icon" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon" title="Facebook" data-field-href="facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon" title="Instagram" data-field-href="instagram"><i class="fa-brands fa-instagram"></i></a>
                 </div>
             </div>
 
@@ -254,8 +254,8 @@
                 <h4>Contact Us</h4>
                 <ul class="footer-contact">
                     <li><span><i class="fa-solid fa-location-dot"></i></span> Bandaragama, Sri Lanka</li>
-                    <li><span><i class="fa-solid fa-phone"></i></span> <a href="tel:+94764061425">0764 061 425</a></li>
-                    <li><span><i class="fa-solid fa-envelope"></i></span> <a href="mailto:support@auracabs.lk">support@auracabs.lk</a></li>
+                    <li><span><i class="fa-solid fa-phone"></i></span> <a href="tel:+94764061425" data-field-text="phone" data-field-href="phone">0764 061 425</a></li>
+                    <li><span><i class="fa-solid fa-envelope"></i></span> <a href="mailto:support@auracabs.lk" data-field-text="email" data-field-href="email">support@auracabs.lk</a></li>
                     <li><span><i class="fa-solid fa-clock"></i></span> Available 24/7</li>
                 </ul>
             </div>
@@ -263,7 +263,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2026 Aura Cabs. All Rights Reserved. Designed with Professional Excellence.</p>
+            <p>&copy; 2026 <span data-field-text="companyName">Aura Cabs</span>. All Rights Reserved. Designed with Professional Excellence.</p>
         </div>
     </footer>
 
@@ -279,7 +279,7 @@
                         <i class="ri-whatsapp-line"></i>
                     </div>
                     <div>
-                        <h4>Aura Cabs</h4>
+                        <h4 data-field-text="companyName">Aura Cabs</h4>
                         <span>Online - Ready to help!</span>
                     </div>
                 </div>
@@ -295,7 +295,7 @@
             </div>
 
             <div class="wa-popup-footer">
-                <a href="https://wa.me/94764061425?text=Hello%20Aura%20Cabs,%20I%20want%20to%20book%20a%20cab." target="_blank" class="wa-start-chat-btn">
+                <a href="https://wa.me/94764061425?text=Hello%20Aura%20Cabs,%20I%20want%20to%20book%20a%20cab." data-field-href="whatsapp" target="_blank" class="wa-start-chat-btn">
                     <i class="ri-whatsapp-line"></i> Start WhatsApp Chat
                 </a>
             </div>
@@ -309,7 +309,9 @@
     </div>
 </section>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="BookingAuth.js"></script>
+<script src="SiteSettings.js"></script>
 <script src="MainJs.js"></script>
 <script>
     window.addEventListener('scroll', function() {
