@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/v1/vehicles/**", "/v1/vehicles").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/terms-condition", "/v1/privacy-policy", "/v1/faqs").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/customer_reviews/approved").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/v1/contact").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         .requestMatchers(HttpMethod.PUT, "/api/v1/auth/update-profile/**").authenticated()

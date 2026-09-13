@@ -7,6 +7,7 @@ import lk.ijse.MainCabService.enumeratios.BookingStatus;
 import lk.ijse.MainCabService.repository.BookingCustomerRepository;
 import lk.ijse.MainCabService.repository.BookingRepository;
 import lk.ijse.MainCabService.service.BookingService;
+import lk.ijse.MainCabService.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class BookingServiceIMPL implements BookingService {
 
     private final BookingRepository bookingRepository;
     private final BookingCustomerRepository bookingCustomerRepository;
+    private final EmailService emailService;
+
 
 
     @Override
@@ -35,6 +38,8 @@ public class BookingServiceIMPL implements BookingService {
             booking.setBookingVehicle(bookingDTO.getVehicleModel());
             booking.setStartDate(bookingDTO.getStartDate());
             booking.setEndDate(bookingDTO.getEndDate());
+            booking.setPickupTime(bookingDTO.getPickupTime());
+            booking.setReturnTime(bookingDTO.getReturnTime());
             booking.setPickupAddress(bookingDTO.getPickupAddress());
             booking.setBookingStatus(BookingStatus.PENDING);
 
@@ -46,6 +51,12 @@ public class BookingServiceIMPL implements BookingService {
 
             bookingRepository.save(booking);
             log.info("Booking saved successfully with PENDING status!");
+
+            try {
+                emailService.sendBookingNotificationEmail(booking, customer);
+            } catch (Exception emailException) {
+                log.error("Booking saved but failed to send notification email: " + emailException.getMessage());
+            }
 
 
         } catch (Exception e) {

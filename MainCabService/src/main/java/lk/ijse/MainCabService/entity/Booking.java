@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 
 @Entity
@@ -26,6 +27,8 @@ public class Booking {
     private String bookingVehicle;
     private LocalDate startDate;
     private LocalDate endDate;
+    private LocalTime pickupTime;
+    private LocalTime returnTime;
     private String pickupAddress;
 
     @Enumerated(EnumType.STRING)

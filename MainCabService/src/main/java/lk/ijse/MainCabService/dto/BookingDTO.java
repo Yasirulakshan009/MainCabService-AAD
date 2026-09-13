@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -26,6 +27,10 @@ public class BookingDTO {
 
     @NotNull(message = "End date cannot be null!")
     private LocalDate endDate;
+
+    private LocalTime pickupTime;
+
+    private LocalTime returnTime;
 
     private String pickupAddress;
 

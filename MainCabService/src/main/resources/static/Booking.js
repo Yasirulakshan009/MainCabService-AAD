@@ -314,7 +314,7 @@ function loadVehiclesByWebCategory() {
 
                 container.appendChild(card);
             });
-            
+
             preselectVehicleId = null;
         },
         error: function(xhr, status, error) {
@@ -364,6 +364,8 @@ document.getElementById("booking-form")?.addEventListener("submit", function(eve
         vehicleModel: vehicleModel,
         startDate: $('#pickupDate').val(),
         endDate: $('#returnDate').val(),
+        pickupTime:$('#pickupTime').val(),
+        returnTime:$('#returnTime').val(),
         pickupAddress: $('#location-input').val(),
         bookingStatus: "PENDING",
         bookingCustomerID: null,
