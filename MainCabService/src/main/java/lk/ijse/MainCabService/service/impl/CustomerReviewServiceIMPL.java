@@ -2,9 +2,11 @@ package lk.ijse.MainCabService.service.impl;
 
 import lk.ijse.MainCabService.dto.CustomerReviewDTO;
 import lk.ijse.MainCabService.entity.CustomerReview;
+import lk.ijse.MainCabService.enumeratios.NotificationType;
 import lk.ijse.MainCabService.enumeratios.ReviewStatus;
 import lk.ijse.MainCabService.repository.CustomerReviewsRepository;
 import lk.ijse.MainCabService.service.CustomerReviewService;
+import lk.ijse.MainCabService.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class CustomerReviewServiceIMPL implements CustomerReviewService {
 
     private final CustomerReviewsRepository customerReviewsRepository;
+    private final NotificationService notificationService;
 
     @Override
     public List<CustomerReviewDTO> getAllReviews() {
@@ -89,6 +92,12 @@ public class CustomerReviewServiceIMPL implements CustomerReviewService {
             review.setStatus(ReviewStatus.PENDING);
 
             CustomerReview saved = customerReviewsRepository.save(review);
+
+            notificationService.createNotification(
+                    NotificationType.REVIEW,
+                    "New review from " + saved.getCustomerName(),
+                    saved.getId()
+            );
 
             CustomerReviewDTO dto = new CustomerReviewDTO();
             dto.setId(saved.getId());

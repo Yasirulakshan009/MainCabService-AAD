@@ -81,6 +81,8 @@ function loadCompletedPaymentCountFromBackend() {
 }
 
 function renderPaymentTable(list) {
+    list = [...(list || [])].reverse();
+    
     const tbody = $("#paymentTableBody");
     tbody.empty();
 

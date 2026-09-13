@@ -27,6 +27,8 @@ function loadAllBookingsFromBackend() {
 
 function renderBookingTable(bookings) {
 
+    bookings = [...(bookings || [])].reverse();
+    
     const tableBody = document.getElementById("bookingTableBody");
     if (!tableBody) return;
 

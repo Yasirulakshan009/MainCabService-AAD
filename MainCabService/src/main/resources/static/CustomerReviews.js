@@ -21,6 +21,8 @@ function loadAllReviewsFromBackend() {
 }
 
 function renderReviewsGrid(reviews) {
+    reviews = [...(reviews || [])].reverse();
+    
     const section = document.getElementById("customer-reviews-section");
     if (!section) {
         return;

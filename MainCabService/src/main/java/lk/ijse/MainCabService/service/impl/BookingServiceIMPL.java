@@ -4,10 +4,12 @@ import lk.ijse.MainCabService.dto.BookingDTO;
 import lk.ijse.MainCabService.entity.Booking;
 import lk.ijse.MainCabService.entity.BookingCustomer;
 import lk.ijse.MainCabService.enumeratios.BookingStatus;
+import lk.ijse.MainCabService.enumeratios.NotificationType;
 import lk.ijse.MainCabService.repository.BookingCustomerRepository;
 import lk.ijse.MainCabService.repository.BookingRepository;
 import lk.ijse.MainCabService.service.BookingService;
 import lk.ijse.MainCabService.service.EmailService;
+import lk.ijse.MainCabService.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,8 +25,7 @@ public class BookingServiceIMPL implements BookingService {
     private final BookingRepository bookingRepository;
     private final BookingCustomerRepository bookingCustomerRepository;
     private final EmailService emailService;
-
-
+    private final NotificationService notificationService;
 
     @Override
     public void saveBooking(BookingDTO bookingDTO) {
@@ -51,6 +52,12 @@ public class BookingServiceIMPL implements BookingService {
 
             bookingRepository.save(booking);
             log.info("Booking saved successfully with PENDING status!");
+
+            notificationService.createNotification(
+                    NotificationType.BOOKING,
+                    "New booking from " + customer.getBookingCustomerName(),
+                    booking.getBookingID()
+            );
 
             try {
                 emailService.sendBookingNotificationEmail(booking, customer);

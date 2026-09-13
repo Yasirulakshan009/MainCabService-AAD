@@ -50,7 +50,7 @@ function loadAllMaintenanceFromBackend() {
 }
 
 function renderMaintenanceTable(maintenanceList) {
-    globalMaintenanceList = maintenanceList || [];
+    maintenanceList = [...(maintenanceList || [])].reverse();
 
     const tableBody = document.getElementById('maintenanceTableBody');
     if (!tableBody) return;

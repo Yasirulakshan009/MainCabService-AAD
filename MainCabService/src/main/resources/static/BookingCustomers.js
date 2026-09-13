@@ -22,7 +22,7 @@ function loadAllBookingCustomersFromBackend() {
 }
 
 function renderBookingCustomerTable(customerList) {
-    globalBookingCustomerList = customerList || [];
+    customerList = [...(customerList || [])].reverse();
 
     const tableBody = document.getElementById('bookingCustTableBody');
     if (!tableBody) return;

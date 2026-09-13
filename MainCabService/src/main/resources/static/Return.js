@@ -271,6 +271,8 @@ function loadAllReturnsFromBackend() {
 }
 
 function renderReturnTable(list) {
+    list = [...(list || [])].reverse();
+    
     const tbody = $("#returnTableBody");
     if (!tbody.length) {
         return;

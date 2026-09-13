@@ -1,6 +1,5 @@
-package lk.ijse.MainCabService.entity;
+package lk.ijse.MainCabService.dto;
 
-import jakarta.persistence.*;
 import lk.ijse.MainCabService.enumeratios.NotificationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,26 +8,16 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "notifications")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Notification {
+public class NotificationDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String message;
-
-    @Enumerated(EnumType.STRING)
     private NotificationType type;
-
     private Long referenceId;
-
-    private boolean isRead = false;
-
+    private boolean isRead;
     private LocalDateTime createdDate;
 }

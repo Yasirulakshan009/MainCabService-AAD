@@ -248,6 +248,8 @@ function loadAllRentalsFromBackend() {
 }
 
 function renderRentalTable(list) {
+    list = [...(list || [])].reverse();
+    
     const tbody = $("#rentalTableBody");
     tbody.empty();
 

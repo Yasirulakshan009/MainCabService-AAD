@@ -40,7 +40,8 @@ function loadAllCustomersFromBackend() {
 }
 
 function renderCustomerTable(customerList) {
-    globalCustomerList = customerList || [];
+    customerList = [...(customerList || [])].reverse();
+    globalCustomerList = customerList;
 
     const tableBody = document.getElementById('normalCustTableBody');
     if (!tableBody) return;

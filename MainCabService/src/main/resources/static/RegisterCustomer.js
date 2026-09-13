@@ -68,6 +68,8 @@ function displayRegisteredCustomers(customers) {
 
     tableBody.innerHTML = "";
 
+    customers = [...(customers || [])].reverse();
+
     if (!customers || customers.length === 0) {
         tableBody.innerHTML = `
             <tr>

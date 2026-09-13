@@ -70,7 +70,9 @@ function loadAllVehiclesFromBackend() {
 }
 
 function loadFleetToGrid(vehicleList) {
-    globalVehicleList = vehicleList || [];
+    vehicleList = [...(vehicleList || [])].reverse();
+    globalVehicleList = vehicleList;
+    
     const vehicleGrid = document.getElementById('vehicleGrid');
     if (!vehicleGrid) return;
 

@@ -154,6 +154,8 @@ function loadSystemUsers() {
             if (!tableBody) return;
             tableBody.innerHTML = "";
 
+            users = [...users].reverse();
+            
             if (!users || users.length === 0) {
                 tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center;">No users found</td></tr>`;
                 return;
